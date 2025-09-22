@@ -1,0 +1,26 @@
+services:
+  backend:
+    build: ./workouts_udec_backend
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=postgresql://postgres:postgres@db:5432/mydb
+    depends_on:
+      - db
+
+  frontend:
+    build: ./workouts_udec_frontend
+    ports:
+      - "5173:5173"
+
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: mydb
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:
