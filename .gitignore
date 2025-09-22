@@ -38,9 +38,6 @@ instance/
 *.db
 *.sqlite3
 
-# Alembic
-versions/
-
 # Node.js
 node_modules/
 npm-debug.log*
