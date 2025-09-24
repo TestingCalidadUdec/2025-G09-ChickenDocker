@@ -1,26 +1,73 @@
 services:
   backend:
+    # Construye la imagen usando el Dockerfile en la carpeta ./workouts_udec_backend
     build: ./workouts_udec_backend
+
+    # Publica el puerto 8000 del contenedor al host
     ports:
       - "8000:8000"
+
+    # Variables de entorno necesarias para conectar con la base de datos
     environment:
       - DATABASE_URL=postgresql://postgres:postgres@db:5432/mydb
-    depends_on:
-      - db
 
+    # Espera que el servicio 'db' esté saludable antes de iniciar
+    depends_on:
+      db:
+        condition: service_healthy
+
+    # Healthcheck para verificar que el backend esté vivo
+    healthcheck:
+      # Usa curl para comprobar que el endpoint /health responde correctamente
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s       
+      timeout: 10s       
+      retries: 3        
+      start_period: 20s   
   frontend:
+    # Construye la imagen usando el Dockerfile en la carpeta ./workouts_udec_frontend
     build: ./workouts_udec_frontend
+
+    # Publica el puerto 5173 del contenedor al host
     ports:
       - "5173:5173"
 
+    # Espera que el backend esté healthy antes de iniciar
+    depends_on:
+      backend:
+        condition: service_healthy
+
+    # Healthcheck para verificar que el frontend esté vivo
+    healthcheck:
+      # Usa curl para comprobar que el frontend responde en el puerto 5173
+      test: ["CMD", "curl", "-f", "http://localhost:5173/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 20s
   db:
+    # Usamos la imagen oficial de Postgres 16
     image: postgres:16
+
+    # Variables de entorno para crear la base de datos y usuario
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: mydb
+
+    # Volumen persistente para que los datos de la base de datos no se pierdan
     volumes:
       - pgdata:/var/lib/postgresql/data
 
+    # Healthcheck para verificar que Postgres esté listo
+    healthcheck:
+      # Usa pg_isready para comprobar la conexión a la DB
+      test: ["CMD-SHELL", "pg_isready -U postgres -d mydb"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
 volumes:
+  # Volumen para mantener los datos de la base de datos entre reinicios
   pgdata:
