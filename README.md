@@ -1,41 +1,29 @@
-# 🏋️‍♂️ Workout Tracker - Full Stack Application
+# Chicken Docker Project 🐔🐾
 
-A full-stack workout tracking application that helps users manage their fitness journey with detailed workout logging, exercise management, and progress tracking. 
+Este proyecto utiliza Docker para levantar los servicios necesarios, incluyendo backend y base de datos PostgreSQL.
 
-## 🌟 Overview
+## Levantar la aplicación con Docker 🚀
 
-This application consists of FastAPI backend with a React TypeScript frontend, providing a complete solution for personal fitness tracking and gym management.
+Sigue estos pasos:
 
-### ✨ Key Features
+1. Navega al directorio del proyecto:
 
-**👤 For Users:**
-- 🔐 Secure authentication and profile management
-- 🏃‍♂️ Interactive workout session tracking
-- 📊 Detailed exercise logging with sets, reps, weights, and duration
-- 📈 Workout history
-- 📝 Workout and exercise notes
-- 📋 Pre-built workout templates
-- 📱 Responsive design for mobile and desktop
+```bash
+cd /2025-G09-ChickenDocker
+```
+Importante: Asegúrate de que los finales de línea de los archivos estén en modo LF (\n).
+Esto es necesario para que los scripts de Docker y Alembic funcionen correctamente.
 
-**👨‍💼 For Administrators:**
-- 👥 Complete user management system
-- 💪 Exercise database administration
-- 📋 Workout template creation and management
-- 🛡️ Role-based access control
+Ejecuta Docker Compose para iniciar la aplicacion web:
 
-## 🏗️ Architecture
+docker compose up
 
-### Technology Stack
+posteriormente dirigase a esta pagina
+```
+http://localhost:5173
+```
 
-| Component | Technology | Purpose |
-|-----------|------------|---------|
-| **Backend** | FastAPI + SQLAlchemy | REST API with ORM database access |
-| **Frontend** | React 19 + TypeScript | Modern SPA with type safety |
-| **Database** | PostgreSQL | Reliable relational data storage |
-| **Styling** | Tailwind CSS 4.x | Utility-first responsive design |
-| **Authentication** | JWT Tokens | Secure stateless authentication |
-| **Build Tools** | Vite + ESLint | Fast development and quality assurance |
+![ChickenDocker Team](CHICKENDOCKER.gif)
 
 
-## 🚀 Quick Start
-Check the readme in workouts_udec_backend and workouts_udec_frontend to get started.
+
