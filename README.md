@@ -1,4 +1,46 @@
-# Chicken Docker Project 🐔🐾
+# 🏋️♂️ Workout Tracker - Aplicación Full Stack
+
+Una aplicación **full-stack** de seguimiento de entrenamientos que ayuda a los usuarios a gestionar su progreso fitness con registro detallado de rutinas, gestión de ejercicios y seguimiento de avances.  
+
+## 🌟 Descripción general
+
+Esta aplicación consiste en un **backend con FastAPI** y un **frontend con React TypeScript**, proporcionando una solución completa para el seguimiento personal de entrenamientos y la gestión de gimnasio.  
+
+### ✨ Funcionalidades principales
+
+**👤 Para usuarios:**
+- 🔐 Autenticación segura y gestión de perfil  
+- 🏃♂️ Seguimiento interactivo de sesiones de entrenamiento  
+- 📊 Registro detallado de ejercicios con series, repeticiones, peso y duración  
+- 📈 Historial de entrenamientos  
+- 📝 Notas de rutinas y ejercicios  
+- 📋 Plantillas de entrenamientos predefinidas  
+- 📱 Diseño responsivo para móvil y escritorio  
+
+**👨💼 Para administradores:**
+- 👥 Sistema completo de gestión de usuarios  
+- 💪 Administración de la base de datos de ejercicios  
+- 📋 Creación y gestión de plantillas de entrenamientos  
+- 🛡️ Control de acceso basado en roles  
+
+## 🏗️ Arquitectura
+
+### Stack tecnológico
+
+| Componente | Tecnología | Propósito |
+|------------|------------|-----------|
+| **Backend** | FastAPI + SQLAlchemy | API REST con acceso a BD mediante ORM |
+| **Frontend** | React 19 + TypeScript | SPA moderna con tipado seguro |
+| **Base de datos** | PostgreSQL | Almacenamiento relacional confiable |
+| **Estilos** | Tailwind CSS 4.x | Diseño responsivo basado en utilidades |
+| **Autenticación** | Tokens JWT | Autenticación segura sin estado |
+| **Herramientas de build** | Vite + ESLint | Desarrollo rápido y aseguramiento de calidad |  
+
+## 🚀 Inicio rápido
+Revisa el README en **workouts_udec_backend** y **workouts_udec_frontend** para comenzar.  
+
+
+# 🐾🐔 TEAM Chicken Docker Project 🐔🐾
 
 Este proyecto utiliza **Docker** para levantar los servicios necesarios, incluyendo **backend**, **frontend** y **base de datos PostgreSQL**.
 
