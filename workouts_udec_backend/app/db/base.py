@@ -6,5 +6,5 @@ from app.models.workout import (
     WorkoutExercise,
     ExerciseSet,
     WorkoutTemplate,
-    WorkoutTemplateExercise
+    WorkoutTemplateExercise,
 )

@@ -5,6 +5,7 @@ from app.crud.base import CRUDBase
 from app.models.user import User
 from app.schemas.user import UserCreate, UserUpdate
 
+
 class CRUDUser(CRUDBase[User, UserCreate, UserUpdate]):
     def get_by_email(self, db: Session, *, email: str) -> Optional[User]:
         return db.query(User).filter(User.email == email).first()
@@ -54,32 +55,42 @@ class CRUDUser(CRUDBase[User, UserCreate, UserUpdate]):
 
     def delete_with_cascade(self, db: Session, *, user_id: int) -> None:
         """Delete user and all associated data in proper order to respect foreign key constraints."""
-        from app.models.workout import Workout, WorkoutExercise, ExerciseSet, WorkoutTemplate
-        
+        from app.models.workout import (
+            Workout,
+            WorkoutExercise,
+            ExerciseSet,
+            WorkoutTemplate,
+        )
+
         # 1. Delete exercise sets for all user's workouts
-        user_workout_ids = db.query(Workout.id).filter(Workout.user_id == user_id).subquery()
-        workout_exercise_ids = db.query(WorkoutExercise.id).filter(
-            WorkoutExercise.workout_id.in_(user_workout_ids)
-        ).subquery()
-        
+        user_workout_ids = (
+            db.query(Workout.id).filter(Workout.user_id == user_id).subquery()
+        )
+        workout_exercise_ids = (
+            db.query(WorkoutExercise.id)
+            .filter(WorkoutExercise.workout_id.in_(user_workout_ids))
+            .subquery()
+        )
+
         db.query(ExerciseSet).filter(
             ExerciseSet.workout_exercise_id.in_(workout_exercise_ids)
         ).delete(synchronize_session=False)
-        
+
         # 2. Delete workout exercises
         db.query(WorkoutExercise).filter(
             WorkoutExercise.workout_id.in_(user_workout_ids)
         ).delete(synchronize_session=False)
-        
+
         # 3. Delete workouts
         db.query(Workout).filter(Workout.user_id == user_id).delete()
-        
+
         # 4. Delete workout templates created by user
         db.query(WorkoutTemplate).filter(WorkoutTemplate.created_by == user_id).delete()
-        
+
         # 5. Finally delete the user
         self.remove(db, id=user_id)
-        
+
         db.commit()
+
 
 user = CRUDUser(User)
