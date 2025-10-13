@@ -1,13 +1,14 @@
 from typing import List, Dict, Any
 from sqlalchemy.orm import Session, joinedload
 from app.crud.base import CRUDBase
-from app.models.workout import WorkoutTemplate, Workout, WorkoutExercise, WorkoutTemplateExercise
+from app.models.workout import WorkoutTemplate, Workout, WorkoutExercise, WorkoutTemplateExercise, ExerciseSet
 from app.schemas.workout import (
     WorkoutTemplateCreate, 
     WorkoutTemplateUpdate,
     WorkoutCreate,
     WorkoutUpdate
 )
+
 
 class CRUDWorkoutTemplate(CRUDBase[WorkoutTemplate, WorkoutTemplateCreate, WorkoutTemplateUpdate]):
     def create(self, db: Session, *, obj_in: WorkoutTemplateCreate, created_by: int) -> WorkoutTemplate:
@@ -42,7 +43,7 @@ class CRUDWorkoutTemplate(CRUDBase[WorkoutTemplate, WorkoutTemplateCreate, Worko
 
     def get_public(self, db: Session, *, skip: int = 0, limit: int = 100) -> List[WorkoutTemplate]:
         return db.query(WorkoutTemplate).filter(
-            WorkoutTemplate.is_public == True
+            WorkoutTemplate.is_public
         ).offset(skip).limit(limit).all()
 
     def get_with_exercises(self, db: Session, id: int) -> WorkoutTemplate:
@@ -112,17 +113,18 @@ class CRUDWorkoutTemplate(CRUDBase[WorkoutTemplate, WorkoutTemplateCreate, Worko
         return template
 
 class CRUDWorkout(CRUDBase[Workout, WorkoutCreate, WorkoutUpdate]):
-    def create(self, db: Session, *, obj_in: Dict[str, Any]) -> Workout:
-        db_obj = Workout(
-            user_id=obj_in["user_id"],
-            name=obj_in.get("name"),
-            notes=obj_in.get("notes"),
-            template_id=obj_in.get("template_id")
+    def create_workout(self, db: Session, workout_data: Dict[str, Any]) -> Workout:
+        """Crea un workout y lo agrega a la DB."""
+        workout = Workout(
+            user_id=workout_data["user_id"],
+            name=workout_data.get("name"),
+            notes=workout_data.get("notes"),
+            template_id=workout_data.get("template_id")
         )
-        db.add(db_obj)
+        db.add(workout)
         db.commit()
-        db.refresh(db_obj)
-        return db_obj
+        db.refresh(workout)
+        return workout
 
     def get_by_user(self, db: Session, *, user_id: int, skip: int = 0, limit: int = 100) -> List[Workout]:
         return db.query(Workout).filter(
@@ -153,24 +155,25 @@ class CRUDWorkout(CRUDBase[Workout, WorkoutCreate, WorkoutUpdate]):
             Workout.completed_at.isnot(None)
         ).order_by(Workout.completed_at.desc()).offset(skip).limit(limit).all()
 
-    def create_from_template(self, db: Session, *, template, workout_data: Dict[str, Any]) -> Workout:
-        from app.models.workout import ExerciseSet
-        
-        # Create the workout
-        new_workout = self.create(db, obj_in=workout_data)
-        
-        # Add exercises from template
+    def add_exercises_from_template(self, db: Session, workout: Workout, template) -> List[WorkoutExercise]:
+        """Agrega los ejercicios de un template al workout."""
+        workout_exercises = []
         for template_exercise in template.template_exercises:
-            workout_exercise = WorkoutExercise(
-                workout_id=new_workout.id,
+            exercise = WorkoutExercise(
+                workout_id=workout.id,
                 exercise_id=template_exercise.exercise_id,
                 order_index=template_exercise.order_index,
                 notes=None
             )
-            db.add(workout_exercise)
-            db.flush()  # Flush to get the workout_exercise.id
-            
-            # Create recommended sets based on template suggestions
+            db.add(exercise)
+            db.flush()
+            workout_exercises.append(exercise)
+        return workout_exercises
+
+    def add_sets_for_exercises(self, db: Session, workout_exercises: List[WorkoutExercise], template) -> None:
+        """Agrega los sets sugeridos a cada ejercicio del workout."""
+
+        for workout_exercise, template_exercise in zip(workout_exercises, template.template_exercises):
             suggested_sets = template_exercise.suggested_sets or 1
             for set_number in range(1, suggested_sets + 1):
                 exercise_set = ExerciseSet(
@@ -183,14 +186,18 @@ class CRUDWorkout(CRUDBase[Workout, WorkoutCreate, WorkoutUpdate]):
                     completed=False
                 )
                 db.add(exercise_set)
-        
         db.commit()
-        
-        # Return workout with exercises loaded
+
+    def create_from_template(self, db: Session, *, template, workout_data: Dict[str, Any]) -> Workout:
+        """Crea un workout a partir de un template, con ejercicios y sets."""
+        workout = self.create_workout(db, workout_data)
+        exercises = self.add_exercises_from_template(db, workout, template)
+        self.add_sets_for_exercises(db, exercises, template)
+
         return db.query(Workout).options(
             joinedload(Workout.workout_exercises).joinedload(WorkoutExercise.exercise),
             joinedload(Workout.workout_exercises).joinedload(WorkoutExercise.sets)
-        ).filter(Workout.id == new_workout.id).first()
+        ).filter(Workout.id == workout.id).first()
 
     def cancel_workout(self, db: Session, *, workout_id: int) -> None:
         """Cancel a workout and remove all associated data."""
