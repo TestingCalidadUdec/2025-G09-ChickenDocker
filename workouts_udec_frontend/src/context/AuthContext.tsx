@@ -32,7 +32,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           const currentUser = await authService.getCurrentUser();
           setUser(currentUser);
           setToken(storedToken);
-        } catch (error) {
+        } catch {
           localStorage.removeItem('token');
           localStorage.removeItem('user');
           setToken(null);

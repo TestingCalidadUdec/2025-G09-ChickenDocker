@@ -30,7 +30,7 @@ const ExerciseManagement: React.FC = () => {
       setLoading(true);
       const data = await exerciseService.getExercises(0, 1000); // Get all exercises
       setExercises(data);
-    } catch (error: any) {
+    } catch {
       setError('Failed to load exercises');
     } finally {
       setLoading(false);
@@ -78,7 +78,7 @@ const ExerciseManagement: React.FC = () => {
       setExercises(exercises.filter(e => e.id !== exercise.id));
       setSuccess('Exercise deleted successfully');
       setTimeout(() => setSuccess(''), 3000);
-    } catch (error: any) {
+    } catch {
       setError('Failed to delete exercise');
       setTimeout(() => setError(''), 3000);
     }

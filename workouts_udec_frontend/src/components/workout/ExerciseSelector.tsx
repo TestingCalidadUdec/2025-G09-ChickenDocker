@@ -30,7 +30,7 @@ const ExerciseSelector: React.FC<ExerciseSelectorProps> = ({ isOpen, onClose }) 
       setLoading(true);
       const exercisesData = await exerciseService.getExercises(0, 1000);
       setExercises(exercisesData.filter(ex => ex.is_active));
-    } catch (err: any) {
+    } catch {
       setError('Failed to load exercises');
     } finally {
       setLoading(false);

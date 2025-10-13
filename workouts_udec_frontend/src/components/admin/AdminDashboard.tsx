@@ -28,7 +28,7 @@ const AdminDashboard: React.FC = () => {
       setLoading(true);
       const data = await adminService.getUsers();
       setUsers(data);
-    } catch (error: any) {
+    } catch {
       setError('Failed to load users');
     } finally {
       setLoading(false);
@@ -76,7 +76,7 @@ const AdminDashboard: React.FC = () => {
       setUsers(users.filter(u => u.id !== user.id));
       setSuccess('User deleted successfully');
       setTimeout(() => setSuccess(''), 3000);
-    } catch (error: any) {
+    } catch {
       setError('Failed to delete user');
       setTimeout(() => setError(''), 3000);
     }
