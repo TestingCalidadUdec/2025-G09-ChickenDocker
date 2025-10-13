@@ -199,23 +199,26 @@ class CRUDWorkout(CRUDBase[Workout, WorkoutCreate, WorkoutUpdate]):
             joinedload(Workout.workout_exercises).joinedload(WorkoutExercise.sets)
         ).filter(Workout.id == workout.id).first()
 
-    def cancel_workout(self, db: Session, *, workout_id: int) -> None:
-        """Cancel a workout and remove all associated data."""
-        from app.models.workout import WorkoutExercise, ExerciseSet
-        
-        # Delete all exercise sets first
-        workout_exercises = db.query(WorkoutExercise).filter(WorkoutExercise.workout_id == workout_id).all()
+    def delete_sets_from_workout(self, db:Session, workout_exercise):
+        db.query(ExerciseSet).filter(
+            ExerciseSet.workout_exercise_id == workout_exercise.id
+        ).delete()
+
+    def delete_exercises_from_workout(self, db:Session, workout_exercises):
         for workout_exercise in workout_exercises:
-            # Delete all sets for this workout exercise
-            db.query(ExerciseSet).filter(ExerciseSet.workout_exercise_id == workout_exercise.id).delete()
-            # Delete the workout exercise
+            self.delete_sets_from_workout(db, workout_exercise)
             db.delete(workout_exercise)
-        
-        # Now delete the workout itself
+
+    def delete_workout(self, db: Session, *, workout_id):
+        workout_exercises = db.query(WorkoutExercise).filter(
+            WorkoutExercise.workout_id == workout_id
+        ).all()
+        self.delete_exercises_from_workout(db, workout_exercises)
+
         workout_obj = self.get(db, id=workout_id)
         if workout_obj:
             db.delete(workout_obj)
-        
+
         db.commit()
 
     def add_exercise_to_workout(self, db: Session, *, workout_id: int, exercise_data) -> WorkoutExercise:
