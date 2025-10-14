@@ -20,7 +20,7 @@ def read_exercises(
     skip: int = 0,
     limit: int = 100,
     current_user: User = Depends(dependencies.get_current_active_user),
-) -> Any:
+) -> List[ExerciseSchema]:
     exercises = exercise.get_active(db, skip=skip, limit=limit)
     return exercises
 
@@ -31,7 +31,7 @@ def read_exercise(
     db: Session = Depends(dependencies.get_db),
     exercise_id: int,
     current_user: User = Depends(dependencies.get_current_active_user),
-) -> Any:
+) -> ExerciseSchema:
     exercise_obj = exercise.get(db, id=exercise_id)
     if not exercise_obj:
         raise HTTPException(status_code=404, detail="Exercise not found")
@@ -44,7 +44,7 @@ def create_exercise(
     db: Session = Depends(dependencies.get_db),
     exercise_in: ExerciseCreate,
     current_user: User = Depends(dependencies.get_current_active_admin),
-) -> Any:
+) -> ExerciseSchema:
     exercise_obj = exercise.create(db, obj_in=exercise_in)
     return exercise_obj
 
@@ -56,7 +56,7 @@ def update_exercise(
     exercise_id: int,
     exercise_in: ExerciseUpdate,
     current_user: User = Depends(dependencies.get_current_active_admin),
-) -> Any:
+) -> ExerciseSchema:
     exercise_obj = exercise.get(db, id=exercise_id)
     if not exercise_obj:
         raise HTTPException(status_code=404, detail="Exercise not found")
@@ -70,7 +70,7 @@ def delete_exercise(
     db: Session = Depends(dependencies.get_db),
     exercise_id: int,
     current_user: User = Depends(dependencies.get_current_active_admin),
-) -> Any:
+) -> dict[str,str]:
     exercise_obj = exercise.get(db, id=exercise_id)
     if not exercise_obj:
         raise HTTPException(status_code=404, detail="Exercise not found")

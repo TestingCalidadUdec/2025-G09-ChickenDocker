@@ -17,7 +17,7 @@ UpdateSchemaT = TypeVar("UpdateSchemaT", bound=BaseModel)
 class CRUDBase(Generic[ModelT, CreateSchemaT, UpdateSchemaT]):
     """Clase base para operaciones CRUD en un modelo de SQLAlchemy."""
 
-    def __init__(self, model: Type[ModelT]):
+    def __init__(self, model: Type[ModelT]) -> None:
         """Inicializa el CRUDBase con un modelo de SQLAlchemy."""
         self.model = model
 

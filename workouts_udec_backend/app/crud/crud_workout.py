@@ -13,6 +13,8 @@ from app.schemas.workout import (
     WorkoutTemplateUpdate,
     WorkoutCreate,
     WorkoutUpdate,
+    WorkoutExerciseCreate,
+    ExerciseSetUpdate
 )
 
 
@@ -229,7 +231,7 @@ class CRUDWorkout(CRUDBase[Workout, WorkoutCreate, WorkoutUpdate]):
         )
 
     def add_exercises_from_template(
-        self, db: Session, workout: Workout, template
+        self, db: Session, workout: Workout, template: WorkoutTemplate
     ) -> List[WorkoutExercise]:
         """Agrega los ejercicios de un template al workout."""
         workout_exercises = []
@@ -246,7 +248,7 @@ class CRUDWorkout(CRUDBase[Workout, WorkoutCreate, WorkoutUpdate]):
         return workout_exercises
 
     def add_sets_for_exercises(
-        self, db: Session, workout_exercises: List[WorkoutExercise], template
+        self, db: Session, workout_exercises: List[WorkoutExercise], template: WorkoutTemplate
     ) -> None:
         """Agrega los sets sugeridos a cada ejercicio del workout."""
 
@@ -268,7 +270,7 @@ class CRUDWorkout(CRUDBase[Workout, WorkoutCreate, WorkoutUpdate]):
         db.commit()
 
     def create_from_template(
-        self, db: Session, *, template, workout_data: Dict[str, Any]
+        self, db: Session, *, template: WorkoutTemplate, workout_data: Dict[str, Any]
     ) -> Workout:
         """Crea un workout a partir de un template, con ejercicios y sets."""
         workout = self.create_workout(db, workout_data)
@@ -287,17 +289,17 @@ class CRUDWorkout(CRUDBase[Workout, WorkoutCreate, WorkoutUpdate]):
             .first()
         )
 
-    def delete_sets_from_workout(self, db: Session, workout_exercise):
+    def delete_sets_from_workout(self, db: Session, workout_exercise: WorkoutExercise) -> None:
         db.query(ExerciseSet).filter(
             ExerciseSet.workout_exercise_id == workout_exercise.id
         ).delete()
 
-    def delete_exercises_from_workout(self, db: Session, workout_exercises):
+    def delete_exercises_from_workout(self, db: Session, workout_exercises: List[WorkoutExercise]) -> None:
         for workout_exercise in workout_exercises:
             self.delete_sets_from_workout(db, workout_exercise)
             db.delete(workout_exercise)
 
-    def delete_workout(self, db: Session, *, workout_id):
+    def delete_workout(self, db: Session, *, workout_id: int) -> None:
         workout_exercises = (
             db.query(WorkoutExercise)
             .filter(WorkoutExercise.workout_id == workout_id)
@@ -312,7 +314,7 @@ class CRUDWorkout(CRUDBase[Workout, WorkoutCreate, WorkoutUpdate]):
         db.commit()
 
     def add_exercise_to_workout(
-        self, db: Session, *, workout_id: int, exercise_data
+        self, db: Session, *, workout_id: int, exercise_data:WorkoutExerciseCreate
     ) -> WorkoutExercise:
         """Add an exercise to a workout with optional sets."""
         workout_exercise = WorkoutExercise(
@@ -353,7 +355,7 @@ class CRUDWorkout(CRUDBase[Workout, WorkoutCreate, WorkoutUpdate]):
         )
 
     def add_set_to_exercise(
-        self, db: Session, *, workout_id: int, exercise_id: int, set_data
+        self, db: Session, *, workout_id: int, exercise_id: int, set_data: ExerciseSetUpdate
     ) -> "ExerciseSet":
         """Add a set to a workout exercise."""
         from app.models.workout import WorkoutExercise, ExerciseSet
@@ -386,7 +388,7 @@ class CRUDWorkout(CRUDBase[Workout, WorkoutCreate, WorkoutUpdate]):
         return exercise_set
 
     def update_exercise_set(
-        self, db: Session, *, workout_id: int, exercise_id: int, set_id: int, set_data
+        self, db: Session, *, workout_id: int, exercise_id: int, set_id: int, set_data: ExerciseSetUpdate
     ) -> "ExerciseSet":
         """Update an exercise set."""
         from app.models.workout import ExerciseSet
@@ -477,7 +479,7 @@ class CRUDWorkout(CRUDBase[Workout, WorkoutCreate, WorkoutUpdate]):
 
     def update_exercise_notes(
         self, db: Session, *, workout_id: int, exercise_id: int, notes: str
-    ):
+    ) -> WorkoutExercise:
         """Update notes for a workout exercise."""
         from app.models.workout import WorkoutExercise
         from sqlalchemy.orm import joinedload

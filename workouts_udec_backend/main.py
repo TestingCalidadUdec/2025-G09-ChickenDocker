@@ -20,7 +20,7 @@ app.include_router(api_router, prefix="/api")
 
 
 @app.get("/health")
-def health_check():  # Endpoint para que Docker para chequear si el backend está vivo
+def health_check() -> dict[str,str]:  # Endpoint para que Docker para chequear si el backend está vivo
     return {"status": "ok"}
 
 

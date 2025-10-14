@@ -19,7 +19,7 @@ def get_admin_token():
 
 
 # Test exercise creation
-def test_exercise_creation():
+def test_exercise_creation() -> None:
     token = get_admin_token()
     if not token:
         return

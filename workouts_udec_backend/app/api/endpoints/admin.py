@@ -24,7 +24,7 @@ def read_users(
     skip: int = 0,
     limit: int = 100,
     current_user: User = Depends(dependencies.get_current_active_admin),
-) -> Any:
+) -> List[UserSchema]:
     users = user.get_multi(db, skip=skip, limit=limit)
     return users
 
@@ -35,7 +35,7 @@ def create_user(
     db: Session = Depends(dependencies.get_db),
     user_in: UserCreate,
     current_user: User = Depends(dependencies.get_current_active_admin),
-) -> Any:
+) -> UserSchema:
     user_obj = user.get_by_email(db, email=user_in.email)
     if user_obj:
         raise HTTPException(
@@ -59,7 +59,7 @@ def update_user(
     user_id: int,
     user_in: UserUpdate,
     current_user: User = Depends(dependencies.get_current_active_admin),
-) -> Any:
+) -> UserSchema:
     user_obj = user.get(db, id=user_id)
     if not user_obj:
         raise HTTPException(status_code=404, detail="User not found")
@@ -73,7 +73,7 @@ def delete_user(
     db: Session = Depends(dependencies.get_db),
     user_id: int,
     current_user: User = Depends(dependencies.get_current_active_admin),
-) -> Any:
+) -> dict[str,str]:
     user_obj = user.get(db, id=user_id)
     if not user_obj:
         raise HTTPException(status_code=404, detail="User not found")
@@ -89,7 +89,7 @@ def read_workout_templates(
     skip: int = 0,
     limit: int = 100,
     current_user: User = Depends(dependencies.get_current_active_admin),
-) -> Any:
+) -> List[WorkoutTemplateSchema]:
     templates = workout_template.get_multi_with_exercises(db, skip=skip, limit=limit)
     return templates
 
@@ -100,7 +100,7 @@ def read_workout_template(
     db: Session = Depends(dependencies.get_db),
     template_id: int,
     current_user: User = Depends(dependencies.get_current_active_admin),
-) -> Any:
+) -> WorkoutTemplateSchema:
     template = workout_template.get_with_exercises(db, id=template_id)
     if not template:
         raise HTTPException(status_code=404, detail="Workout template not found")
@@ -113,7 +113,7 @@ def create_workout_template(
     db: Session = Depends(dependencies.get_db),
     template_in: WorkoutTemplateCreate,
     current_user: User = Depends(dependencies.get_current_active_admin),
-) -> Any:
+) -> WorkoutTemplateSchema:
     template_obj = workout_template.create(
         db, obj_in=template_in, created_by=current_user.id
     )
@@ -127,7 +127,7 @@ def update_workout_template(
     template_id: int,
     template_in: WorkoutTemplateUpdate,
     current_user: User = Depends(dependencies.get_current_active_admin),
-) -> Any:
+) -> WorkoutTemplateSchema:
     template_obj = workout_template.get(db, id=template_id)
     if not template_obj:
         raise HTTPException(status_code=404, detail="Workout template not found")
@@ -141,7 +141,7 @@ def delete_workout_template(
     db: Session = Depends(dependencies.get_db),
     template_id: int,
     current_user: User = Depends(dependencies.get_current_active_admin),
-) -> Any:
+) -> dict[str,str]:
     template_obj = workout_template.get(db, id=template_id)
     if not template_obj:
         raise HTTPException(status_code=404, detail="Workout template not found")
@@ -160,7 +160,7 @@ def add_exercise_to_template(
     template_id: int,
     exercise_in: WorkoutTemplateExerciseCreate,
     current_user: User = Depends(dependencies.get_current_active_admin),
-) -> Any:
+) -> WorkoutTemplateExerciseSchema:
     template = workout_template.get(db, id=template_id)
     if not template:
         raise HTTPException(status_code=404, detail="Workout template not found")
@@ -179,7 +179,7 @@ def remove_exercise_from_template(
     template_id: int,
     exercise_id: int,
     current_user: User = Depends(dependencies.get_current_active_admin),
-) -> Any:
+) -> dict[str,str]:
     template = workout_template.get(db, id=template_id)
     if not template:
         raise HTTPException(status_code=404, detail="Workout template not found")

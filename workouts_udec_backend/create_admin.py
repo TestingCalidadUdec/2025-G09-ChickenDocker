@@ -10,7 +10,7 @@ from app.db.session import SessionLocal
 from app.models.user import User
 
 
-def create_admin_user():
+def create_admin_user() -> None:
     db = SessionLocal()
 
     # Check if admin user already exists

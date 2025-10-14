@@ -17,7 +17,7 @@ router = APIRouter()
 def login_access_token(
     db: Session = Depends(dependencies.get_db),
     form_data: OAuth2PasswordRequestForm = Depends(),
-) -> Any:
+) -> Token:
     user_obj = user.authenticate(
         db, email=form_data.username, password=form_data.password
     )

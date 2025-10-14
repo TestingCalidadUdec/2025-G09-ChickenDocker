@@ -27,7 +27,7 @@ def read_workout_templates(
     skip: int = 0,
     limit: int = 100,
     current_user: User = Depends(dependencies.get_current_active_user),
-) -> Any:
+) -> List[WorkoutTemplateSchema]:
     # Get all templates with exercises and filter for public ones
     all_templates = workout_template.get_multi_with_exercises(
         db, skip=0, limit=1000
@@ -46,7 +46,7 @@ def read_workout_template(
     db: Session = Depends(dependencies.get_db),
     template_id: int,
     current_user: User = Depends(dependencies.get_current_active_user),
-) -> Any:
+) -> WorkoutTemplateSchema:
     template = workout_template.get_with_exercises(db, id=template_id)
     if not template:
         raise HTTPException(status_code=404, detail="Template not found")
@@ -62,7 +62,7 @@ def create_workout_from_template(
     template_id: int,
     workout_in: WorkoutCreate,
     current_user: User = Depends(dependencies.get_current_active_user),
-) -> Any:
+) -> WorkoutSchema:
     template = workout_template.get_with_exercises(db, id=template_id)
     if not template:
         raise HTTPException(status_code=404, detail="Template not found")
@@ -88,7 +88,7 @@ def read_workouts(
     skip: int = 0,
     limit: int = 100,
     current_user: User = Depends(dependencies.get_current_active_user),
-) -> Any:
+) -> List[WorkoutSchema]:
     workouts = workout.get_by_user(db, user_id=current_user.id, skip=skip, limit=limit)
     return workouts
 
@@ -97,7 +97,7 @@ def read_workouts(
 def get_active_workout(
     db: Session = Depends(dependencies.get_db),
     current_user: User = Depends(dependencies.get_current_active_user),
-) -> Any:
+) -> WorkoutSchema:
     active_workout = workout.get_active_by_user(db, user_id=current_user.id)
     if not active_workout:
         raise HTTPException(status_code=404, detail="No active workout found")
@@ -110,7 +110,7 @@ def create_workout(
     db: Session = Depends(dependencies.get_db),
     workout_in: WorkoutCreate,
     current_user: User = Depends(dependencies.get_current_active_user),
-) -> Any:
+) -> WorkoutSchema:
     # Check if user has an active workout
     active_workout = workout.get_active_by_user(db, user_id=current_user.id)
     if active_workout:
@@ -132,7 +132,7 @@ def update_workout(
     workout_id: int,
     workout_in: WorkoutUpdate,
     current_user: User = Depends(dependencies.get_current_active_user),
-) -> Any:
+) -> WorkoutSchema:
     workout_obj = workout.get(db, id=workout_id)
     if not workout_obj:
         raise HTTPException(status_code=404, detail="Workout not found")
@@ -148,7 +148,7 @@ def complete_workout(
     db: Session = Depends(dependencies.get_db),
     workout_id: int,
     current_user: User = Depends(dependencies.get_current_active_user),
-) -> Any:
+) -> dict[str,str]:
     workout_obj = workout.get(db, id=workout_id)
     if not workout_obj:
         raise HTTPException(status_code=404, detail="Workout not found")
@@ -169,7 +169,7 @@ def cancel_workout(
     db: Session = Depends(dependencies.get_db),
     workout_id: int,
     current_user: User = Depends(dependencies.get_current_active_user),
-) -> Any:
+) -> dict[str,str]:
     workout_obj = workout.get(db, id=workout_id)
     if not workout_obj:
         raise HTTPException(status_code=404, detail="Workout not found")
@@ -191,7 +191,7 @@ def get_workout_history(
     skip: int = 0,
     limit: int = 100,
     current_user: User = Depends(dependencies.get_current_active_user),
-) -> Any:
+) -> List[WorkoutSchema]:
     completed_workouts = workout.get_completed_by_user(
         db, user_id=current_user.id, skip=skip, limit=limit
     )
@@ -204,7 +204,7 @@ def read_workout(
     db: Session = Depends(dependencies.get_db),
     workout_id: int,
     current_user: User = Depends(dependencies.get_current_active_user),
-) -> Any:
+) -> WorkoutSchema:
     workout_obj = workout.get(db, id=workout_id)
     if not workout_obj:
         raise HTTPException(status_code=404, detail="Workout not found")
@@ -221,7 +221,7 @@ def add_exercise_to_workout(
     workout_id: int,
     exercise_in: WorkoutExerciseCreate,
     current_user: User = Depends(dependencies.get_current_active_user),
-) -> Any:
+) -> WorkoutExerciseSchema:
     workout_obj = workout.get(db, id=workout_id)
     if not workout_obj:
         raise HTTPException(status_code=404, detail="Workout not found")
@@ -245,7 +245,7 @@ def add_set_to_exercise(
     exercise_id: int,
     set_in: ExerciseSetCreate,
     current_user: User = Depends(dependencies.get_current_active_user),
-) -> Any:
+) -> ExerciseSetSchema:
     workout_obj = workout.get(db, id=workout_id)
     if not workout_obj:
         raise HTTPException(status_code=404, detail="Workout not found")
@@ -274,7 +274,7 @@ def update_exercise_set(
     set_id: int,
     set_in: ExerciseSetUpdate,
     current_user: User = Depends(dependencies.get_current_active_user),
-) -> Any:
+) -> ExerciseSetSchema:
     workout_obj = workout.get(db, id=workout_id)
     if not workout_obj:
         raise HTTPException(status_code=404, detail="Workout not found")
@@ -301,7 +301,7 @@ def delete_exercise_set(
     exercise_id: int,
     set_id: int,
     current_user: User = Depends(dependencies.get_current_active_user),
-) -> Any:
+) -> dict[str,str]:
     workout_obj = workout.get(db, id=workout_id)
     if not workout_obj:
         raise HTTPException(status_code=404, detail="Workout not found")
@@ -327,7 +327,7 @@ def get_exercise_progression(
     workout_id: int,
     exercise_id: int,
     current_user: User = Depends(dependencies.get_current_active_user),
-) -> Any:
+) -> dict[str,int]:
     progression_data = workout.get_exercise_progression(
         db, user_id=current_user.id, exercise_id=exercise_id, limit=10
     )
@@ -343,7 +343,7 @@ def update_workout_notes(
     workout_id: int,
     notes_data: dict,
     current_user: User = Depends(dependencies.get_current_active_user),
-) -> Any:
+) -> dict[str,str]:
     workout_obj = workout.get(db, id=workout_id)
     if not workout_obj:
         raise HTTPException(status_code=404, detail="Workout not found")
@@ -366,7 +366,7 @@ def update_exercise_notes(
     exercise_id: int,
     notes_data: dict,
     current_user: User = Depends(dependencies.get_current_active_user),
-) -> Any:
+) -> WorkoutExerciseSchema:
     workout_obj = workout.get(db, id=workout_id)
     if not workout_obj:
         raise HTTPException(status_code=404, detail="Workout not found")
