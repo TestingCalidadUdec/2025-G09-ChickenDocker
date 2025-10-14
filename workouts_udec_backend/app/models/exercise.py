@@ -4,6 +4,7 @@ Este módulo define el modelo de la base de datos para los ejercicios.
 Utiliza SQLAlchemy para declarar la estructura de la tabla 'exercises',
 incluyendo sus columnas, tipos de datos y relaciones.
 """
+
 import enum
 from sqlalchemy import Column, Integer, String, Boolean, Text, Enum
 from sqlalchemy.sql import func
@@ -17,8 +18,10 @@ class ExerciseType(enum.Enum):
 
     Define las categorías en las que se puede clasificar un ejercicio.
     """
+
     WEIGHT_BASED = "WEIGHT_BASED"
     TIME_BASED = "TIME_BASED"
+
 
 # pylint: disable=too-few-public-methods
 class Exercise(Base):
@@ -29,6 +32,7 @@ class Exercise(Base):
     que se mapea a la tabla 'exercises'. Cada atributo de la clase representa
     una columna en la tabla.
     """
+
     __tablename__ = "exercises"
 
     id = Column(Integer, primary_key=True, index=True)

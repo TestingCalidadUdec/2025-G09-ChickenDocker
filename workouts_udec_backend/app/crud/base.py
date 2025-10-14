@@ -1,4 +1,5 @@
 """Clases base para operaciones CRUD (Crear, Leer, Actualizar, Eliminar)."""
+
 from typing import Any, Dict, Generic, List, Optional, Type, TypeVar, Union
 
 from fastapi.encoders import jsonable_encoder
@@ -45,7 +46,7 @@ class CRUDBase(Generic[ModelT, CreateSchemaT, UpdateSchemaT]):
         db: Session,
         *,
         db_obj: ModelT,
-        obj_in: Union[UpdateSchemaT, Dict[str, Any]]
+        obj_in: Union[UpdateSchemaT, Dict[str, Any]],
     ) -> ModelT:
         """Actualiza un registro existente en la base de datos."""
         obj_data = jsonable_encoder(db_obj)
@@ -70,4 +71,3 @@ class CRUDBase(Generic[ModelT, CreateSchemaT, UpdateSchemaT]):
             db.delete(obj)
             db.commit()
         return obj
-    

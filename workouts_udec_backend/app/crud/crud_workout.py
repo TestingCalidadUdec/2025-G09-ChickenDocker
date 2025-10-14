@@ -433,7 +433,7 @@ class CRUDWorkout(CRUDBase[Workout, WorkoutCreate, WorkoutUpdate]):
         self, db: Session, *, user_id: int, exercise_id: int, limit: int = 10
     ) -> list:
         """Get exercise progression data for a user and exercise."""
-        from app.models.workout import WorkoutExercise, ExerciseSet
+        from app.models.workout import WorkoutExercise
         from sqlalchemy.orm import joinedload
 
         # Get previous completed workouts with this exercise

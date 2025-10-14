@@ -12,6 +12,7 @@ por grupo muscular.
 Se exporta una instancia `exercise` para ser utilizada directamente en las
 rutas (endpoints) de la API.
 """
+
 from typing import List
 from sqlalchemy.orm import Session
 from app.crud.base import CRUDBase
@@ -24,6 +25,7 @@ class CRUDExercise(CRUDBase[Exercise, ExerciseCreate, ExerciseUpdate]):
     Objeto CRUD para el modelo Exercise.
     Hereda de CRUDBase y añade métodos específicos para buscar ejercicios.
     """
+
     def get_active(
         self, db: Session, *, skip: int = 0, limit: int = 100
     ) -> List[Exercise]:
@@ -60,8 +62,11 @@ class CRUDExercise(CRUDBase[Exercise, ExerciseCreate, ExerciseUpdate]):
         """
         return (
             db.query(self.model)
-            .filter(self.model.muscle_group == muscle_group, self.model.is_active is True)
+            .filter(
+                self.model.muscle_group == muscle_group, self.model.is_active is True
+            )
             .all()
         )
+
 
 exercise = CRUDExercise(Exercise)

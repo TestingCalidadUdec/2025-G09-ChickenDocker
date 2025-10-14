@@ -5,10 +5,12 @@ Estos esquemas se utilizan para la validación de datos, serialización y docume
 automática de la API para las operaciones CRUD (Crear, Leer, Actualizar, Eliminar)
 relacionadas con los ejercicios.
 """
+
 from datetime import datetime
 from typing import Optional
 from pydantic import BaseModel
 from app.models.exercise import ExerciseType
+
 
 # pylint: disable=too-few-public-methods
 class ExerciseBase(BaseModel):
@@ -17,6 +19,7 @@ class ExerciseBase(BaseModel):
 
     Contiene los campos comunes que se comparten en la creación y lectura de un ejercicio.
     """
+
     name: str
     description: Optional[str] = None
     exercise_type: ExerciseType
@@ -34,6 +37,7 @@ class ExerciseCreate(ExerciseBase):
     de entrada al crear un nuevo registro de ejercicio en la base de datos.
     """
 
+
 # pylint: disable=too-few-public-methods
 class ExerciseUpdate(BaseModel):
     """
@@ -42,6 +46,7 @@ class ExerciseUpdate(BaseModel):
     Todos los campos son opcionales, lo que permite actualizaciones parciales (PATCH).
     Solo los campos proporcionados en la solicitud serán actualizados.
     """
+
     name: Optional[str] = None
     description: Optional[str] = None
     exercise_type: Optional[ExerciseType] = None
@@ -58,6 +63,7 @@ class ExerciseInDBBase(ExerciseBase):
     Hereda de `ExerciseBase` y añade campos que son gestionados por la base
     de datos, como el ID y las marcas de tiempo de creación/actualización.
     """
+
     id: Optional[int] = None
     created_at: Optional[datetime] = None
     updated_at: Optional[datetime] = None
@@ -70,6 +76,7 @@ class ExerciseInDBBase(ExerciseBase):
         de un modelo de ORM (como SQLAlchemy) directamente, leyendo los datos
         desde sus atributos en lugar de un diccionario.
         """
+
         from_attributes = True
 
 

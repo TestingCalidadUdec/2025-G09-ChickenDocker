@@ -4,9 +4,11 @@ Módulo que define los esquemas (schemas) de Pydantic para la entidad User y la 
 Estos esquemas se utilizan para la validación de datos, serialización y documentación
 de la API para operaciones relacionadas con usuarios y tokens de autenticación (JWT).
 """
+
 from datetime import datetime
 from typing import Optional
 from pydantic import BaseModel, EmailStr
+
 
 # pylint: disable=too-few-public-methods
 class UserBase(BaseModel):
@@ -16,6 +18,7 @@ class UserBase(BaseModel):
     Contiene los campos comunes que se comparten entre los diferentes esquemas de usuario.
     La mayoría de los campos son opcionales para proporcionar flexibilidad.
     """
+
     email: Optional[EmailStr] = None
     username: Optional[str] = None
     full_name: Optional[str] = None
@@ -31,6 +34,7 @@ class UserCreate(UserBase):
     obligatorios para asegurar que se proporcionen los datos mínimos necesarios
     al registrar un nuevo usuario.
     """
+
     email: EmailStr
     username: str
     password: str
@@ -43,6 +47,7 @@ class UserUpdate(UserBase):
     Hereda de `UserBase` y añade un campo opcional para la contraseña.
     Permite actualizaciones parciales, ya que todos los campos son opcionales.
     """
+
     password: Optional[str] = None
 
 
@@ -53,6 +58,7 @@ class UserInDBBase(UserBase):
     Añade campos gestionados automáticamente por la base de datos, como el `id`
     y las marcas de tiempo (`created_at`, `updated_at`).
     """
+
     id: Optional[int] = None
     created_at: Optional[datetime] = None
     updated_at: Optional[datetime] = None
@@ -64,6 +70,7 @@ class UserInDBBase(UserBase):
         from_attributes = True: Permite crear el modelo Pydantic a partir
         de un objeto ORM, leyendo los datos desde sus atributos.
         """
+
         from_attributes = True
 
 
@@ -83,6 +90,7 @@ class UserInDB(UserInDBBase):
     Incluye el campo `hashed_password` para manejar internamente la contraseña
     almacenada de forma segura. No debe ser expuesto en las respuestas de la API.
     """
+
     hashed_password: str
 
 
@@ -92,6 +100,7 @@ class Token(BaseModel):
 
     Representa la respuesta que se envía al cliente tras una autenticación exitosa.
     """
+
     access_token: str
     token_type: str
 
@@ -103,4 +112,5 @@ class TokenPayload(BaseModel):
     Define la estructura de los datos codificados dentro del token. El campo `sub`
     (subject) se usa comúnmente para almacenar el identificador del usuario.
     """
+
     sub: Optional[int] = None

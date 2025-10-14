@@ -1,4 +1,5 @@
 """Módulo de Modelos de Base de Datos para Entrenamientos."""
+
 from sqlalchemy import (
     Column,
     Integer,
@@ -13,12 +14,14 @@ from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 from app.db.base_class import Base
 
+
 # pylint: disable=too-few-public-methods
 class WorkoutTemplate(Base):
     """Representa una plantilla o plan de entrenamiento predefinido.
     Una plantilla es un molde reutilizable para crear entrenamientos,
     no una sesión de entrenamiento real.
     """
+
     __tablename__ = "workout_templates"
 
     id = Column(Integer, primary_key=True, index=True)
@@ -34,12 +37,14 @@ class WorkoutTemplate(Base):
         "WorkoutTemplateExercise", back_populates="template"
     )
 
+
 # pylint: disable=too-few-public-methods
 class WorkoutTemplateExercise(Base):
     """Tabla de asociación que vincula un Ejercicio a una Plantilla.
     Define los detalles de un ejercicio dentro del contexto de una plantilla,
     como las series, repeticiones o peso sugeridos.
     """
+
     __tablename__ = "workout_template_exercises"
 
     id = Column(Integer, primary_key=True, index=True)
@@ -54,12 +59,14 @@ class WorkoutTemplateExercise(Base):
     template = relationship("WorkoutTemplate", back_populates="template_exercises")
     exercise = relationship("Exercise")
 
+
 # pylint: disable=too-few-public-methods
 class Workout(Base):
     """Representa una sesión de entrenamiento real y registrada por un usuario.
     Esta clase almacena una instancia concreta de un entrenamiento que ha ocurrido
     o está en progreso.
     """
+
     __tablename__ = "workouts"
 
     id = Column(Integer, primary_key=True, index=True)
@@ -74,12 +81,14 @@ class Workout(Base):
     template = relationship("WorkoutTemplate")
     workout_exercises = relationship("WorkoutExercise", back_populates="workout")
 
+
 # pylint: disable=too-few-public-methods
 class WorkoutExercise(Base):
     """Asocia un Ejercicio con una sesión de Entrenamiento (Workout).
     Registra que un ejercicio particular fue realizado durante un entrenamiento,
     y sirve como contenedor para todas las series de ese ejercicio.
     """
+
     __tablename__ = "workout_exercises"
 
     id = Column(Integer, primary_key=True, index=True)
@@ -92,12 +101,14 @@ class WorkoutExercise(Base):
     exercise = relationship("Exercise")
     sets = relationship("ExerciseSet", back_populates="workout_exercise")
 
+
 # pylint: disable=too-few-public-methods
 class ExerciseSet(Base):
     """Representa una única serie de un ejercicio dentro de un Workout.
     Este es el nivel más granular de datos, registrando los detalles de cada
     serie individual (repeticiones, peso, etc.).
     """
+
     __tablename__ = "exercise_sets"
 
     id = Column(Integer, primary_key=True, index=True)

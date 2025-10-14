@@ -4,9 +4,11 @@ Este módulo define el modelo de la base de datos para los usuarios.
 Utiliza SQLAlchemy para declarar la estructura de la tabla 'users',
 incluyendo sus columnas, tipos de datos y relaciones.
 """
+
 from sqlalchemy import Column, Integer, String, Boolean, DateTime
 from sqlalchemy.sql import func
 from app.db.base_class import Base
+
 
 # pylint: disable=too-few-public-methods
 class User(Base):
@@ -17,6 +19,7 @@ class User(Base):
     incluyendo credenciales para autenticación, detalles personales y marcadores
     de estado para el control de acceso.
     """
+
     __tablename__ = "users"
 
     id = Column(Integer, primary_key=True, index=True)

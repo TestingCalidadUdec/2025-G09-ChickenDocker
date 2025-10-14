@@ -55,9 +55,7 @@ class CRUDUser(CRUDBase[User, UserCreate, UserUpdate]):
             update_data["hashed_password"] = hashed_password
         return super().update(db, db_obj=db_obj, obj_in=update_data)
 
-    def authenticate(
-        self, db: Session, *, email: str, password: str
-    ) -> Optional[User]:
+    def authenticate(self, db: Session, *, email: str, password: str) -> Optional[User]:
         """Autentica un usuario por correo electrónico y contraseña."""
         user = self.get_by_email(db, email=email)
         if not user:
@@ -74,9 +72,7 @@ class CRUDUser(CRUDBase[User, UserCreate, UserUpdate]):
         """Verifica si un usuario es administrador."""
         return user.is_admin
 
-    def delete_with_cascade(
-        self, db: Session, *, user_id: int
-    ) -> None:
+    def delete_with_cascade(self, db: Session, *, user_id: int) -> None:
         """Elimina un usuario y todos sus datos asociados, respetando las claves foráneas."""
         # 1. Obtener los IDs de los elementos relacionados
         user_workout_ids = (

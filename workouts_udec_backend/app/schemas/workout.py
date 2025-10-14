@@ -6,10 +6,12 @@ Contiene los modelos para:
 - Workout: Sesiones de entrenamiento específicas realizadas por un usuario.
 - Sus componentes anidados como ejercicios y series (sets).
 """
+
 from datetime import datetime
 from typing import List, Optional
 from pydantic import BaseModel
 from app.schemas.exercise import Exercise
+
 
 # pylint: disable=too-few-public-methods
 class WorkoutTemplateExerciseBase(BaseModel):
@@ -19,12 +21,14 @@ class WorkoutTemplateExerciseBase(BaseModel):
     Define la configuración sugerida para un ejercicio, como el orden, series,
     repeticiones, peso y/o duración.
     """
+
     exercise_id: int
     order_index: int
     suggested_sets: Optional[int] = None
     suggested_reps: Optional[int] = None
     suggested_weight: Optional[float] = None
     suggested_duration: Optional[int] = None
+
 
 # pylint: disable=too-few-public-methods
 class WorkoutTemplateExerciseCreate(WorkoutTemplateExerciseBase):
@@ -35,6 +39,7 @@ class WorkoutTemplateExerciseCreate(WorkoutTemplateExerciseBase):
     ejercicio que la compone.
     """
 
+
 # pylint: disable=too-few-public-methods
 class WorkoutTemplateExercise(WorkoutTemplateExerciseBase):
     """
@@ -43,13 +48,16 @@ class WorkoutTemplateExercise(WorkoutTemplateExerciseBase):
     Representa la asociación leída desde la base de datos, incluyendo los IDs
     y el objeto `Exercise` completo con sus detalles.
     """
+
     id: int
     template_id: int
     exercise: Exercise
 
     class Config:
         """Configuración del modelo Pydantic."""
+
         from_attributes = True
+
 
 # pylint: disable=too-few-public-methods
 class WorkoutTemplateBase(BaseModel):
@@ -58,9 +66,11 @@ class WorkoutTemplateBase(BaseModel):
 
     Contiene los campos fundamentales como nombre, descripción y si es pública.
     """
+
     name: str
     description: Optional[str] = None
     is_public: bool = False
+
 
 # pylint: disable=too-few-public-methods
 class WorkoutTemplateCreate(WorkoutTemplateBase):
@@ -70,7 +80,9 @@ class WorkoutTemplateCreate(WorkoutTemplateBase):
     Incluye una lista de los ejercicios que la componen, utilizando el esquema
     `WorkoutTemplateExerciseCreate`.
     """
+
     exercises: List[WorkoutTemplateExerciseCreate] = []
+
 
 # pylint: disable=too-few-public-methods
 class WorkoutTemplateUpdate(BaseModel):
@@ -79,9 +91,11 @@ class WorkoutTemplateUpdate(BaseModel):
 
     Todos los campos son opcionales para permitir actualizaciones parciales.
     """
+
     name: Optional[str] = None
     description: Optional[str] = None
     is_public: Optional[bool] = None
+
 
 # pylint: disable=too-few-public-methods
 class WorkoutTemplate(WorkoutTemplateBase):
@@ -91,6 +105,7 @@ class WorkoutTemplate(WorkoutTemplateBase):
     Este modelo se usa en las respuestas de la API. Incluye metadatos como
     el ID, el creador, fechas y la lista completa de sus ejercicios.
     """
+
     id: int
     created_by: int
     created_at: datetime
@@ -99,7 +114,9 @@ class WorkoutTemplate(WorkoutTemplateBase):
 
     class Config:
         """Configuración del modelo Pydantic."""
+
         from_attributes = True
+
 
 # pylint: disable=too-few-public-methods
 class ExerciseSetBase(BaseModel):
@@ -109,6 +126,7 @@ class ExerciseSetBase(BaseModel):
     Define los detalles de una única serie, como el número de repeticiones,
     el peso levantado, la duración y si se completó.
     """
+
     set_number: int
     reps: Optional[int] = None
     weight: Optional[float] = None
@@ -128,6 +146,7 @@ class ExerciseSetUpdate(BaseModel):
 
     Todos los campos son opcionales.
     """
+
     set_number: Optional[int] = None
     reps: Optional[int] = None
     weight: Optional[float] = None
@@ -138,17 +157,21 @@ class ExerciseSetUpdate(BaseModel):
 
 class ExerciseSet(ExerciseSetBase):
     """Esquema para representar una serie leída desde la base de datos."""
+
     id: int
 
     class Config:
         """Configuración del modelo Pydantic."""
+
         from_attributes = True
+
 
 # pylint: disable=too-few-public-methods
 class WorkoutExerciseBase(BaseModel):
     """
     Esquema base para un ejercicio dentro de una sesión de entrenamiento concreta.
     """
+
     exercise_id: int
     order_index: int
     notes: Optional[str] = None
@@ -160,6 +183,7 @@ class WorkoutExerciseCreate(WorkoutExerciseBase):
 
     Incluye la lista de series (`sets`) realizadas para este ejercicio.
     """
+
     sets: List[ExerciseSetCreate] = []
 
 
@@ -171,6 +195,7 @@ class WorkoutExercise(WorkoutExerciseBase):
     Se usa en las respuestas de la API para mostrar un ejercicio realizado,
     incluyendo sus detalles (`Exercise`), el ID de la sesión y las series.
     """
+
     id: int
     workout_id: int
     exercise: Exercise
@@ -178,11 +203,14 @@ class WorkoutExercise(WorkoutExerciseBase):
 
     class Config:
         """Configuración del modelo Pydantic."""
+
         from_attributes = True
+
 
 # pylint: disable=too-few-public-methods
 class WorkoutBase(BaseModel):
     """Esquema base para una sesión de entrenamiento (workout)."""
+
     name: Optional[str] = None
     notes: Optional[str] = None
     template_id: Optional[int] = None
@@ -194,7 +222,9 @@ class WorkoutCreate(WorkoutBase):
 
     Incluye la lista de ejercicios que se van a realizar.
     """
+
     exercises: List[WorkoutExerciseCreate] = []
+
 
 # pylint: disable=too-few-public-methods
 class WorkoutUpdate(BaseModel):
@@ -204,9 +234,11 @@ class WorkoutUpdate(BaseModel):
     Permite modificar el nombre, las notas o marcarla como completada
     estableciendo la fecha y hora en `completed_at`.
     """
+
     name: Optional[str] = None
     notes: Optional[str] = None
     completed_at: Optional[datetime] = None
+
 
 # pylint: disable=too-few-public-methods
 class WorkoutHistory(BaseModel):
@@ -215,6 +247,7 @@ class WorkoutHistory(BaseModel):
 
     Es una vista simplificada, ideal para listas de entrenamientos pasados.
     """
+
     id: int
     user_id: int
     name: Optional[str] = None
@@ -225,7 +258,9 @@ class WorkoutHistory(BaseModel):
 
     class Config:
         """Configuración del modelo Pydantic."""
+
         from_attributes = True
+
 
 # pylint: disable=too-few-public-methods
 class Workout(WorkoutBase):
@@ -235,6 +270,7 @@ class Workout(WorkoutBase):
     Representa un entrenamiento en curso o finalizado con todos sus detalles,
     incluyendo la lista completa de ejercicios y sus respectivas series.
     """
+
     id: int
     user_id: int
     started_at: datetime
@@ -243,4 +279,5 @@ class Workout(WorkoutBase):
 
     class Config:
         """Configuración del modelo Pydantic."""
+
         from_attributes = True
