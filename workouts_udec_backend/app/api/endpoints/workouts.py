@@ -148,7 +148,7 @@ def complete_workout(
     db: Session = Depends(dependencies.get_db),
     workout_id: int,
     current_user: User = Depends(dependencies.get_current_active_user),
-) -> dict[str,str]:
+) -> dict[str, str]:
     workout_obj = workout.get(db, id=workout_id)
     if not workout_obj:
         raise HTTPException(status_code=404, detail="Workout not found")
@@ -169,7 +169,7 @@ def cancel_workout(
     db: Session = Depends(dependencies.get_db),
     workout_id: int,
     current_user: User = Depends(dependencies.get_current_active_user),
-) -> dict[str,str]:
+) -> dict[str, str]:
     workout_obj = workout.get(db, id=workout_id)
     if not workout_obj:
         raise HTTPException(status_code=404, detail="Workout not found")
@@ -301,7 +301,7 @@ def delete_exercise_set(
     exercise_id: int,
     set_id: int,
     current_user: User = Depends(dependencies.get_current_active_user),
-) -> dict[str,str]:
+) -> dict[str, str]:
     workout_obj = workout.get(db, id=workout_id)
     if not workout_obj:
         raise HTTPException(status_code=404, detail="Workout not found")
@@ -327,7 +327,7 @@ def get_exercise_progression(
     workout_id: int,
     exercise_id: int,
     current_user: User = Depends(dependencies.get_current_active_user),
-) -> dict[str,int]:
+) -> dict[str, int]:
     progression_data = workout.get_exercise_progression(
         db, user_id=current_user.id, exercise_id=exercise_id, limit=10
     )
@@ -343,7 +343,7 @@ def update_workout_notes(
     workout_id: int,
     notes_data: dict,
     current_user: User = Depends(dependencies.get_current_active_user),
-) -> dict[str,str]:
+) -> dict[str, str]:
     workout_obj = workout.get(db, id=workout_id)
     if not workout_obj:
         raise HTTPException(status_code=404, detail="Workout not found")

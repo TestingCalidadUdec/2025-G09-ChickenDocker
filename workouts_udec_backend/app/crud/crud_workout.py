@@ -14,7 +14,7 @@ from app.schemas.workout import (
     WorkoutCreate,
     WorkoutUpdate,
     WorkoutExerciseCreate,
-    ExerciseSetUpdate
+    ExerciseSetUpdate,
 )
 
 
@@ -248,7 +248,10 @@ class CRUDWorkout(CRUDBase[Workout, WorkoutCreate, WorkoutUpdate]):
         return workout_exercises
 
     def add_sets_for_exercises(
-        self, db: Session, workout_exercises: List[WorkoutExercise], template: WorkoutTemplate
+        self,
+        db: Session,
+        workout_exercises: List[WorkoutExercise],
+        template: WorkoutTemplate,
     ) -> None:
         """Agrega los sets sugeridos a cada ejercicio del workout."""
 
@@ -289,12 +292,16 @@ class CRUDWorkout(CRUDBase[Workout, WorkoutCreate, WorkoutUpdate]):
             .first()
         )
 
-    def delete_sets_from_workout(self, db: Session, workout_exercise: WorkoutExercise) -> None:
+    def delete_sets_from_workout(
+        self, db: Session, workout_exercise: WorkoutExercise
+    ) -> None:
         db.query(ExerciseSet).filter(
             ExerciseSet.workout_exercise_id == workout_exercise.id
         ).delete()
 
-    def delete_exercises_from_workout(self, db: Session, workout_exercises: List[WorkoutExercise]) -> None:
+    def delete_exercises_from_workout(
+        self, db: Session, workout_exercises: List[WorkoutExercise]
+    ) -> None:
         for workout_exercise in workout_exercises:
             self.delete_sets_from_workout(db, workout_exercise)
             db.delete(workout_exercise)
@@ -314,7 +321,7 @@ class CRUDWorkout(CRUDBase[Workout, WorkoutCreate, WorkoutUpdate]):
         db.commit()
 
     def add_exercise_to_workout(
-        self, db: Session, *, workout_id: int, exercise_data:WorkoutExerciseCreate
+        self, db: Session, *, workout_id: int, exercise_data: WorkoutExerciseCreate
     ) -> WorkoutExercise:
         """Add an exercise to a workout with optional sets."""
         workout_exercise = WorkoutExercise(
@@ -355,7 +362,12 @@ class CRUDWorkout(CRUDBase[Workout, WorkoutCreate, WorkoutUpdate]):
         )
 
     def add_set_to_exercise(
-        self, db: Session, *, workout_id: int, exercise_id: int, set_data: ExerciseSetUpdate
+        self,
+        db: Session,
+        *,
+        workout_id: int,
+        exercise_id: int,
+        set_data: ExerciseSetUpdate,
     ) -> "ExerciseSet":
         """Add a set to a workout exercise."""
         from app.models.workout import WorkoutExercise, ExerciseSet
@@ -388,7 +400,13 @@ class CRUDWorkout(CRUDBase[Workout, WorkoutCreate, WorkoutUpdate]):
         return exercise_set
 
     def update_exercise_set(
-        self, db: Session, *, workout_id: int, exercise_id: int, set_id: int, set_data: ExerciseSetUpdate
+        self,
+        db: Session,
+        *,
+        workout_id: int,
+        exercise_id: int,
+        set_id: int,
+        set_data: ExerciseSetUpdate,
     ) -> "ExerciseSet":
         """Update an exercise set."""
         from app.models.workout import ExerciseSet
