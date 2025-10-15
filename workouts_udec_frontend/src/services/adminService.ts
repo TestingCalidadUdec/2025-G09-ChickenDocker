@@ -23,7 +23,7 @@ export const adminService = {
   },
 
   // Workout Templates (for future use)
-  async getWorkoutTemplates(skip: number = 0, limit: number = 100): Promise<any[]> {
+  async getWorkoutTemplates(skip: number = 0, limit: number = 100): Promise<unknown[]> {
     const response = await api.get(`/admin/workout-templates?skip=${skip}&limit=${limit}`);
     return response.data;
   },

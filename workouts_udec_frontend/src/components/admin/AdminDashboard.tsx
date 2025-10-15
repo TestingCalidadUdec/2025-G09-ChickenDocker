@@ -3,7 +3,7 @@ import { adminService } from '../../services/adminService';
 import UserTable from './UserTable';
 import UserModal from './UserModal';
 import UserFilters from './UserFilters';
-import type { User, UserCreate } from '../../types/auth';
+import type { User, UserCreate, UserUpdate } from '../../types/auth';
 
 const AdminDashboard: React.FC = () => {
   const [users, setUsers] = useState<User[]>([]);
@@ -45,7 +45,7 @@ const AdminDashboard: React.FC = () => {
     setShowModal(true);
   };
 
-  const handleSaveUser = async (userData: UserCreate | any) => {
+  const handleSaveUser = async (userData: UserCreate | UserUpdate) => {
     setModalLoading(true);
     setError('');
 
@@ -63,7 +63,7 @@ const AdminDashboard: React.FC = () => {
       }
       setShowModal(false);
       setTimeout(() => setSuccess(''), 3000);
-    } catch (error: any) {
+    } catch (error: unknown) {
       throw error; // Let UserModal handle the error display
     } finally {
       setModalLoading(false);

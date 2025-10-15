@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import type { Exercise, ExerciseCreate } from '../../types/exercise';
+import type { Exercise, ExerciseCreate, ExerciseUpdate } from '../../types/exercise';
 import { ExerciseType } from '../../types/exercise';
+import axios from 'axios';
 
 interface ExerciseModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onSave: (exerciseData: ExerciseCreate | any) => Promise<void>;
+  onSave: (exerciseData: ExerciseCreate | ExerciseUpdate) => Promise<void>;
   exercise?: Exercise | null;
   loading: boolean;
 }
@@ -87,8 +88,14 @@ const ExerciseModal: React.FC<ExerciseModalProps> = ({
     try {
       await onSave(formData);
       onClose();
-    } catch (error: any) {
-      setError(error.response?.data?.detail || 'Failed to save exercise');
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
+        setError(error.response?.data?.detail || 'Failed to save exercise');
+      } else if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError('Unknown error');
+      }
     }
   };
 

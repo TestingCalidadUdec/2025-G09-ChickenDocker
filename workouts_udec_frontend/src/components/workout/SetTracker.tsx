@@ -42,7 +42,16 @@ const SetTracker: React.FC<SetTrackerProps> = ({ set, workoutExerciseId, exercis
   }, [weight, reps, durationMinutes, durationSeconds, restMinutes, restSeconds, notes]);
 
   const handleAutoSave = async () => {
-    const updates: any = {};
+
+    type structUpdates = {
+      weight?: number;
+      reps?: number;
+      duration?: number;
+      rest_duration?: number; 
+      notes? : string;
+    };
+
+    const updates: structUpdates = {};
     let hasChanges = false;
 
     // Weight-based fields

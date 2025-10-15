@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { authService } from '../../services/authService';
+import axios from 'axios';
 
 const ProfileForm: React.FC = () => {
   const { user, setUser } = useAuth();
@@ -75,18 +76,23 @@ const ProfileForm: React.FC = () => {
         }
       }
 
-      // Prepare update data
-      const updateData: any = {
+      type structUpdateUser = {
+        username: string;
+        email: string;
+        full_name?: string;
+        password?: string; 
+      };
+      
+      const updateData: structUpdateUser = {
         username: formData.username,
         email: formData.email,
         full_name: formData.full_name || undefined,
       };
-
-      // Add password if changing
+      
       if (formData.newPassword) {
-        updateData.password = formData.newPassword;
+        updateData.password = formData.newPassword; 
       }
-
+    
       const updatedUser = await authService.updateUser(updateData);
       
       // Update user in auth context and localStorage
@@ -102,8 +108,14 @@ const ProfileForm: React.FC = () => {
         confirmPassword: '',
       });
       
-    } catch (error: any) {
-      setError(error.response?.data?.detail || 'Failed to update profile');
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
+        setError(error.response?.data?.detail || 'Failed to update profile');
+      } else if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError('Unkown Error');
+      }
     } finally {
       setLoading(false);
     }

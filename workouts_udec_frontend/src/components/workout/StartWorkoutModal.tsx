@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useActiveWorkout } from '../../context/ActiveWorkoutContext';
 import { workoutService } from '../../services/workoutService';
 import type { WorkoutTemplate } from '../../types/workout';
+import axios from 'axios';
 
 interface StartWorkoutModalProps {
   isOpen: boolean;
@@ -32,8 +33,12 @@ const StartWorkoutModal: React.FC<StartWorkoutModalProps> = ({
       setTemplatesLoading(true);
       const templatesData = await workoutService.getWorkoutTemplates();
       setTemplates(templatesData);
-    } catch (err: any) {
-      console.error('Failed to load templates:', err);
+    } catch (err: unknown) {
+        if (axios.isAxiosError(err) || err instanceof Error) {
+          console.error('Failed to load templates:', err);
+        } else {
+          console.error('Unknown Error');
+        }
     } finally {
       setTemplatesLoading(false);
     }
@@ -51,8 +56,14 @@ const StartWorkoutModal: React.FC<StartWorkoutModalProps> = ({
       
       handleClose();
       onWorkoutStarted();
-    } catch (err: any) {
-      setError(err.response?.data?.detail || err.message || 'Failed to start workout');
+    } catch (err: unknown) {
+      if (axios.isAxiosError(err)) {
+        setError(err.response?.data?.detail || 'Failed to start workout');
+      } else if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError('Unknown Error');
+      }
     }
   };
 

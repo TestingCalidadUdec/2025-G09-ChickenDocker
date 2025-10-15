@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const LoginForm: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -18,8 +19,14 @@ const LoginForm: React.FC = () => {
     try {
       await login({ username: email, password });
       navigate('/dashboard');
-    } catch (error: any) {
-      setError(error.response?.data?.detail || 'Login failed');
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
+        setError(error.response?.data?.detail || 'Login failed');
+      } else if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError('Unknown Error');
+      }
     } finally {
       setLoading(false);
     }

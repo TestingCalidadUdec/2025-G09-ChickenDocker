@@ -17,6 +17,7 @@ import type {
   WorkoutSummary,
   ExerciseProgression
 } from '../types/workout';
+import axios from 'axios';
 
 export const workoutService = {
   // Workout management
@@ -34,12 +35,15 @@ export const workoutService = {
     try {
       const response = await api.get('/workouts/active');
       return response.data;
-    } catch (error: any) {
-      if (error.response?.status === 404) {
-        return null;
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
+        if (error.response?.status === 404) {
+          return null;
+        }
       }
       throw error;
     }
+    
   },
 
   async getWorkout(workoutId: number): Promise<Workout> {

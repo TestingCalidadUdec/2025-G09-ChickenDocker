@@ -8,6 +8,7 @@ import type {
   ExerciseSetUpdate
 } from '../types/workout';
 import { workoutService } from '../services/workoutService';
+import axios from 'axios';
 
 interface ActiveWorkoutContextType {
   // State
@@ -84,8 +85,12 @@ export const ActiveWorkoutProvider: React.FC<ActiveWorkoutProviderProps> = ({ ch
         setActiveWorkout(workout);
         calculateTimer(workout);
       }
-    } catch (err: any) {
-      console.error('Failed to load active workout:', err);
+    } catch (err: unknown) {
+      if (axios.isAxiosError(err) || err instanceof Error) {
+        console.error('Failed to load active workout:', err);
+      } else {
+        console.error('Unknown Error');
+      }
     } finally {
       setLoading(false);
     }
@@ -117,21 +122,30 @@ export const ActiveWorkoutProvider: React.FC<ActiveWorkoutProviderProps> = ({ ch
     }
   };
 
-  const handleError = (err: any, defaultMessage: string) => {
+  const handleError = (err: unknown, defaultMessage: string) => {
     let message = defaultMessage;
-    
-    if (err.response?.data?.detail) {
-      const detail = err.response.data.detail;
+  
+    if (axios.isAxiosError(err)) {
+      const detail = err.response?.data?.detail;
+  
       if (Array.isArray(detail)) {
-        // Handle validation errors (422)
-        message = detail.map((error: any) => error.msg || error.message).join(', ');
+        message = detail
+          .map((error: Record<string, unknown>) =>
+            typeof error === 'object' && error !== null
+              ? String((error as { msg?: string; message?: string }).msg ?? (error as { message?: string }).message ?? '')
+              : ''
+          )
+          .filter(Boolean)
+          .join(', ');
       } else if (typeof detail === 'string') {
         message = detail;
+      } else if (typeof err.message === 'string') {
+        message = err.message;
       }
-    } else if (err.message) {
+    } else if (err instanceof Error) {
       message = err.message;
     }
-    
+  
     setError(message);
     console.error(defaultMessage, err);
   };
@@ -143,9 +157,14 @@ export const ActiveWorkoutProvider: React.FC<ActiveWorkoutProviderProps> = ({ ch
       const workout = await workoutService.createWorkout(workoutData);
       setActiveWorkout(workout);
       setWorkoutTimer(0);
-    } catch (err: any) {
-      handleError(err, 'Failed to start workout');
-      throw err;
+    } catch (err: unknown) {
+      if (axios.isAxiosError(err) || err instanceof Error) {
+        handleError(err, 'Failed to start workout');
+        throw err;
+      } else {
+        handleError(err, 'Failed to start workout');
+        throw err;
+      }
     } finally {
       setLoading(false);
     }
@@ -158,9 +177,14 @@ export const ActiveWorkoutProvider: React.FC<ActiveWorkoutProviderProps> = ({ ch
       const workout = await workoutService.createWorkoutFromTemplate(templateId, workoutData);
       setActiveWorkout(workout);
       setWorkoutTimer(0);
-    } catch (err: any) {
-      handleError(err, 'Failed to start workout from template');
-      throw err;
+    } catch (err: unknown) {
+      if (axios.isAxiosError(err) || err instanceof Error) {
+        handleError(err, 'Failed to start workout from template');
+        throw err;
+      } else {
+        handleError(err, 'Failed to start workout from template');
+        throw err;
+      }
     } finally {
       setLoading(false);
     }
@@ -175,9 +199,14 @@ export const ActiveWorkoutProvider: React.FC<ActiveWorkoutProviderProps> = ({ ch
       await workoutService.completeWorkout(activeWorkout.id);
       setActiveWorkout(null);
       setWorkoutTimer(0);
-    } catch (err: any) {
-      handleError(err, 'Failed to complete workout');
-      throw err;
+    } catch (err: unknown) {
+      if (axios.isAxiosError(err) || err instanceof Error) {
+        handleError(err, 'Failed to complete workout');
+        throw err;
+      } else {
+        handleError(err, 'Failed to complete workout');
+        throw err;
+      }
     } finally {
       setLoading(false);
     }
@@ -193,9 +222,14 @@ export const ActiveWorkoutProvider: React.FC<ActiveWorkoutProviderProps> = ({ ch
       setActiveWorkout(null);
       setWorkoutTimer(0);
       stopTimer();
-    } catch (err: any) {
-      handleError(err, 'Failed to cancel workout');
-      throw err;
+    } catch (err: unknown) {
+      if (axios.isAxiosError(err) || err instanceof Error) {
+        handleError(err, 'Failed to cancel workout');
+        throw err;
+      } else {
+        handleError(err, 'Failed to cancel workout');
+        throw err;
+      }
     } finally {
       setLoading(false);
     }
@@ -207,9 +241,14 @@ export const ActiveWorkoutProvider: React.FC<ActiveWorkoutProviderProps> = ({ ch
     try {
       const updatedWorkout = await workoutService.updateWorkoutNotes(activeWorkout.id, notes);
       setActiveWorkout(updatedWorkout);
-    } catch (err: any) {
-      handleError(err, 'Failed to update workout notes');
-      throw err;
+    } catch (err: unknown) {
+      if (axios.isAxiosError(err) || err instanceof Error) {
+        handleError(err, 'Failed to update workout notes');
+        throw err;
+      } else {
+        handleError(err, 'Failed to update workout notes');
+        throw err;
+      }
     }
   };
 
@@ -229,10 +268,20 @@ export const ActiveWorkoutProvider: React.FC<ActiveWorkoutProviderProps> = ({ ch
           workout_exercises: [...(prev.workout_exercises || []), workoutExercise]
         };
       });
-    } catch (err: any) {
-      const errorMessage = err.response?.data?.detail || err.message || 'Failed to add exercise to workout';
-      setError(errorMessage);
-      throw new Error(errorMessage);
+    } catch (err: unknown) {
+      if (axios.isAxiosError(err)) {
+        const errorMessage = err.response?.data?.detail || 'Failed to add exercise to workout';
+        setError(errorMessage);
+        throw new Error(errorMessage);
+      } else if (err instanceof Error) {
+        const errorMessage = err.message;
+        setError(errorMessage);
+        throw new Error(errorMessage);
+      } else {
+        const errorMessage = 'Unknown Error';
+        setError(errorMessage);
+        throw new Error(errorMessage);
+      }
     }
   };
 
@@ -250,9 +299,14 @@ export const ActiveWorkoutProvider: React.FC<ActiveWorkoutProviderProps> = ({ ch
           workout_exercises: prev.workout_exercises?.filter(we => we.id !== workoutExerciseId) || []
         };
       });
-    } catch (err: any) {
-      handleError(err, 'Failed to remove exercise from workout');
-      throw err;
+    } catch (err: unknown) {
+      if (axios.isAxiosError(err) || err instanceof Error) {
+        handleError(err, 'Failed to remove exercise from workout');
+        throw err;
+      } else {
+        handleError(err, 'Failed to remove exercise from workout');
+        throw err;
+      }
     }
   };
 
@@ -271,9 +325,14 @@ export const ActiveWorkoutProvider: React.FC<ActiveWorkoutProviderProps> = ({ ch
           ) || []
         };
       });
-    } catch (err: any) {
-      handleError(err, 'Failed to update exercise notes');
-      throw err;
+    } catch (err: unknown) {
+      if (axios.isAxiosError(err) || err instanceof Error) {
+        handleError(err, 'Failed to update exercise notes');
+        throw err;
+      } else {
+        handleError(err, 'Failed to update exercise notes');
+        throw err;
+      }
     }
   };
 
@@ -295,9 +354,14 @@ export const ActiveWorkoutProvider: React.FC<ActiveWorkoutProviderProps> = ({ ch
           ) || []
         };
       });
-    } catch (err: any) {
-      handleError(err, 'Failed to add set');
-      throw err;
+    } catch (err: unknown) {
+      if (axios.isAxiosError(err) || err instanceof Error) {
+        handleError(err, 'Failed to add set');
+        throw err;
+      } else {
+        handleError(err, 'Failed to add set');
+        throw err;
+      }
     }
   };
 
@@ -324,9 +388,14 @@ export const ActiveWorkoutProvider: React.FC<ActiveWorkoutProviderProps> = ({ ch
           ) || []
         };
       });
-    } catch (err: any) {
-      handleError(err, 'Failed to update set');
-      throw err;
+    } catch (err: unknown) {
+      if (axios.isAxiosError(err) || err instanceof Error) {
+        handleError(err, 'Failed to update set');
+        throw err;
+      } else {
+        handleError(err, 'Failed to update set');
+        throw err;
+      }
     }
   };
 
@@ -351,9 +420,14 @@ export const ActiveWorkoutProvider: React.FC<ActiveWorkoutProviderProps> = ({ ch
           ) || []
         };
       });
-    } catch (err: any) {
-      handleError(err, 'Failed to delete set');
-      throw err;
+    } catch (err: unknown) {
+      if (axios.isAxiosError(err) || err instanceof Error) {
+        handleError(err, 'Failed to delete set');
+        throw err;
+      } else {
+        handleError(err, 'Failed to delete set');
+        throw err;
+      }
     }
   };
 
@@ -367,8 +441,12 @@ export const ActiveWorkoutProvider: React.FC<ActiveWorkoutProviderProps> = ({ ch
         const updated = await workoutService.getWorkout(activeWorkout.id);
         setActiveWorkout(updated);
         calculateTimer(updated);
-      } catch (err: any) {
-        handleError(err, 'Failed to refresh workout');
+      } catch (err: unknown) {
+        if (axios.isAxiosError(err) || err instanceof Error) {
+          handleError(err, 'Failed to refresh workout');
+        } else {
+          handleError(err, 'Failed to refresh workout');
+        }
       }
     }
   };

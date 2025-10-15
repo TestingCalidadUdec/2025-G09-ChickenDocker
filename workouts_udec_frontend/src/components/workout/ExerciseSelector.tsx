@@ -3,6 +3,7 @@ import { useActiveWorkout } from '../../context/ActiveWorkoutContext';
 import { exerciseService } from '../../services/exerciseService';
 import type { Exercise } from '../../types/exercise';
 import { ExerciseType } from '../../types/exercise';
+import axios from 'axios';
 
 interface ExerciseSelectorProps {
   isOpen: boolean;
@@ -57,11 +58,18 @@ const ExerciseSelector: React.FC<ExerciseSelectorProps> = ({ isOpen, onClose }) 
       
       await addExerciseToWorkout(exerciseData);
       onClose();
-    } catch (err: any) {
-      const errorMessage = err.response?.data?.detail || err.message || 'Failed to add exercise';
-      setError(errorMessage);
+    } catch (err: unknown) {
+      if (axios.isAxiosError(err)) {
+        setError(err.response?.data?.detail || 'Falied to add excersice')
+      } else if (err instanceof Error) {
+        setError(err.message)
+      } else{
+        setError('Unknown Error');
+      }
       // Don't close modal on error, let user retry
-    } finally {
+    }
+    
+    finally {
       setAddingExerciseId(null);
     }
   };

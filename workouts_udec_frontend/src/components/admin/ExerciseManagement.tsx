@@ -3,7 +3,7 @@ import { exerciseService } from '../../services/exerciseService';
 import ExerciseTable from './ExerciseTable';
 import ExerciseModal from './ExerciseModal';
 import ExerciseFilters from './ExerciseFilters';
-import type { Exercise, ExerciseCreate } from '../../types/exercise';
+import type { Exercise, ExerciseCreate, ExerciseUpdate } from '../../types/exercise';
 
 const ExerciseManagement: React.FC = () => {
   const [exercises, setExercises] = useState<Exercise[]>([]);
@@ -47,7 +47,7 @@ const ExerciseManagement: React.FC = () => {
     setShowModal(true);
   };
 
-  const handleSaveExercise = async (exerciseData: ExerciseCreate | any) => {
+  const handleSaveExercise = async (exerciseData: ExerciseCreate | ExerciseUpdate) => {
     setModalLoading(true);
     setError('');
 
@@ -65,7 +65,7 @@ const ExerciseManagement: React.FC = () => {
       }
       setShowModal(false);
       setTimeout(() => setSuccess(''), 3000);
-    } catch (error: any) {
+    } catch (error: unknown) {
       throw error; // Let ExerciseModal handle the error display
     } finally {
       setModalLoading(false);
