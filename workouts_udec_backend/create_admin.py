@@ -11,6 +11,9 @@ from app.models.user import User
 
 
 def create_admin_user() -> None:
+    """
+    Create an admin user with predefined credentials.
+    """
     db = SessionLocal()
 
     # Check if admin user already exists

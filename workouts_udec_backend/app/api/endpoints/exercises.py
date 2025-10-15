@@ -1,4 +1,11 @@
-from typing import Any, List
+"""
+Endpoints para gestión de ejercicios.
+
+Permite a los usuarios activos consultar ejercicios, y a los administradores
+crear, actualizar o eliminar ejercicios.
+"""
+
+from typing import List
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
@@ -21,8 +28,8 @@ def read_exercises(
     limit: int = 100,
     current_user: User = Depends(dependencies.get_current_active_user),
 ) -> List[ExerciseSchema]:
-    exercises = exercise.get_active(db, skip=skip, limit=limit)
-    return exercises
+    """Devuelve la lista de ejercicios activos."""
+    return exercise.get_active(db, skip=skip, limit=limit)
 
 
 @router.get("/{exercise_id}", response_model=ExerciseSchema)
@@ -32,7 +39,8 @@ def read_exercise(
     exercise_id: int,
     current_user: User = Depends(dependencies.get_current_active_user),
 ) -> ExerciseSchema:
-    exercise_obj = exercise.get(db, id=exercise_id)
+    """Devuelve un ejercicio específico por su ID."""
+    exercise_obj = exercise.get(db, obj_id=exercise_id)
     if not exercise_obj:
         raise HTTPException(status_code=404, detail="Exercise not found")
     return exercise_obj
@@ -45,8 +53,8 @@ def create_exercise(
     exercise_in: ExerciseCreate,
     current_user: User = Depends(dependencies.get_current_active_admin),
 ) -> ExerciseSchema:
-    exercise_obj = exercise.create(db, obj_in=exercise_in)
-    return exercise_obj
+    """Crea un nuevo ejercicio."""
+    return exercise.create(db, obj_in=exercise_in)
 
 
 @router.put("/{exercise_id}", response_model=ExerciseSchema)
@@ -57,11 +65,11 @@ def update_exercise(
     exercise_in: ExerciseUpdate,
     current_user: User = Depends(dependencies.get_current_active_admin),
 ) -> ExerciseSchema:
-    exercise_obj = exercise.get(db, id=exercise_id)
+    """Actualiza un ejercicio existente."""
+    exercise_obj = exercise.get(db, obj_id=exercise_id)
     if not exercise_obj:
         raise HTTPException(status_code=404, detail="Exercise not found")
-    exercise_obj = exercise.update(db, db_obj=exercise_obj, obj_in=exercise_in)
-    return exercise_obj
+    return exercise.update(db, db_obj=exercise_obj, obj_in=exercise_in)
 
 
 @router.delete("/{exercise_id}")
@@ -70,9 +78,10 @@ def delete_exercise(
     db: Session = Depends(dependencies.get_db),
     exercise_id: int,
     current_user: User = Depends(dependencies.get_current_active_admin),
-) -> dict[str,str]:
-    exercise_obj = exercise.get(db, id=exercise_id)
+) -> dict[str, str]:
+    """Elimina un ejercicio por su ID."""
+    exercise_obj = exercise.get(db, obj_id=exercise_id)
     if not exercise_obj:
         raise HTTPException(status_code=404, detail="Exercise not found")
-    exercise.remove(db, id=exercise_id)
+    exercise.remove(db, obj_id=exercise_id)
     return {"message": "Exercise deleted successfully"}

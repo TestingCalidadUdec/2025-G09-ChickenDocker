@@ -1,25 +1,38 @@
 #!/usr/bin/env python3
+"""
+Script de prueba para la API de ejercicios.
 
-import requests
+Este módulo contiene funciones para probar la creación de ejercicios en la API.
+Se encarga de dos tareas principales:
+1. Obtener un token de autenticación para un usuario administrador.
+2. Utilizar ese token para enviar una petición POST y crear un nuevo ejercicio.
+"""
 import json
+import requests
 
 
 # Get admin token
 def get_admin_token():
+    """
+    Autentica al usuario administrador y obtiene un token de acceso.
+    """
     response = requests.post(
         "http://localhost:8000/api/auth/login",
         data={"username": "admin@example.com", "password": "admin123"},
         headers={"Content-Type": "application/x-www-form-urlencoded"},
+        timeout=10,
     )
     if response.status_code == 200:
         return response.json()["access_token"]
-    else:
-        print(f"Login failed: {response.status_code} - {response.text}")
-        return None
+    print(f"Login failed: {response.status_code} - {response.text}")
+    return None
 
 
 # Test exercise creation
 def test_exercise_creation() -> None:
+    """
+    Prueba la creación de un nuevo ejercicio a través de la API.
+    """
     token = get_admin_token()
     if not token:
         return
@@ -39,7 +52,10 @@ def test_exercise_creation() -> None:
     print(json.dumps(exercise_data, indent=2))
 
     response = requests.post(
-        "http://localhost:8000/api/exercises/", headers=headers, json=exercise_data
+        "http://localhost:8000/api/exercises/",
+        headers=headers,
+        json=exercise_data,
+        timeout=10,
     )
 
     print(f"\nResponse Status: {response.status_code}")
@@ -50,7 +66,7 @@ def test_exercise_creation() -> None:
             error_detail = response.json()
             print("\nValidation Errors:")
             print(json.dumps(error_detail, indent=2))
-        except:
+        except json.JSONDecodeError:
             pass
 
 

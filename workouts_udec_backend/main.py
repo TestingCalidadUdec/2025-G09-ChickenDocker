@@ -1,3 +1,11 @@
+"""
+Módulo principal de la API de seguimiento de entrenamientos.
+
+Este módulo inicializa la aplicación FastAPI, configura el middleware CORS,
+registra los routers de la API y define un endpoint básico de salud (`/health`)
+para verificar el estado del servidor.
+"""
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.api.main_router import api_router
@@ -20,7 +28,10 @@ app.include_router(api_router, prefix="/api")
 
 
 @app.get("/health")
-def health_check() -> dict[str,str]:  # Endpoint para que Docker para chequear si el backend está vivo
+def health_check() -> dict[str,str]:
+    """
+    Endpoint de verificación del estado del servidor.
+    """
     return {"status": "ok"}
 
 
