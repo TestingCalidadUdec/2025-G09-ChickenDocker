@@ -9,12 +9,14 @@ from app.schemas.user import User as UserSchema, UserCreate, UserUpdate
 
 router = APIRouter()
 
+
 @router.get("/me", response_model=UserSchema)
 def read_user_me(
     db: Session = Depends(dependencies.get_db),
     current_user: User = Depends(dependencies.get_current_active_user),
-) -> Any:
+) -> UserSchema:
     return current_user
+
 
 @router.put("/me", response_model=UserSchema)
 def update_user_me(
@@ -22,16 +24,17 @@ def update_user_me(
     db: Session = Depends(dependencies.get_db),
     user_in: UserUpdate,
     current_user: User = Depends(dependencies.get_current_active_user),
-) -> Any:
+) -> UserSchema:
     user_obj = user.update(db, db_obj=current_user, obj_in=user_in)
     return user_obj
+
 
 @router.post("/register", response_model=UserSchema)
 def create_user_open(
     *,
     db: Session = Depends(dependencies.get_db),
     user_in: UserCreate,
-) -> Any:
+) -> UserSchema:
     user_obj = user.get_by_email(db, email=user_in.email)
     if user_obj:
         raise HTTPException(
