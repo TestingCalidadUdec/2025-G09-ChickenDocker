@@ -21,10 +21,9 @@ class CRUDBase(Generic[ModelT, CreateSchemaT, UpdateSchemaT]):
         """Inicializa el CRUDBase con un modelo de SQLAlchemy."""
         self.model = model
 
-    def get(self, db: Session, obj_id: Any) -> Optional[ModelT]:
+    def get(self, db: Session, id: Any) -> Optional[ModelT]:
         """Obtiene un único registro por su ID."""
-        # Se renombró 'id' a 'obj_id' para evitar sobreescribir la función nativa id()
-        return db.query(self.model).filter(self.model.id == obj_id).first()
+        return db.query(self.model).filter(self.model.id == id).first()
 
     def get_multi(
         self, db: Session, *, skip: int = 0, limit: int = 100
@@ -63,10 +62,9 @@ class CRUDBase(Generic[ModelT, CreateSchemaT, UpdateSchemaT]):
         db.refresh(db_obj)
         return db_obj
 
-    def remove(self, db: Session, *, obj_id: int) -> Optional[ModelT]:
+    def remove(self, db: Session, *, id: int) -> Optional[ModelT]:
         """Elimina un registro de la base de datos."""
-        # Se renombró 'id' a 'obj_id'
-        obj = db.query(self.model).get(obj_id)
+        obj = db.query(self.model).get(id)
         if obj:
             db.delete(obj)
             db.commit()
