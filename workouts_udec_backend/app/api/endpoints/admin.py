@@ -11,7 +11,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
 from app.api import dependencies
-from app.crud.crud_user import crud_user as user
+from app.crud.crud_user import user
 from app.crud.crud_workout import workout_template
 from app.models.user import User
 from app.schemas.user import User as UserSchema, UserCreate, UserUpdate

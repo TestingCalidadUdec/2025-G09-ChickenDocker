@@ -108,4 +108,4 @@ class CRUDUser(CRUDBase[User, UserCreate, UserUpdate]):
         db.commit()
 
 
-crud_user = CRUDUser(User)
+user = CRUDUser(User)

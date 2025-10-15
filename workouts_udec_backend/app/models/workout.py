@@ -29,8 +29,8 @@ class WorkoutTemplate(Base):
     description = Column(Text, nullable=True)
     created_by = Column(Integer, ForeignKey("users.id"), nullable=False)
     is_public = Column(Boolean, default=False)
-    created_at = Column(DateTime(timezone=True), server_default=func.now)
-    updated_at = Column(DateTime(timezone=True), onupdate=func.now)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+    updated_at = Column(DateTime(timezone=True), onupdate=func.now())
 
     creator = relationship("User")
     template_exercises = relationship(
@@ -72,7 +72,7 @@ class Workout(Base):
     id = Column(Integer, primary_key=True, index=True)
     user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
     name = Column(String, nullable=True)
-    started_at = Column(DateTime(timezone=True), server_default=func.now)
+    started_at = Column(DateTime(timezone=True), server_default=func.now())
     completed_at = Column(DateTime(timezone=True), nullable=True)
     notes = Column(Text, nullable=True)
     template_id = Column(Integer, ForeignKey("workout_templates.id"), nullable=True)
