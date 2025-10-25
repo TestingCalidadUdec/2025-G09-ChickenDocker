@@ -83,7 +83,7 @@ def delete_user(
     current_user: User = Depends(dependencies.get_current_active_admin),
 ) -> dict[str, str]:
     """Elimina un usuario y todos los datos asociados."""
-    user_obj = user.get(db, obj_id=user_id)
+    user_obj = user.get(db, id=user_id)
     if not user_obj:
         raise HTTPException(status_code=404, detail="User not found")
 

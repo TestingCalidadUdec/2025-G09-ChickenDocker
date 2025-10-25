@@ -40,7 +40,7 @@ def read_exercise(
     current_user: User = Depends(dependencies.get_current_active_user),
 ) -> ExerciseSchema:
     """Devuelve un ejercicio específico por su ID."""
-    exercise_obj = exercise.get(db, obj_id=exercise_id)
+    exercise_obj = exercise.get(db, id=exercise_id)
     if not exercise_obj:
         raise HTTPException(status_code=404, detail="Exercise not found")
     return exercise_obj
@@ -66,7 +66,7 @@ def update_exercise(
     current_user: User = Depends(dependencies.get_current_active_admin),
 ) -> ExerciseSchema:
     """Actualiza un ejercicio existente."""
-    exercise_obj = exercise.get(db, obj_id=exercise_id)
+    exercise_obj = exercise.get(db, id=exercise_id)
     if not exercise_obj:
         raise HTTPException(status_code=404, detail="Exercise not found")
     return exercise.update(db, db_obj=exercise_obj, obj_in=exercise_in)
@@ -80,8 +80,8 @@ def delete_exercise(
     current_user: User = Depends(dependencies.get_current_active_admin),
 ) -> dict[str, str]:
     """Elimina un ejercicio por su ID."""
-    exercise_obj = exercise.get(db, obj_id=exercise_id)
+    exercise_obj = exercise.get(db, id=exercise_id)
     if not exercise_obj:
         raise HTTPException(status_code=404, detail="Exercise not found")
-    exercise.remove(db, obj_id=exercise_id)
+    exercise.remove(db, id=exercise_id)
     return {"message": "Exercise deleted successfully"}

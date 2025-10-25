@@ -42,7 +42,7 @@ class CRUDExercise(CRUDBase[Exercise, ExerciseCreate, ExerciseUpdate]):
         """
         return (
             db.query(self.model)
-            .filter(self.model.is_active is True)
+            .filter(self.model.is_active == True)
             .offset(skip)
             .limit(limit)
             .all()

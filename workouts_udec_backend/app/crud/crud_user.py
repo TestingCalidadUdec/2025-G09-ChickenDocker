@@ -103,7 +103,7 @@ class CRUDUser(CRUDBase[User, UserCreate, UserUpdate]):
         )
 
         # 5. Finalmente, eliminar el usuario
-        self.remove(db, obj_id=user_id)
+        self.remove(db, id=user_id)
 
         db.commit()
 
