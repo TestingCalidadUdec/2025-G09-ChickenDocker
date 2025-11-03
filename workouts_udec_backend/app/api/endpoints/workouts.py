@@ -119,7 +119,7 @@ def create_workout(
             detail="You already have an active workout. Complete it before starting a new one.",
         )
 
-    workout_data = workout_in.dict()
+    workout_data = workout_in.dict(exclude={"exercises"})
     workout_data["user_id"] = current_user.id
     workout_obj = workout.create(db, obj_in=workout_data)
     return workout_obj
@@ -179,8 +179,7 @@ def cancel_workout(
     # Only allow cancelling of incomplete workouts
     if workout_obj.completed_at is not None:
         raise HTTPException(status_code=400, detail="Cannot cancel a completed workout")
-
-    workout.cancel_workout(db, workout_id=workout_id)
+    workout.delete_workout(db, workout_id=workout_id)
     return {"message": "Workout cancelled and removed successfully"}
 
 
