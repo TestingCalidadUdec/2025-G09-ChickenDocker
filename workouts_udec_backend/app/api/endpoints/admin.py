@@ -69,7 +69,7 @@ def update_user(
     current_user: User = Depends(dependencies.get_current_active_admin),
 ) -> UserSchema:
     """Actualiza los datos de un usuario existente."""
-    user_obj = user.get(db, obj_id=user_id)
+    user_obj = user.get(db, id=user_id)
     if not user_obj:
         raise HTTPException(status_code=404, detail="User not found")
     return user.update(db, db_obj=user_obj, obj_in=user_in)
@@ -110,7 +110,7 @@ def read_workout_template(
     current_user: User = Depends(dependencies.get_current_active_admin),
 ) -> WorkoutTemplateSchema:
     """Obtiene una plantilla de entrenamiento específica."""
-    template = workout_template.get_with_exercises(db, obj_id=template_id)
+    template = workout_template.get_with_exercises(db, id=template_id)
     if not template:
         raise HTTPException(status_code=404, detail="Workout template not found")
     return template
@@ -136,7 +136,7 @@ def update_workout_template(
     current_user: User = Depends(dependencies.get_current_active_admin),
 ) -> WorkoutTemplateSchema:
     """Actualiza una plantilla de entrenamiento existente."""
-    template_obj = workout_template.get(db, obj_id=template_id)
+    template_obj = workout_template.get(db, id=template_id)
     if not template_obj:
         raise HTTPException(status_code=404, detail="Workout template not found")
     return workout_template.update(db, db_obj=template_obj, obj_in=template_in)
@@ -150,10 +150,10 @@ def delete_workout_template(
     current_user: User = Depends(dependencies.get_current_active_admin),
 ) -> dict[str, str]:
     """Elimina una plantilla de entrenamiento."""
-    template_obj = workout_template.get(db, obj_id=template_id)
+    template_obj = workout_template.get(db, id=template_id)
     if not template_obj:
         raise HTTPException(status_code=404, detail="Workout template not found")
-    workout_template.remove(db, obj_id=template_id)
+    workout_template.remove(db, id=template_id)
     return {"message": "Workout template deleted successfully"}
 
 
@@ -169,7 +169,7 @@ def add_exercise_to_template(
     current_user: User = Depends(dependencies.get_current_active_admin),
 ) -> WorkoutTemplateExerciseSchema:
     """Agrega un ejercicio a una plantilla de entrenamiento."""
-    template = workout_template.get(db, obj_id=template_id)
+    template = workout_template.get(db, id=template_id)
     if not template:
         raise HTTPException(status_code=404, detail="Workout template not found")
 
@@ -188,7 +188,7 @@ def remove_exercise_from_template(
     current_user: User = Depends(dependencies.get_current_active_admin),
 ) -> dict[str, str]:
     """Elimina un ejercicio de una plantilla de entrenamiento."""
-    template = workout_template.get(db, obj_id=template_id)
+    template = workout_template.get(db, id=template_id)
     if not template:
         raise HTTPException(status_code=404, detail="Workout template not found")
 
