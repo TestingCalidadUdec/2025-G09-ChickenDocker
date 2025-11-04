@@ -1,6 +1,6 @@
 # Pruebas API con Postman
 
-Sigue los siguentes pasos para poder ejecutar los tests de la api en postman
+Antes de ejecutar los pasos a continuacion debera leer y seguir las instrucciones ubicadas en los README.md del backend y frontend una vez todo montado siga los siguentes pasos para ejecutar los test de la API en postman
 
 ---
 
