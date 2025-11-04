@@ -43,17 +43,36 @@ Ejecuta las carpetas en el **orden alfabético** indicado, ya que algunas prueba
 
 ---
 
-## Nota Adicional
+## Notas Adicionales
 
 El endpoint  
 > **`/api/workouts/{workout_id}/progression/{exercise_id}`**  
+
 fue **omitido de las pruebas**, ya que **no se utiliza actualmente en ningún flujo funcional** de la API.
 
-Además, presentaba **inconsistencias lógicas** en su implementación, tales como:
+Durante la revisión, se identificaron **problemas lógicos** en su implementación:
 
-- Permitir solicitudes con un **`workout_id` inexistente**, devolviendo un **status 200 OK**.  
-- Permitir solicitudes con un **`exercise_id` inexistente**, devolviendo igualmente un **status 200 OK**.  
+- Permitía solicitudes con un **`workout_id` inexistente**, devolviendo un **status 200 OK**.  
+- Permitía solicitudes con un **`exercise_id` inexistente**, devolviendo igualmente un **status 200 OK**.  
 
-Estas situaciones **dificultaron la elaboración de test** para este endpoint, ya que **no existía documentación ni un propósito claro** respecto a su funcionalidad.  
-Por estos motivos, y considerando los errores mencionados, **se decidió no incluirlo** dentro de la colección de tests en Postman.
+Estas situaciones **dificultaron la elaboración de pruebas** para este endpoint, ya que **no existía documentación ni un propósito funcional claro**.
 
+
+Por los motivos anteriores, se **decidió excluir este endpoint** de la colección de pruebas en Postman.
+
+---
+
+### Ejecución de pruebas
+
+- Los **tests deben ejecutarse solo una vez**, ya que **no fueron diseñados para una ejecución repetida**.  
+- Si se desea **volver a ejecutar las pruebas**, es necesario **reiniciar la base de datos** ejecutando el archivo:
+
+```bash
+python reset_db.py
+```
+
+---
+
+### Consideraciones adicionales
+
+- En el desarrollo del proyecto **no se utilizó Docker**.
