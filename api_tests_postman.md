@@ -71,6 +71,12 @@ Por los motivos anteriores, se **decidió excluir este endpoint** de la colecci�
 python reset_db.py
 ```
 
+Luego de reiniciar la base de datos, será necesario **volver a crear el usuario administrador** ejecutando:
+
+```bash
+python create_admin.py
+```
+
 ---
 
 ### Consideraciones adicionales
