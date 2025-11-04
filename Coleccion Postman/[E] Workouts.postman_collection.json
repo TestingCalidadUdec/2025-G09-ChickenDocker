@@ -1,0 +1,4392 @@
+{
+	"info": {
+		"_postman_id": "62b909b5-b085-41c9-8643-ae2679d10ea4",
+		"name": "[E] Workouts",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "49475218"
+	},
+	"item": [
+		{
+			"name": "PRE-RQUESTS",
+			"item": [
+				{
+					"name": "Crear Template",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"pm.environment.set(\"admin_template_id\", jsonData.id)"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n        \"name\": \"Template Workouts\",\n        \"description\": \"descripcion\",\n        \"is_public\": true,\n        \"created_by\": 1,\n        \"exercises\": [\n            {\n                \"exercise_id\": {{admin_template_exercise_1_id}},\n                \"order_index\": 1,\n                \"suggested_sets\": 3,\n                \"suggested_reps\": 10,\n                \"suggested_weight\": 43.0,\n                \"suggested_duration\": null\n            }\n        ]\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/admin/workout-templates",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"workout-templates"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Templates",
+			"item": [
+				{
+					"name": "Lista de Templates",
+					"item": [
+						{
+							"name": "Lista de Templates valido",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Solicitud exitosa 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"La respuesta es una lista\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData).to.be.an(\"array\");",
+											"});",
+											"",
+											"pm.test(\"Cada elemento de la lista es un Template con las propiedades esperadas\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(Array.isArray(jsonData)).to.be.true;",
+											"    jsonData.forEach(function (u, index) {",
+											"        pm.expect(u).to.have.property(\"name\");",
+											"        pm.expect(u).to.have.property(\"description\");",
+											"        pm.expect(u).to.have.property(\"is_public\");",
+											"        pm.expect(u).to.have.property(\"id\");",
+											"        pm.expect(u).to.have.property(\"created_by\");",
+											"        pm.expect(u).to.have.property(\"created_at\");",
+											"        pm.expect(u).to.have.property(\"updated_at\");",
+											"        pm.expect(u).to.have.property(\"template_exercises\");",
+											"        pm.expect(u.template_exercises).to.be.an(\"array\");",
+											"        u.template_exercises.forEach(function (ex, index) {",
+											"            pm.expect(ex).to.have.property(\"exercise_id\");",
+											"            pm.expect(ex).to.have.property(\"order_index\");",
+											"            pm.expect(ex).to.have.property(\"suggested_sets\");",
+											"            pm.expect(ex).to.have.property(\"suggested_reps\");",
+											"            pm.expect(ex).to.have.property(\"suggested_weight\");",
+											"            pm.expect(ex).to.have.property(\"suggested_duration\");",
+											"            pm.expect(ex).to.have.property(\"id\");",
+											"            pm.expect(ex).to.have.property(\"template_id\");",
+											"            pm.expect(ex).to.have.property(\"exercise\");",
+											"            pm.expect(ex.exercise).to.have.property(\"name\");",
+											"            pm.expect(ex.exercise).to.have.property(\"description\");",
+											"            pm.expect(ex.exercise).to.have.property(\"exercise_type\");",
+											"            pm.expect(ex.exercise).to.have.property(\"muscle_group\");",
+											"            pm.expect(ex.exercise).to.have.property(\"equipment\");",
+											"            pm.expect(ex.exercise).to.have.property(\"instructions\");",
+											"            pm.expect(ex.exercise).to.have.property(\"is_active\");",
+											"            pm.expect(ex.exercise).to.have.property(\"id\");",
+											"            pm.expect(ex.exercise).to.have.property(\"created_at\");",
+											"            pm.expect(ex.exercise).to.have.property(\"updated_at\");",
+											"            });",
+											"    });",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{admin_test_user_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/workouts/templates",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"workouts",
+										"templates"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Lista de Templates sin token",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Acceso no autorizado 403\", function () {",
+											"    pm.response.to.have.status(403);",
+											"});",
+											"",
+											"pm.test(\"El mensaje indica que no está autenticado\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData).to.have.property(\"detail\")",
+											"    pm.expect(jsonData.detail).to.include(\"Not authenticated\");",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/workouts/templates",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"workouts",
+										"templates"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Obtener Template",
+					"item": [
+						{
+							"name": "Obtener template valido",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Solicitud exitosa 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Template tiene todas las propiedades esperadas\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData).to.have.property(\"name\");",
+											"    pm.expect(jsonData).to.have.property(\"description\");",
+											"    pm.expect(jsonData).to.have.property(\"is_public\");",
+											"    pm.expect(jsonData).to.have.property(\"id\");",
+											"    pm.expect(jsonData).to.have.property(\"created_by\");",
+											"    pm.expect(jsonData).to.have.property(\"created_at\");",
+											"    pm.expect(jsonData).to.have.property(\"updated_at\");",
+											"    pm.expect(jsonData).to.have.property(\"template_exercises\");",
+											"    pm.expect(jsonData.template_exercises).to.be.an(\"array\");",
+											"    jsonData.template_exercises.forEach(function (ex, index) {",
+											"        pm.expect(ex).to.have.property(\"exercise_id\");",
+											"        pm.expect(ex).to.have.property(\"order_index\");",
+											"        pm.expect(ex).to.have.property(\"suggested_sets\");",
+											"        pm.expect(ex).to.have.property(\"suggested_reps\");",
+											"        pm.expect(ex).to.have.property(\"suggested_weight\");",
+											"        pm.expect(ex).to.have.property(\"suggested_duration\");",
+											"        pm.expect(ex).to.have.property(\"id\");",
+											"        pm.expect(ex).to.have.property(\"template_id\");",
+											"        pm.expect(ex).to.have.property(\"exercise\");",
+											"        pm.expect(ex.exercise).to.have.property(\"name\");",
+											"        pm.expect(ex.exercise).to.have.property(\"description\");",
+											"        pm.expect(ex.exercise).to.have.property(\"exercise_type\");",
+											"        pm.expect(ex.exercise).to.have.property(\"muscle_group\");",
+											"        pm.expect(ex.exercise).to.have.property(\"equipment\");",
+											"        pm.expect(ex.exercise).to.have.property(\"instructions\");",
+											"        pm.expect(ex.exercise).to.have.property(\"is_active\");",
+											"        pm.expect(ex.exercise).to.have.property(\"id\");",
+											"        pm.expect(ex.exercise).to.have.property(\"created_at\");",
+											"        pm.expect(ex.exercise).to.have.property(\"updated_at\");",
+											"        });",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{admin_test_user_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/workouts/templates/{{admin_template_id}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"workouts",
+										"templates",
+										"{{admin_template_id}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Obtener template inexistente",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Template no encontrado 404\", function () {",
+											"    pm.response.to.have.status(404);",
+											"});",
+											"",
+											"pm.test(\"Mensaje de error indica que el Template no fue encontrado\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData).to.have.property(\"detail\");",
+											"    pm.expect(jsonData.detail).to.include(\"Template not found\");",
+											"});",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{admin_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/workouts/templates/0",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"workouts",
+										"templates",
+										"0"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Obtener template sin Token",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Acceso no autorizado 403\", function () {",
+											"    pm.response.to.have.status(403);",
+											"});",
+											"",
+											"pm.test(\"El mensaje indica que no está autenticado\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData).to.have.property(\"detail\")",
+											"    pm.expect(jsonData.detail).to.include(\"Not authenticated\");",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/workouts/templates/{{admin_template_id}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"workouts",
+										"templates",
+										"{{admin_template_id}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Crear Workout a partir de Template",
+					"item": [
+						{
+							"name": "Crear Workout Template valido",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Solicitud exitosa 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Workout tiene todas las propiedades esperadas\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData.name).to.eql(\"Entrenamiento sigma\");",
+											"    pm.expect(jsonData.notes).to.eql(\"solo apto para giga chads\");",
+											"    pm.expect(jsonData.template_id).to.eql(pm.environment.get(\"admin_template_id\"));",
+											"    pm.environment.set(\"workout_id\", jsonData.id);",
+											"});",
+											"",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{admin_test_user_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"name\": \"Entrenamiento sigma\",\n  \"notes\": \"solo apto para giga chads\",\n  \"template_id\": {{admin_template_id}},\n  \"exercises\": []\n}\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/workouts/templates/{{admin_template_id}}/create-workout",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"workouts",
+										"templates",
+										"{{admin_template_id}}",
+										"create-workout"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Crear Workout Template sin token",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Acceso no autorizado 403\", function () {",
+											"    pm.response.to.have.status(403);",
+											"});",
+											"",
+											"pm.test(\"El mensaje indica que no está autenticado\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData).to.have.property(\"detail\")",
+											"    pm.expect(jsonData.detail).to.include(\"Not authenticated\");",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"name\": \"Entrenamiento sigma\",\n  \"notes\": \"solo apto para giga chads\",\n  \"template_id\": {{admin_template_id}},\n  \"exercises\": []\n}\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/workouts/templates/{{admin_template_id}}/create-workout",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"workouts",
+										"templates",
+										"{{admin_template_id}}",
+										"create-workout"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Crear Workout Template inexistente",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Template no encontrado 404\", function () {",
+											"    pm.response.to.have.status(404);",
+											"});",
+											"",
+											"pm.test(\"Mensaje de error indica que el template no fue encontrado\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData).to.have.property(\"detail\");",
+											"    pm.expect(jsonData.detail).to.include(\"Template not found\");",
+											"});",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{admin_test_user_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"name\": \"Entrenamiento sigma\",\n  \"notes\": \"solo apto para giga chads\",\n  \"template_id\": {{admin_template_id}},\n  \"exercises\": []\n}\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/workouts/templates/0/create-workout",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"workouts",
+										"templates",
+										"0",
+										"create-workout"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Cancelar Workout",
+			"item": [
+				{
+					"name": "Cancelar Workout valido",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Workout cancelado exitosamente 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"El mensaje de confirmación es correcto\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property(\"message\");",
+									"    pm.expect(jsonData.message).to.include(\"Workout cancelled and removed successful\");",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin_test_user_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/workouts/{{workout_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"workouts",
+								"{{workout_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Cancelar Workout sin token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Acceso no autorizado 403\", function () {",
+									"    pm.response.to.have.status(403);",
+									"});",
+									"",
+									"pm.test(\"El mensaje indica que no está autenticado\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property(\"detail\")",
+									"    pm.expect(jsonData.detail).to.include(\"Not authenticated\");",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/workouts/{{workout_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"workouts",
+								"{{workout_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Cancelar Workout inexistente",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Workout no encontrado 404\", function () {",
+									"    pm.response.to.have.status(404);",
+									"});",
+									"",
+									"pm.test(\"Mensaje de error indica que el Workout no fue encontrado\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property(\"detail\");",
+									"    pm.expect(jsonData.detail).to.include(\"Workout not found\");",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin_test_user_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/workouts/0",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"workouts",
+								"0"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Obtener Workout Activo",
+			"item": [
+				{
+					"name": "Obtener Workout Activo vacio",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"No hay workouts activos 404\", function () {",
+									"    pm.response.to.have.status(404);",
+									"});",
+									"",
+									"pm.test(\"Mensaje del error indica que no hay Workouts activos\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property(\"detail\");",
+									"    pm.expect(jsonData.detail).to.include(\"No active workout found\");",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin_test_user_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/workouts/active",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"workouts",
+								"active"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Crear Workout activo",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"pm.environment.set(\"workout_id\", jsonData.id);",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin_test_user_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Sigma super training\",\n  \"notes\": \"onyl for mewing sigma pomny chad giga chad people\",\n  \"template_id\": null,\n  \"exercises\": [\n    {\n    \"exercise_id\": {{admin_template_exercise_1_id}},\n    \"order_index\": 1,\n    \"notes\": \"string\",\n    \"sets\": [\n        {\n        \"set_number\": 0,\n        \"reps\": 0,\n        \"weight\": 0,\n        \"duration\": 0,\n        \"rest_duration\": 0,\n        \"completed\": true\n        }\n    ]\n    }\n  ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/workouts",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"workouts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener Workout Activo valido",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Solicitud exitosa 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Workout contiene las propiedades esperadas\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property(\"name\");",
+									"    pm.expect(jsonData).to.have.property(\"notes\");",
+									"    pm.expect(jsonData).to.have.property(\"template_id\");",
+									"    pm.expect(jsonData).to.have.property(\"id\");",
+									"    pm.expect(jsonData).to.have.property(\"user_id\");",
+									"    pm.expect(jsonData).to.have.property(\"started_at\");",
+									"    pm.expect(jsonData).to.have.property(\"completed_at\");",
+									"    pm.expect(jsonData).to.have.property(\"workout_exercises\");",
+									"",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin_test_user_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/workouts/active",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"workouts",
+								"active"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener Workout Activo sin token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Acceso no autorizado 403\", function () {",
+									"    pm.response.to.have.status(403);",
+									"});",
+									"",
+									"pm.test(\"El mensaje indica que no está autenticado\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property(\"detail\")",
+									"    pm.expect(jsonData.detail).to.include(\"Not authenticated\");",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/workouts/active",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"workouts",
+								"active"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Completar Workout activo",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin_test_user_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/workouts/{{workout_id}}/complete",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"workouts",
+								"{{workout_id}}",
+								"complete"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Lista de Workouts",
+			"item": [
+				{
+					"name": "Lista de Workouts valido",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Solicitud exitosa 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"La respuesta tiene formato JSON\", function () {",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"pm.test(\"La respuesta es una lista de Workouts\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(Array.isArray(jsonData)).to.be.true;",
+									"});",
+									"",
+									"pm.test(\"Cada Workout contiene las propiedades esperadas\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    jsonData.forEach(function (u, index) {",
+									"        pm.expect(u).to.have.property(\"name\");",
+									"        pm.expect(u).to.have.property(\"notes\");",
+									"        pm.expect(u).to.have.property(\"template_id\");",
+									"        pm.expect(u).to.have.property(\"id\");",
+									"        pm.expect(u).to.have.property(\"user_id\");",
+									"        pm.expect(u).to.have.property(\"started_at\");",
+									"        pm.expect(u).to.have.property(\"completed_at\");",
+									"        pm.expect(u).to.have.property(\"workout_exercises\");",
+									"    });",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin_test_user_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/workouts/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"workouts",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Lista de Workouts sin token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Acceso no autorizado 403\", function () {",
+									"    pm.response.to.have.status(403);",
+									"});",
+									"",
+									"pm.test(\"El mensaje indica que no está autenticado\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property(\"detail\")",
+									"    pm.expect(jsonData.detail).to.include(\"Not authenticated\");",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/workouts/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"workouts",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Crear Workout",
+			"item": [
+				{
+					"name": "Crear Workout valido",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Solicitud exitosa 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Workout tiene todas las propiedades esperadas\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.name).to.eql(\"Sigma super training\")",
+									"    pm.expect(jsonData.notes).to.eql(\"onyl for mewing sigma pomny chad giga chad people\")",
+									"    pm.environment.set(\"workout_id\", jsonData.id);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin_test_user_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Sigma super training\",\n  \"notes\": \"onyl for mewing sigma pomny chad giga chad people\",\n  \"template_id\": null,\n  \"exercises\": []\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/workouts",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"workouts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Crear Workout sin token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Acceso no autorizado 403\", function () {",
+									"    pm.response.to.have.status(403);",
+									"});",
+									"",
+									"pm.test(\"El mensaje indica que no está autenticado\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property(\"detail\")",
+									"    pm.expect(jsonData.detail).to.include(\"Not authenticated\");",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Sigma super training\",\n  \"notes\": \"onyl for mewing sigma pomny chad giga chad people\",\n  \"template_id\": null,\n  \"exercises\": []\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/workouts",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"workouts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Crear Workout con Workout activo",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Error de workout 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"pm.test(\"Mensaje del error indica que el usuario no puede crear un workout\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property(\"detail\");",
+									"    pm.expect(jsonData.detail).to.include(\"You already have an active workout. Complete it before starting a new one.\");",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin_test_user_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Sigma super training\",\n  \"notes\": \"onyl for mewing sigma pomny chad giga chad people\",\n  \"template_id\": null,\n  \"exercises\": []\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/workouts",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"workouts"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Actualizar Workout",
+			"item": [
+				{
+					"name": "Actualizar Workout valido",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Solicitud exitosa 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Workout tiene todas las propiedades esperadas\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.name).to.eql(\"War thunder\");",
+									"    pm.expect(jsonData.notes).to.eql(\"War thunder mejor juego\");",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin_test_user_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"War thunder\",\n  \"notes\": \"War thunder mejor juego\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/workouts/{{workout_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"workouts",
+								"{{workout_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Actualizar Workout inexistente",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Workout no encontrado 404\", function () {",
+									"    pm.response.to.have.status(404);",
+									"});",
+									"",
+									"pm.test(\"Mensaje de error indica que el Workout no fue encontrado\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property(\"detail\");",
+									"    pm.expect(jsonData.detail).to.include(\"Workout not found\");",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin_test_user_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"War thunder\",\n  \"notes\": \"War thunder mejor juego\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/workouts/0",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"workouts",
+								"0"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Actualizar Workout sin token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Acceso no autorizado 403\", function () {",
+									"    pm.response.to.have.status(403);",
+									"});",
+									"",
+									"pm.test(\"El mensaje indica que no está autenticado\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property(\"detail\")",
+									"    pm.expect(jsonData.detail).to.include(\"Not authenticated\");",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"War thunder\",\n  \"notes\": \"War thunder mejor juego\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/workouts/{{workout_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"workouts",
+								"{{workout_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Obtener Workout",
+			"item": [
+				{
+					"name": "Obtener Workout valido",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Solicitud exitosa 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Workout contiene las propiedades esperadas\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property(\"name\");",
+									"    pm.expect(jsonData).to.have.property(\"notes\");",
+									"    pm.expect(jsonData).to.have.property(\"template_id\");",
+									"    pm.expect(jsonData).to.have.property(\"id\");",
+									"    pm.expect(jsonData).to.have.property(\"user_id\");",
+									"    pm.expect(jsonData).to.have.property(\"started_at\");",
+									"    pm.expect(jsonData).to.have.property(\"completed_at\");",
+									"    pm.expect(jsonData).to.have.property(\"workout_exercises\");",
+									"",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin_test_user_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/workouts/{{workout_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"workouts",
+								"{{workout_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener Workout inexistente",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Workout no encontrado 404\", function () {",
+									"    pm.response.to.have.status(404);",
+									"});",
+									"",
+									"pm.test(\"Mensaje de error indica que el Workout no fue encontrado\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property(\"detail\");",
+									"    pm.expect(jsonData.detail).to.include(\"Workout not found\");",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin_test_user_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/workouts/0",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"workouts",
+								"0"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener Workout sin token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Acceso no autorizado 403\", function () {",
+									"    pm.response.to.have.status(403);",
+									"});",
+									"",
+									"pm.test(\"El mensaje indica que no está autenticado\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property(\"detail\")",
+									"    pm.expect(jsonData.detail).to.include(\"Not authenticated\");",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/workouts/{{workout_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"workouts",
+								"{{workout_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Excercises",
+			"item": [
+				{
+					"name": "Añadir Ejercicios al Workout",
+					"item": [
+						{
+							"name": "Añadir Ejercicio valido",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Solicitud exitosa 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Workout tiene todas las propiedades esperadas\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData.exercise_id).to.eql(pm.environment.get(\"admin_template_exercise_1_id\"))",
+											"    pm.expect(jsonData.order_index).to.eql(1)",
+											"    pm.expect(jsonData.notes).to.eql(\"melhor\")",
+											"    pm.environment.set(\"workout_exercise_id\", jsonData.id)",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{admin_test_user_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"exercise_id\": {{admin_template_exercise_1_id}},\n  \"order_index\": 1,\n  \"notes\": \"melhor\",\n  \"sets\": []\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/workouts/{{workout_id}}/exercises",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"workouts",
+										"{{workout_id}}",
+										"exercises"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Añadir Ejercicio sin token",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Acceso no autorizado 403\", function () {",
+											"    pm.response.to.have.status(403);",
+											"});",
+											"",
+											"pm.test(\"El mensaje indica que no está autenticado\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData).to.have.property(\"detail\")",
+											"    pm.expect(jsonData.detail).to.include(\"Not authenticated\");",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"exercise_id\": {{admin_template_exercise_1_id}},\n  \"order_index\": 1,\n  \"notes\": \"melhor\",\n  \"sets\": []\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/workouts/{{workout_id}}/exercises",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"workouts",
+										"{{workout_id}}",
+										"exercises"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Añadir Ejercicio invalido (Workout inexistente)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Workout no encontrado 404\", function () {",
+											"    pm.response.to.have.status(404);",
+											"});",
+											"",
+											"pm.test(\"Mensaje de error indica que el Workout no fue encontrado\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData).to.have.property(\"detail\");",
+											"    pm.expect(jsonData.detail).to.include(\"Workout not found\");",
+											"});",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{admin_test_user_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"exercise_id\": {{admin_template_exercise_1_id}},\n  \"order_index\": 1,\n  \"notes\": \"melhor\",\n  \"sets\": []\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/workouts/0/exercises",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"workouts",
+										"0",
+										"exercises"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Añadir Ejercicio invalido (Order faltante)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Datos inválidos o faltantes 422\", function () {",
+											"    pm.response.to.have.status(422);",
+											"});",
+											"",
+											"pm.test(\"Verificar que el campo 'order_index' es requerido\", function () {",
+											"    var jsonData= pm.response.json();",
+											"    pm.expect(jsonData).to.have.property(\"detail\")",
+											"    pm.expect(jsonData.detail[0].msg).to.include(\"Field required\");",
+											"});",
+											"",
+											"",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{admin_test_user_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"exercise_id\": {{admin_template_exercise_1_id}},\n  \"notes\": \"melhor\",\n  \"sets\": []\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/workouts/{{workout_id}}/exercises",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"workouts",
+										"{{workout_id}}",
+										"exercises"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Añadir Ejercicio invalido (id Ejercicio faltante)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Datos inválidos o faltantes 422\", function () {",
+											"    pm.response.to.have.status(422);",
+											"});",
+											"",
+											"pm.test(\"Verificar que el campo 'exercise_id' es requerido\", function () {",
+											"    var jsonData= pm.response.json();",
+											"    pm.expect(jsonData).to.have.property(\"detail\")",
+											"    pm.expect(jsonData.detail[0].msg).to.include(\"Field required\");",
+											"});",
+											"",
+											"",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{admin_test_user_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"order_index\": 1,\n  \"notes\": \"melhor\",\n  \"sets\": []\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/workouts/{{workout_id}}/exercises",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"workouts",
+										"{{workout_id}}",
+										"exercises"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Añadir Set a Ejercicio",
+					"item": [
+						{
+							"name": "Añadir Set a Ejercicio valido",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Solicitud exitosa 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Verificar los datos\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData.set_number).to.eql(1)",
+											"    pm.expect(jsonData.reps).to.eql(10)",
+											"    pm.expect(jsonData.weight).to.eql(1.0)",
+											"    pm.expect(jsonData.duration).to.eql(40)",
+											"    pm.expect(jsonData.rest_duration).to.eql(5)",
+											"    pm.expect(jsonData.completed).to.eql(false)",
+											"    pm.environment.set(\"workout_exercise_set_id\", jsonData.id)",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{admin_test_user_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"set_number\": 1,\n  \"reps\": 10,\n  \"weight\": 1,\n  \"duration\": 40,\n  \"rest_duration\": 5,\n  \"completed\": false\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/workouts/{{workout_id}}/exercises/{{workout_exercise_id}}/sets",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"workouts",
+										"{{workout_id}}",
+										"exercises",
+										"{{workout_exercise_id}}",
+										"sets"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Añadir Set a Ejercicio input invalido",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Valores incorrectos o faltantes 422\", function () {",
+											"    pm.response.to.have.status(422);",
+											"});",
+											"",
+											"pm.test(\"Mensaje del error indica que el valor no es un numero\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData).to.have.property(\"detail\");",
+											"    pm.expect(jsonData.detail[0].msg).to.include(\"Input should be a valid number\");",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{admin_test_user_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"set_number\": 1,\n  \"reps\": 10,\n  \"weight\": \"eafeaf\",\n  \"duration\": 40,\n  \"rest_duration\": 5,\n  \"completed\": false\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/workouts/{{workout_id}}/exercises/{{workout_exercise_id}}/sets",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"workouts",
+										"{{workout_id}}",
+										"exercises",
+										"{{workout_exercise_id}}",
+										"sets"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Añadir Set a Ejercicio sin token",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Acceso no autorizado 403\", function () {",
+											"    pm.response.to.have.status(403);",
+											"});",
+											"",
+											"pm.test(\"El mensaje indica que no está autenticado\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData).to.have.property(\"detail\")",
+											"    pm.expect(jsonData.detail).to.include(\"Not authenticated\");",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"set_number\": 0,\n  \"reps\": 0,\n  \"weight\": 0,\n  \"duration\": 0,\n  \"rest_duration\": 0,\n  \"completed\": false\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/workouts/{workout_id}/exercises/{{workout_exercise_id}}/sets",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"workouts",
+										"{workout_id}",
+										"exercises",
+										"{{workout_exercise_id}}",
+										"sets"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Añadir Set a Ejercicio invalido (set numer faltante)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Datos inválidos o faltantes 422\", function () {",
+											"    pm.response.to.have.status(422);",
+											"});",
+											"",
+											"pm.test(\"Verificar que el campo 'set_number' es requerido\", function () {",
+											"    var jsonData= pm.response.json();",
+											"    pm.expect(jsonData).to.have.property(\"detail\")",
+											"    pm.expect(jsonData.detail[0].msg).to.include(\"Field required\");",
+											"});",
+											"",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{admin_test_user_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"reps\": 10,\n  \"weight\": 1,\n  \"duration\": 40,\n  \"rest_duration\": 5,\n  \"completed\": false\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/workouts/{{workout_id}}/exercises/{{workout_exercise_id}}/sets",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"workouts",
+										"{{workout_id}}",
+										"exercises",
+										"{{workout_exercise_id}}",
+										"sets"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Añadir Set a Ejercicio invalido (exercise id inexistente)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Ejercicio no encontrado 404\", function () {",
+											"    pm.response.to.have.status(404);",
+											"});",
+											"",
+											"pm.test(\"Mensaje de error indica que el Ejercicio no fue encontrado en el Workout\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData).to.have.property(\"detail\");",
+											"    pm.expect(jsonData.detail).to.include(\"Exercise not found in workout\");",
+											"});",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{admin_test_user_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"set_number\": 1,\n  \"reps\": 10,\n  \"weight\": 1,\n  \"duration\": 40,\n  \"rest_duration\": 5,\n  \"completed\": false\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/workouts/{{workout_id}}/exercises/0/sets",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"workouts",
+										"{{workout_id}}",
+										"exercises",
+										"0",
+										"sets"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Añadir Set a Ejercicio invalido (workout id inexistente)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Workout no encontrado 404\", function () {",
+											"    pm.response.to.have.status(404);",
+											"});",
+											"",
+											"pm.test(\"Mensaje de error indica que el Workout no fue encontrado\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData).to.have.property(\"detail\");",
+											"    pm.expect(jsonData.detail).to.include(\"Workout not found\");",
+											"});",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{admin_test_user_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"set_number\": 1,\n  \"reps\": 10,\n  \"weight\": 1,\n  \"duration\": 40,\n  \"rest_duration\": 5,\n  \"completed\": false\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/workouts/0/exercises/{{workout_exercise_id}}/sets",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"workouts",
+										"0",
+										"exercises",
+										"{{workout_exercise_id}}",
+										"sets"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Actualizar Set del Ejercicio",
+					"item": [
+						{
+							"name": "Actualizar Set del Ejercicio",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Solicitud exitosa 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Verificar los datos\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData.set_number).to.eql(5);",
+											"    pm.expect(jsonData.reps).to.eql(2);",
+											"    pm.expect(jsonData.weight).to.eql(2);",
+											"    pm.expect(jsonData.duration).to.eql(2);",
+											"    pm.expect(jsonData.rest_duration).to.eql(2);",
+											"    pm.expect(jsonData.completed).to.eql(true);",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{admin_test_user_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"set_number\": 5,\n  \"reps\": 2,\n  \"weight\": 2,\n  \"duration\": 2,\n  \"rest_duration\": 2,\n  \"completed\": true\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/workouts/{{workout_id}}/exercises/{{workout_exercise_id}}/sets/{{workout_exercise_set_id}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"workouts",
+										"{{workout_id}}",
+										"exercises",
+										"{{workout_exercise_id}}",
+										"sets",
+										"{{workout_exercise_set_id}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Actualizar Set del Ejercicio sin token",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Acceso no autorizado 403\", function () {",
+											"    pm.response.to.have.status(403);",
+											"});",
+											"",
+											"pm.test(\"El mensaje indica que no está autenticado\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData).to.have.property(\"detail\")",
+											"    pm.expect(jsonData.detail).to.include(\"Not authenticated\");",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"set_number\": 5,\n  \"reps\": 2,\n  \"weight\": 2,\n  \"duration\": 2,\n  \"rest_duration\": 2,\n  \"completed\": true\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/workouts/{{workout_id}}/exercises/{{workout_exercise_id}}/sets/{{workout_exercise_set_id}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"workouts",
+										"{{workout_id}}",
+										"exercises",
+										"{{workout_exercise_id}}",
+										"sets",
+										"{{workout_exercise_set_id}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Actualizar Set del Ejercicio invalido (set id inexistente)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Set no encontrado 404\", function () {",
+											"    pm.response.to.have.status(404);",
+											"});",
+											"",
+											"pm.test(\"Mensaje de error indica que el Set del Ejercicio no fue encontrado en el Workout\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData).to.have.property(\"detail\");",
+											"    pm.expect(jsonData.detail).to.include(\"Exercise set not found\");",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{admin_test_user_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"set_number\": 5,\n  \"reps\": 2,\n  \"weight\": 2,\n  \"duration\": 2,\n  \"rest_duration\": 2,\n  \"completed\": true\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/workouts/{{workout_id}}/exercises/{{workout_exercise_id}}/sets/0",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"workouts",
+										"{{workout_id}}",
+										"exercises",
+										"{{workout_exercise_id}}",
+										"sets",
+										"0"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Actualizar Set del Ejercicio invalido (exercise id inexistente)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Ejercicio no encontrado 404\", function () {",
+											"    pm.response.to.have.status(404);",
+											"});",
+											"",
+											"pm.test(\"Mensaje de error indica que Ejercicio no fue encontrado\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData).to.have.property(\"detail\");",
+											"    pm.expect(jsonData.detail).to.include(\"Exercise set not found\");",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{admin_test_user_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"set_number\": 5,\n  \"reps\": 2,\n  \"weight\": 2,\n  \"duration\": 2,\n  \"rest_duration\": 2,\n  \"completed\": true\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/workouts/{{workout_id}}/exercises/0/sets/{{workout_exercise_set_id}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"workouts",
+										"{{workout_id}}",
+										"exercises",
+										"0",
+										"sets",
+										"{{workout_exercise_set_id}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Actualizar Set del Ejercicio invalido (workout id inexistente)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Workout no encontrado 404\", function () {",
+											"    pm.response.to.have.status(404);",
+											"});",
+											"",
+											"pm.test(\"Mensaje de error indica que el Workout no fue encontrado\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData).to.have.property(\"detail\");",
+											"    pm.expect(jsonData.detail).to.include(\"Workout not found\");",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{admin_test_user_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"set_number\": 5,\n  \"reps\": 2,\n  \"weight\": 2,\n  \"duration\": 2,\n  \"rest_duration\": 2,\n  \"completed\": true\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/workouts/0/exercises/{{workout_exercise_id}}/sets/{{workout_exercise_set_id}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"workouts",
+										"0",
+										"exercises",
+										"{{workout_exercise_id}}",
+										"sets",
+										"{{workout_exercise_set_id}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Borrar Set del Ejercicio",
+					"item": [
+						{
+							"name": "Borrar Set Ejercicio valido",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Workout cancelado exitosamente 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"El mensaje de confirmación es correcto\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData).to.have.property(\"message\");",
+											"    pm.expect(jsonData.message).to.include(\"Exercise set deleted successfully\");",
+											"});",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{admin_test_user_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/workouts/{{workout_id}}/exercises/{{workout_exercise_id}}/sets/{{workout_exercise_set_id}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"workouts",
+										"{{workout_id}}",
+										"exercises",
+										"{{workout_exercise_id}}",
+										"sets",
+										"{{workout_exercise_set_id}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Borrar Set Ejercicio sin token",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Acceso no autorizado 403\", function () {",
+											"    pm.response.to.have.status(403);",
+											"});",
+											"",
+											"pm.test(\"El mensaje indica que no está autenticado\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData).to.have.property(\"detail\")",
+											"    pm.expect(jsonData.detail).to.include(\"Not authenticated\");",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/workouts/{{workout_id}}/exercises/{{workout_exercise_id}}/sets/{{workout_exercise_set_id}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"workouts",
+										"{{workout_id}}",
+										"exercises",
+										"{{workout_exercise_id}}",
+										"sets",
+										"{{workout_exercise_set_id}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Borrar Set del Ejercicio invalido (set id inexistente)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Set no encontrado 404\", function () {",
+											"    pm.response.to.have.status(404);",
+											"});",
+											"",
+											"pm.test(\"Mensaje de error indica que el Set del Ejercicio no fue encontrado en el Workout\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData).to.have.property(\"detail\");",
+											"    pm.expect(jsonData.detail).to.include(\"Exercise set not found\");",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{admin_test_user_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"set_number\": 5,\n  \"reps\": 2,\n  \"weight\": 2,\n  \"duration\": 2,\n  \"rest_duration\": 2,\n  \"completed\": true\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/workouts/{{workout_id}}/exercises/{{workout_exercise_id}}/sets/0",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"workouts",
+										"{{workout_id}}",
+										"exercises",
+										"{{workout_exercise_id}}",
+										"sets",
+										"0"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Borrar Set del Ejercicio invalido (exercise id inexistente)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Ejercicio no encontrado 404\", function () {",
+											"    pm.response.to.have.status(404);",
+											"});",
+											"",
+											"pm.test(\"Mensaje de error indica que Ejercicio no fue encontrado\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData).to.have.property(\"detail\");",
+											"    pm.expect(jsonData.detail).to.include(\"Exercise set not found\");",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{admin_test_user_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"set_number\": 5,\n  \"reps\": 2,\n  \"weight\": 2,\n  \"duration\": 2,\n  \"rest_duration\": 2,\n  \"completed\": true\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/workouts/{{workout_id}}/exercises/0/sets/{{workout_exercise_set_id}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"workouts",
+										"{{workout_id}}",
+										"exercises",
+										"0",
+										"sets",
+										"{{workout_exercise_set_id}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Borrar Set del Ejercicio invalido (workout id inexistente)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Workout no encontrado 404\", function () {",
+											"    pm.response.to.have.status(404);",
+											"});",
+											"",
+											"pm.test(\"Mensaje de error indica que el Workout no fue encontrado\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData).to.have.property(\"detail\");",
+											"    pm.expect(jsonData.detail).to.include(\"Workout not found\");",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{admin_test_user_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"set_number\": 5,\n  \"reps\": 2,\n  \"weight\": 2,\n  \"duration\": 2,\n  \"rest_duration\": 2,\n  \"completed\": true\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/workouts/0/exercises/{{workout_exercise_id}}/sets/{{workout_exercise_set_id}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"workouts",
+										"0",
+										"exercises",
+										"{{workout_exercise_id}}",
+										"sets",
+										"{{workout_exercise_set_id}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Actualizar notas del Ejercicio",
+					"item": [
+						{
+							"name": "Actualizar notas del Ejercicio",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Solicitud exitosa 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Verificar los datos\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData.notes).to.eql(\"wena wena buena esa\");",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{admin_test_user_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"notes\": \"wena wena buena esa\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/workouts/{{workout_id}}/exercises/{{workout_exercise_id}}/notes",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"workouts",
+										"{{workout_id}}",
+										"exercises",
+										"{{workout_exercise_id}}",
+										"notes"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Actualizar notas del Ejercicio sin token",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Acceso no autorizado 403\", function () {",
+											"    pm.response.to.have.status(403);",
+											"});",
+											"",
+											"pm.test(\"El mensaje indica que no está autenticado\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData).to.have.property(\"detail\")",
+											"    pm.expect(jsonData.detail).to.include(\"Not authenticated\");",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"notes\": \"wena wena buena esa\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/workouts/{{workout_id}}/exercises/{{workout_exercise_id}}/notes",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"workouts",
+										"{{workout_id}}",
+										"exercises",
+										"{{workout_exercise_id}}",
+										"notes"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Actualizar notas del Ejercicio invalido (exercise id inexistente) Copy",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Ejercicio no encontrado 404\", function () {",
+											"    pm.response.to.have.status(404);",
+											"});",
+											"",
+											"pm.test(\"Mensaje de error indica que Ejercicio no fue encontrado en el Workout\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData).to.have.property(\"detail\");",
+											"    pm.expect(jsonData.detail).to.include(\"Exercise not found in workout\");",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{admin_test_user_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"set_number\": 5,\n  \"reps\": 2,\n  \"weight\": 2,\n  \"duration\": 2,\n  \"rest_duration\": 2,\n  \"completed\": true\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/workouts/{{workout_id}}/exercises/0/notes",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"workouts",
+										"{{workout_id}}",
+										"exercises",
+										"0",
+										"notes"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Actualizar notas del Ejercicio invalido (workout id inexistente) Copy",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Workout no encontrado 404\", function () {",
+											"    pm.response.to.have.status(404);",
+											"});",
+											"",
+											"pm.test(\"Mensaje de error indica que el Workout no fue encontrado\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData).to.have.property(\"detail\");",
+											"    pm.expect(jsonData.detail).to.include(\"Workout not found\");",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{admin_test_user_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"set_number\": 5,\n  \"reps\": 2,\n  \"weight\": 2,\n  \"duration\": 2,\n  \"rest_duration\": 2,\n  \"completed\": true\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/workouts/0/exercises/{{workout_exercise_id}}/notes",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"workouts",
+										"0",
+										"exercises",
+										"{{workout_exercise_id}}",
+										"notes"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Actualizar notas del Workout",
+			"item": [
+				{
+					"name": "Actualizar notas Workout",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Solicitud exitosa 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Mensaje indica que las notas del Workout se actualizaron con éxito\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.message).to.eql(\"Workout notes updated successfully\");",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin_test_user_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"notes\" : \"ayuda porfavor son las 3 am y no puedo parar de jugar lol\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/workouts/{{workout_id}}/notes",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"workouts",
+								"{{workout_id}}",
+								"notes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Actualizar notas Workout inexistente",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Workout no encontrado 404\", function () {",
+									"    pm.response.to.have.status(404);",
+									"});",
+									"",
+									"pm.test(\"Mensaje de error indica que el Workout no fue encontrado\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property(\"detail\");",
+									"    pm.expect(jsonData.detail).to.include(\"Workout not found\");",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin_test_user_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"notes\" : \"ayuda porfavor son las 3 am y no puedo parar de jugar lol\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/workouts/0/notes",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"workouts",
+								"0",
+								"notes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Actualizar notas Workout sin token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Acceso no autorizado 403\", function () {",
+									"    pm.response.to.have.status(403);",
+									"});",
+									"",
+									"pm.test(\"El mensaje indica que no está autenticado\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property(\"detail\")",
+									"    pm.expect(jsonData.detail).to.include(\"Not authenticated\");",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"notes\" : \"ayuda porfavor son las 3 am y no puedo parar de jugar lol\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/workouts/{{workout_id}}/notes",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"workouts",
+								"{{workout_id}}",
+								"notes"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Completar Workout",
+			"item": [
+				{
+					"name": "Completar Workout valido",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Solicitud exitosa 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Mensaje indica que el Workout fue completado\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.message).to.eql(\"Workout completed successfully\");",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin_test_user_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/workouts/{{workout_id}}/complete",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"workouts",
+								"{{workout_id}}",
+								"complete"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Completar Workout error completado",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Error ya completado 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"pm.test(\"Mensaje indica que el Workout ya fue completado\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.detail).to.eql(\"Workout already completed\");",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin_test_user_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/workouts/{{workout_id}}/complete",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"workouts",
+								"{{workout_id}}",
+								"complete"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Completar Workout inexistente",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Workout no encontrado 404\", function () {",
+									"    pm.response.to.have.status(404);",
+									"});",
+									"",
+									"pm.test(\"Mensaje de error indica que el Workout no fue encontrado\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property(\"detail\");",
+									"    pm.expect(jsonData.detail).to.include(\"Workout not found\");",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin_test_user_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"notes\" : \"ayuda porfavor son las 3 am y no puedo parar de jugar lol\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/workouts/0/complete",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"workouts",
+								"0",
+								"complete"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Completar Workout sin token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Acceso no autorizado 403\", function () {",
+									"    pm.response.to.have.status(403);",
+									"});",
+									"",
+									"pm.test(\"El mensaje indica que no está autenticado\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property(\"detail\")",
+									"    pm.expect(jsonData.detail).to.include(\"Not authenticated\");",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"notes\" : \"ayuda porfavor son las 3 am y no puedo parar de jugar lol\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/workouts/{{workout_id}}/complete",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"workouts",
+								"{{workout_id}}",
+								"complete"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Obtener historial de Workouts",
+			"item": [
+				{
+					"name": "Obtener historial Workouts valido",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Solicitud exitosa 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Devuelve una lista de Workouts\",  function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.be.an(\"array\");",
+									"});",
+									"",
+									"pm.test(\"Historial contiene las propiedades esperadas\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.be.an(\"array\");",
+									"    jsonData.forEach(function (workout) {",
+									"        pm.expect(workout).to.be.an(\"object\");",
+									"        pm.expect(workout).to.have.property(\"name\");",
+									"        pm.expect(workout).to.have.property(\"notes\");",
+									"        pm.expect(workout).to.have.property(\"template_id\");",
+									"        pm.expect(workout).to.have.property(\"id\");",
+									"        pm.expect(workout).to.have.property(\"user_id\");",
+									"        pm.expect(workout).to.have.property(\"started_at\");",
+									"        pm.expect(workout).to.have.property(\"completed_at\");",
+									"        pm.expect(workout).to.have.property(\"workout_exercises\");",
+									"        pm.expect(workout.workout_exercises).to.be.an(\"array\")",
+									"        workout.workout_exercises.forEach(function (we) {",
+									"            pm.expect(we).to.have.property(\"exercise\");",
+									"            pm.expect(we).to.have.property(\"sets\");",
+									"        });",
+									"    });",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin_test_user_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/workouts/history",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"workouts",
+								"history"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener historial Workouts sin token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Acceso no autorizado 403\", function () {",
+									"    pm.response.to.have.status(403);",
+									"});",
+									"",
+									"pm.test(\"El mensaje indica que no está autenticado\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property(\"detail\")",
+									"    pm.expect(jsonData.detail).to.include(\"Not authenticated\");",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/workouts/history",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"workouts",
+								"history"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

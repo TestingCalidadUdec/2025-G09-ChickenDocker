@@ -1,0 +1,3790 @@
+{
+	"info": {
+		"_postman_id": "0c27650d-c9fa-473b-8fc8-8f8235f82ba1",
+		"name": "[D] Admin",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "49475218"
+	},
+	"item": [
+		{
+			"name": "PRE-REQUESTS",
+			"item": [
+				{
+					"name": "Registro usuario",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"pm.environment.set('admin_test_user_id', jsonData.id);"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"seba@example.com\",\n  \"username\": \"quesooooooooooooooooo\",\n  \"full_name\": \"usuario_activo_full_name\",\n  \"is_active\": true,\n  \"is_admin\": false,\n  \"password\": \"seba123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/users/register",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Crear ejercicio 1 para template",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"pm.environment.set('admin_template_exercise_1_id', jsonData.id);"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Ejercicio1\",\n  \"description\": \"Jugar War Thunder\",\n  \"exercise_type\": \"WEIGHT_BASED\",\n  \"muscle_group\": \"chest\",\n  \"equipment\": \"barra, discos\",\n  \"instructions\": \"Jugar War Thunder\",\n  \"is_active\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/exercises/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"exercises",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Crear ejercicio 2 para template Copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"pm.environment.set('admin_template_exercise_2_id', jsonData.id);"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Ejercicio2\",\n  \"description\": \"Jugar Risk of rain 2\",\n  \"exercise_type\": \"WEIGHT_BASED\",\n  \"muscle_group\": \"chest\",\n  \"equipment\": \"barra, discos\",\n  \"instructions\": \"Jugar Risk of rain 2\",\n  \"is_active\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/exercises/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"exercises",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login Usuario",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"pm.environment.set('admin_test_user_token', jsonData.access_token);"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "username",
+									"value": "seba@example.com",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "seba123",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/api/auth/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "Antes de ejecutar los tests de admin ejecute los endpoints dentro de esta carpeta"
+		},
+		{
+			"name": "Usuarios",
+			"item": [
+				{
+					"name": "Crear Usuarios",
+					"item": [
+						{
+							"name": "Crear Usuario valido",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Usuario creado exitosamente 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Respuesta en formato JSON\", function () {",
+											"    pm.response.to.be.json;",
+											"});",
+											"",
+											"pm.test(\"Verificar campos del usuario creado\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData).to.have.property(\"id\");",
+											"    pm.expect(jsonData).to.have.property(\"email\");",
+											"    pm.expect(jsonData).to.have.property(\"username\");",
+											"    pm.expect(jsonData).to.have.property(\"is_active\");",
+											"    pm.expect(jsonData).to.have.property(\"is_admin\");",
+											"    pm.expect(jsonData).to.have.property(\"created_at\");",
+											"    pm.expect(jsonData).to.have.property(\"updated_at\");",
+											"    pm.environment.set('admin_user_temporal_id', jsonData.id);",
+											"});",
+											"",
+											"",
+											"pm.test(\"Verificar los datos\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData.email).to.eql(pm.environment.get(\"new_user_email\"));",
+											"    pm.expect(jsonData.username).to.eql(pm.environment.get(\"new_user_name\"));",
+											"    pm.expect(jsonData.full_name).to.eql(\"Luis\");",
+											"    pm.expect(jsonData.is_active).to.eql(true);",
+											"    pm.expect(jsonData.is_admin).to.eql(false);",
+											"});",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"let currentId = parseInt(pm.environment.get(\"new_user_id\")) || 0;",
+											"let newId = currentId + 1;",
+											"pm.environment.set(\"new_user_id\", newId);",
+											"pm.environment.set(\"new_user_name\", `test${newId}`);",
+											"pm.environment.set(\"new_user_email\", `test${newId}@example.com`);",
+											"",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{admin_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"email\": \"{{new_user_email}}\",\n  \"username\": \"{{new_user_name}}\",\n  \"full_name\": \"Luis\",\n  \"password\": \"test123\",\n  \"is_active\": true,\n  \"is_admin\": false\n}\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/admin/users",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"users"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Crear Usuario sin admin",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Acceso no autorizado 400\", function () {",
+											"    pm.response.to.have.status(400);",
+											"});",
+											"",
+											"pm.test(\"El mensaje indica falta de privilegios\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData).to.have.property(\"detail\")",
+											"    pm.expect(jsonData.detail).to.include(\"user doesn't have enough privileges\");",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"let currentId = parseInt(pm.environment.get(\"new_user_id\")) || 0;",
+											"let newId = currentId + 1;",
+											"pm.environment.set(\"new_user_id\", newId);",
+											"pm.environment.set(\"new_user_name\", `test${newId}`);",
+											"pm.environment.set(\"new_user_email\", `test${newId}@example.com`);",
+											"",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{admin_test_user_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"email\": \"{{new_user_email}}\",\n  \"username\": \"{{new_user_name}}\",\n  \"full_name\": \"Luis\",\n  \"password\": \"test123\",\n  \"is_active\": true,\n  \"is_admin\": false\n}\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/admin/users",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"users"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Crear Usuario sin token",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Acceso no autorizado 403\", function () {",
+											"    pm.response.to.have.status(403);",
+											"});",
+											"",
+											"pm.test(\"El mensaje indica que no está autenticado\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData).to.have.property(\"detail\")",
+											"    pm.expect(jsonData.detail).to.include(\"Not authenticated\");",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"let currentId = parseInt(pm.environment.get(\"new_user_id\")) || 0;",
+											"let newId = currentId + 1;",
+											"pm.environment.set(\"new_user_id\", newId);",
+											"pm.environment.set(\"new_user_name\", `test${newId}`);",
+											"pm.environment.set(\"new_user_email\", `test${newId}@example.com`);",
+											"",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"email\": \"{{new_user_email}}\",\n  \"username\": \"{{new_user_name}}\",\n  \"full_name\": \"Luis\",\n  \"password\": \"test123\",\n  \"is_active\": true,\n  \"is_admin\": false\n}\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/admin/users",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"users"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Crear Usuario duplicado",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Usuario duplicado 400\", function () {",
+											"    pm.response.to.have.status(400);",
+											"});",
+											"",
+											"pm.test(\"Mensaje de error indica duplicado\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData).to.have.property(\"detail\")",
+											"    pm.expect(jsonData.detail).to.include(\"this email already exists in the system\");",
+											"});",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{admin_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "    {\n        \"email\": \"admin@example.com\",\n        \"username\": \"admin\",\n        \"full_name\": \"System Administrator\",\n        \"password\": \"admin123\",\n        \"is_active\": true,\n        \"is_admin\": true\n    }",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/admin/users",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"users"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Crear Usuario invalido (Email invalido)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Datos inválidos o faltantes 422\", function () {",
+											"    pm.response.to.have.status(422);",
+											"});",
+											"",
+											"pm.test(\"Mensaje del error indica que el valor no es una dirección de correo electrónico válida\", function () {",
+											"    var jsonData= pm.response.json();",
+											"    pm.expect(jsonData).to.have.property(\"detail\")",
+											"    pm.expect(jsonData.detail[0].msg).to.include(\"value is not a valid email address\");",
+											"});",
+											"",
+											"",
+											"",
+											"",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{admin_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"username\": \"seba\",\n    \"email\": \"hola\",\n    \"password\": \"hola\"\n}\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/admin/users",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"users"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Crear Usuario invalido (Email faltante)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Datos inválidos o faltantes 422\", function () {",
+											"    pm.response.to.have.status(422);",
+											"});",
+											"",
+											"pm.test(\"Verificar que el campo 'email' es requerido\", function () {",
+											"    var jsonData= pm.response.json();",
+											"    pm.expect(jsonData).to.have.property(\"detail\")",
+											"    pm.expect(jsonData.detail[0].msg).to.include(\"Field required\");",
+											"});",
+											"",
+											"",
+											"",
+											"",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{admin_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"username\": \"seba\",\n    \"password\": \"hola\"\n}\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/admin/users",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"users"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Crear Usuario invalido (Username faltante)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Datos inválidos o faltantes 422\", function () {",
+											"    pm.response.to.have.status(422);",
+											"});",
+											"",
+											"pm.test(\"Verificar que el campo 'username' es requerido\", function () {",
+											"    var jsonData= pm.response.json();",
+											"    pm.expect(jsonData).to.have.property(\"detail\")",
+											"    pm.expect(jsonData.detail[0].msg).to.include(\"Field required\");",
+											"});",
+											"",
+											"",
+											"",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{admin_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\": \"hola@p.com\",\n    \"password\": \"123456\"\n}\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/admin/users",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"users"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Crear Usuario invalido (Password faltante)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Datos inválidos o faltantes 422\", function () {",
+											"    pm.response.to.have.status(422);",
+											"});",
+											"",
+											"pm.test(\"Verificar que el campo 'password' es requerido\", function () {",
+											"    var jsonData= pm.response.json();",
+											"    pm.expect(jsonData).to.have.property(\"detail\")",
+											"    pm.expect(jsonData.detail[0].msg).to.include(\"Field required\");",
+											"});",
+											"",
+											"",
+											"",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{admin_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"username\": \"benji\",\n    \"email\": \"hola@gmail.cl\"\n}\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/admin/users",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"users"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Lista de Usuarios",
+					"item": [
+						{
+							"name": "Lista de Usuarios valido",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Solicitud exitosa 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"La respuesta tiene formato JSON\", function () {",
+											"    pm.response.to.be.json;",
+											"});",
+											"",
+											"pm.test(\"La respuesta es una lista de usuarios\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(Array.isArray(jsonData)).to.be.true;",
+											"});",
+											"",
+											"pm.test(\"Cada usuario contiene campos válidos\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(Array.isArray(jsonData)).to.be.true;",
+											"    pm.expect(jsonData.length).to.be.above(0);",
+											"    jsonData.forEach(function (u, index) {",
+											"        pm.expect(u).to.have.property(\"id\");",
+											"        pm.expect(u).to.have.property(\"username\");",
+											"        pm.expect(u).to.have.property(\"email\");",
+											"        pm.expect(u).to.have.property(\"is_active\");",
+											"        pm.expect(u).to.have.property(\"is_admin\");",
+											"        pm.expect(u).to.have.property(\"created_at\");",
+											"        pm.expect(u).to.have.property(\"updated_at\");",
+											"",
+											"    });",
+											"});",
+											"",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{admin_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": []
+								},
+								"url": {
+									"raw": "{{base_url}}/api/admin/users",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"users"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Lista de Usuarios sin Admin",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Acceso no autorizado 400\", function () {",
+											"    pm.response.to.have.status(400);",
+											"});",
+											"",
+											"pm.test(\"El mensaje indica falta de privilegios\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData).to.have.property(\"detail\")",
+											"    pm.expect(jsonData.detail).to.include(\"user doesn't have enough privileges\");",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{admin_test_user_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/admin/users",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"users"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Lista de Usuarios sin token",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Acceso no autorizado 403\", function () {",
+											"    pm.response.to.have.status(403);",
+											"});",
+											"",
+											"pm.test(\"El mensaje indica que no está autenticado\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData).to.have.property(\"detail\")",
+											"    pm.expect(jsonData.detail).to.include(\"Not authenticated\");",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/admin/users",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"users"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Actualizar Usuario",
+					"item": [
+						{
+							"name": "Actualizar Usuario valido",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Usuario actualizado correctamente 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"La respuesta es JSON\", function () {",
+											"    pm.response.to.be.json;",
+											"});",
+											"",
+											"pm.test(\"El usuario actualizado tiene los campos esperados\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData).to.have.property(\"username\");",
+											"    pm.expect(jsonData).to.have.property(\"email\");",
+											"});",
+											"",
+											"pm.test(\"El campo username y email del usuario se actualizaron correctamente\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData.username).to.eql(\"luisgamercool_v2\");",
+											"    pm.expect(jsonData.email).to.eql(\"luiscool@example.com\");",
+											"});",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{admin_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"username\": \"luisgamercool_v2\",\n  \"email\": \"luiscool@example.com\"\n}\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/admin/users/{{admin_test_user_id}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"users",
+										"{{admin_test_user_id}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Actualizar Usuario inexistente",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Usuario no encontrado 404\", function () {",
+											"    pm.response.to.have.status(404);",
+											"});",
+											"",
+											"pm.test(\"Mensaje de error indica que el usuario no fue encontrado\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData).to.have.property(\"detail\");",
+											"    pm.expect(jsonData.detail).to.include(\"User not found\");",
+											"});",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{admin_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"username\": \"luisgamercool_v2\",\n  \"email\": \"luiscool@example.com\"\n}\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/admin/users/0",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"users",
+										"0"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Actualizar Usuario sin admin",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Acceso no autorizado 400\", function () {",
+											"    pm.response.to.have.status(400);",
+											"});",
+											"",
+											"pm.test(\"El mensaje indica falta de privilegios\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData).to.have.property(\"detail\")",
+											"    pm.expect(jsonData.detail).to.include(\"user doesn't have enough privileges\");",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{admin_test_user_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"username\": \"luisgamercool_v2\",\n  \"email\": \"luiscool@example.com\"\n}\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/admin/users/{{admin_test_user_id}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"users",
+										"{{admin_test_user_id}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Actualizar Usuario sin token",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Acceso no autorizado 403\", function () {",
+											"    pm.response.to.have.status(403);",
+											"});",
+											"",
+											"pm.test(\"El mensaje indica que no está autenticado\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData).to.have.property(\"detail\")",
+											"    pm.expect(jsonData.detail).to.include(\"Not authenticated\");",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"username\": \"luisgamercool_v2\",\n  \"email\": \"luiscool@example.com\"\n}\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/admin/users/{{admin_test_user_id}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"users",
+										"{{admin_test_user_id}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Actualizar Usuario invalido (Email invalido)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Valores incorrectos o faltantes 422\", function () {",
+											"    pm.response.to.have.status(422);",
+											"});",
+											"",
+											"",
+											"pm.test(\"Mensaje de error indica que el email no es válido\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData).to.have.property(\"detail\");",
+											"    pm.expect(jsonData.detail[0].msg).to.include(\"not a valid email address\");",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{admin_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"email\": \"hola\"\n}\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/admin/users/{{admin_test_user_id}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"users",
+										"{{admin_test_user_id}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Borrar Usuario",
+					"item": [
+						{
+							"name": "Borrar Usuario valido",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Usuario eliminado correctamente 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"La respuesta es JSON\", function () {",
+											"    pm.response.to.be.json;",
+											"});",
+											"",
+											"pm.test(\"El mensaje de confirmación es correcto\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData).to.have.property(\"message\");",
+											"    pm.expect(jsonData.message).to.include(\"deleted successfully\");",
+											"});",
+											"",
+											"pm.environment.unset(\"admin_user_temporal_id\");"
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{admin_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/admin/users/{{admin_user_temporal_id}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"users",
+										"{{admin_user_temporal_id}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Borrar Usuario inexistente",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Usuario no encontrado 404\", function () {",
+											"    pm.response.to.have.status(404);",
+											"});",
+											"",
+											"pm.test(\"Mensaje de error indica que el usuario no fue encontrado\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData).to.have.property(\"detail\");",
+											"    pm.expect(jsonData.detail).to.include(\"User not found\");",
+											"});",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{admin_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/admin/users/0",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"users",
+										"0"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Borrar Usuario sin admin",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Acceso no autorizado 400\", function () {",
+											"    pm.response.to.have.status(400);",
+											"});",
+											"",
+											"pm.test(\"El mensaje indica falta de privilegios\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData).to.have.property(\"detail\")",
+											"    pm.expect(jsonData.detail).to.include(\"user doesn't have enough privileges\");",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{admin_test_user_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/admin/users/1",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"users",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Borrar Usuario sin token",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Acceso no autorizado 403\", function () {",
+											"    pm.response.to.have.status(403);",
+											"});",
+											"",
+											"pm.test(\"El mensaje indica que no está autenticado\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData).to.have.property(\"detail\")",
+											"    pm.expect(jsonData.detail).to.include(\"Not authenticated\");",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/admin/users/1",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"users",
+										"1"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Templates",
+			"item": [
+				{
+					"name": "Crear Templates",
+					"item": [
+						{
+							"name": "Crear Template valido",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Creación exitosa 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"El template tiene todas las propiedades esperadas\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData).to.have.property(\"name\");",
+											"    pm.expect(jsonData).to.have.property(\"description\");",
+											"    pm.expect(jsonData).to.have.property(\"is_public\");",
+											"    pm.expect(jsonData).to.have.property(\"id\");",
+											"    pm.environment.set(\"admin_template_id\", jsonData.id)",
+											"    pm.expect(jsonData).to.have.property(\"created_by\");",
+											"    pm.expect(jsonData).to.have.property(\"created_at\");",
+											"    pm.expect(jsonData).to.have.property(\"updated_at\");",
+											"    pm.expect(jsonData).to.have.property(\"template_exercises\");",
+											"    pm.expect(jsonData.template_exercises).to.be.an(\"array\");",
+											"    jsonData.template_exercises.forEach(function (ex, index) {",
+											"        pm.expect(ex).to.have.property(\"exercise_id\");",
+											"        pm.expect(ex).to.have.property(\"order_index\");",
+											"        pm.expect(ex).to.have.property(\"suggested_sets\");",
+											"        pm.expect(ex).to.have.property(\"suggested_reps\");",
+											"        pm.expect(ex).to.have.property(\"suggested_weight\");",
+											"        pm.expect(ex).to.have.property(\"suggested_duration\");",
+											"        pm.expect(ex).to.have.property(\"id\");",
+											"        pm.expect(ex).to.have.property(\"template_id\");",
+											"        pm.expect(ex).to.have.property(\"exercise\");",
+											"        pm.expect(ex.exercise).to.have.property(\"name\");",
+											"        pm.expect(ex.exercise).to.have.property(\"description\");",
+											"        pm.expect(ex.exercise).to.have.property(\"exercise_type\");",
+											"        pm.expect(ex.exercise).to.have.property(\"muscle_group\");",
+											"        pm.expect(ex.exercise).to.have.property(\"equipment\");",
+											"        pm.expect(ex.exercise).to.have.property(\"instructions\");",
+											"        pm.expect(ex.exercise).to.have.property(\"is_active\");",
+											"        pm.expect(ex.exercise).to.have.property(\"id\");",
+											"        pm.expect(ex.exercise).to.have.property(\"created_at\");",
+											"        pm.expect(ex.exercise).to.have.property(\"updated_at\");",
+											"    });",
+											"});",
+											"",
+											"pm.test(\"Verificar los datos\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData.name).to.eql(\"Template1\");",
+											"    pm.expect(jsonData.description).to.eql(\"descripcion1\");",
+											"    pm.expect(jsonData.is_public).to.eql(false);",
+											"    pm.expect(jsonData.created_by).to.eql(1);",
+											"    jsonData.template_exercises.forEach(function (ex, index) {",
+											"        pm.expect(ex.exercise_id).to.eql(pm.environment.get(\"admin_template_exercise_1_id\"));",
+											"        pm.expect(ex.order_index).to.eql(1);",
+											"        pm.expect(ex.suggested_sets).to.eql(3);",
+											"        pm.expect(ex.suggested_reps).to.eql(10)",
+											"        pm.expect(ex.suggested_weight).to.eql(43.0)",
+											"        pm.expect(ex.suggested_duration).to.eql(null)",
+											"    });",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{admin_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n        \"name\": \"Template1\",\n        \"description\": \"descripcion1\",\n        \"is_public\": false,\n        \"created_by\": 1,\n        \"exercises\": [\n            {\n                \"exercise_id\": {{admin_template_exercise_1_id}},\n                \"order_index\": 1,\n                \"suggested_sets\": 3,\n                \"suggested_reps\": 10,\n                \"suggested_weight\": 43.0,\n                \"suggested_duration\": null\n            }\n        ]\n    }",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/admin/workout-templates",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"workout-templates"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Crear Template sin admin",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Acceso no autorizado 400\", function () {",
+											"    pm.response.to.have.status(400);",
+											"});",
+											"",
+											"pm.test(\"El mensaje indica falta de privilegios\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData.detail).to.include(\"user doesn't have enough privileges\");",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{admin_test_user_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n        \"name\": \"Template1\",\n        \"description\": \"descripcion1\",\n        \"is_public\": false,\n        \"created_by\": 1,\n        \"exercises\": [\n            {\n                \"exercise_id\": {{admin_template_exercise_1_id}},\n                \"order_index\": 1,\n                \"suggested_sets\": 3,\n                \"suggested_reps\": 10,\n                \"suggested_weight\": 43.0,\n                \"suggested_duration\": null\n            }\n        ]\n    }",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/admin/workout-templates",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"workout-templates"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Crear Template sin token",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Acceso no autorizado 403\", function () {",
+											"    pm.response.to.have.status(403);",
+											"});",
+											"",
+											"pm.test(\"El mensaje indica que no está autenticado\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData.detail).to.include(\"Not authenticated\");",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n        \"name\": \"Template1\",\n        \"description\": \"descripcion1\",\n        \"is_public\": false,\n        \"created_by\": 1,\n        \"exercises\": [\n            {\n                \"exercise_id\": {{admin_template_exercise_1_id}},\n                \"order_index\": 1,\n                \"suggested_sets\": 3,\n                \"suggested_reps\": 10,\n                \"suggested_weight\": 43.0,\n                \"suggested_duration\": null\n            }\n        ]\n    }",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/admin/workout-templates",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"workout-templates"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Crear Template input invalido",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Valores incorrectos o faltantes 422\", function () {",
+											"    pm.response.to.have.status(422);",
+											"});",
+											"",
+											"pm.test(\"Mensaje del error indica que el valor no es un entero\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData).to.have.property(\"detail\");",
+											"    pm.expect(jsonData.detail[0].msg).to.include(\"Input should be a valid integer\");",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{admin_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n        \"name\": \"Template1\",\n        \"description\": \"descripcion1\",\n        \"is_public\": false,\n        \"created_by\": 1,\n        \"exercises\": [\n            {\n                \"exercise_id\": {{admin_template_exercise_1_id}},\n                \"order_index\": 1,\n                \"suggested_sets\": \"3fdsf\",\n                \"suggested_reps\": 10,\n                \"suggested_weight\": 43.0,\n                \"suggested_duration\": null\n            }\n        ]\n    }",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/admin/workout-templates",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"workout-templates"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Crear Template invalido (sin nombre)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Valores incorrectos o faltantes 422\", function () {",
+											"    pm.response.to.have.status(422);",
+											"});",
+											"",
+											"pm.test(\"Verifica que el campo 'name' es requerido\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData).to.have.property(\"detail\");",
+											"    pm.expect(jsonData.detail[0].msg).to.include(\"Field required\");",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{admin_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n        \"description\": \"descripcion1\",\n        \"is_public\": false,\n        \"created_by\": 1,\n        \"exercises\": [\n            {\n                \"exercise_id\": {{admin_template_exercise_1_id}},\n                \"order_index\": 1,\n                \"suggested_sets\": 3,\n                \"suggested_reps\": 10,\n                \"suggested_weight\": 43.0,\n                \"suggested_duration\": null\n            }\n        ]\n    }",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/admin/workout-templates",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"workout-templates"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Lista de Templates",
+					"item": [
+						{
+							"name": "Lista de Templates valido",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Solicitud exitosa 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"La respuesta es una lista\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData).to.be.an(\"array\");",
+											"});",
+											"",
+											"pm.test(\"Cada elemento de la lista es un Template con las propiedades esperadas\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(Array.isArray(jsonData)).to.be.true;",
+											"    jsonData.forEach(function (u, index) {",
+											"        pm.expect(u).to.have.property(\"name\");",
+											"        pm.expect(u).to.have.property(\"description\");",
+											"        pm.expect(u).to.have.property(\"is_public\");",
+											"        pm.expect(u).to.have.property(\"id\");",
+											"        pm.expect(u).to.have.property(\"created_by\");",
+											"        pm.expect(u).to.have.property(\"created_at\");",
+											"        pm.expect(u).to.have.property(\"updated_at\");",
+											"        pm.expect(u).to.have.property(\"template_exercises\");",
+											"        pm.expect(u.template_exercises).to.be.an(\"array\");",
+											"        u.template_exercises.forEach(function (ex, index) {",
+											"            pm.expect(ex).to.have.property(\"exercise_id\");",
+											"            pm.expect(ex).to.have.property(\"order_index\");",
+											"            pm.expect(ex).to.have.property(\"suggested_sets\");",
+											"            pm.expect(ex).to.have.property(\"suggested_reps\");",
+											"            pm.expect(ex).to.have.property(\"suggested_weight\");",
+											"            pm.expect(ex).to.have.property(\"suggested_duration\");",
+											"            pm.expect(ex).to.have.property(\"id\");",
+											"            pm.expect(ex).to.have.property(\"template_id\");",
+											"            pm.expect(ex).to.have.property(\"exercise\");",
+											"            pm.expect(ex.exercise).to.have.property(\"name\");",
+											"            pm.expect(ex.exercise).to.have.property(\"description\");",
+											"            pm.expect(ex.exercise).to.have.property(\"exercise_type\");",
+											"            pm.expect(ex.exercise).to.have.property(\"muscle_group\");",
+											"            pm.expect(ex.exercise).to.have.property(\"equipment\");",
+											"            pm.expect(ex.exercise).to.have.property(\"instructions\");",
+											"            pm.expect(ex.exercise).to.have.property(\"is_active\");",
+											"            pm.expect(ex.exercise).to.have.property(\"id\");",
+											"            pm.expect(ex.exercise).to.have.property(\"created_at\");",
+											"            pm.expect(ex.exercise).to.have.property(\"updated_at\");",
+											"            });",
+											"    });",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{admin_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/admin/workout-templates\n",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"workout-templates\n"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Lista de Templates sin Admin",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Acceso no autorizado 400\", function () {",
+											"    pm.response.to.have.status(400);",
+											"});",
+											"",
+											"pm.test(\"El mensaje indica falta de privilegios\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData).to.have.property(\"detail\")",
+											"    pm.expect(jsonData.detail).to.include(\"user doesn't have enough privileges\");",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{admin_test_user_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/admin/workout-templates",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"workout-templates"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Lista de Templates sin token",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Acceso no autorizado 403\", function () {",
+											"    pm.response.to.have.status(403);",
+											"});",
+											"",
+											"pm.test(\"El mensaje indica que no está autenticado\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData).to.have.property(\"detail\")",
+											"    pm.expect(jsonData.detail).to.include(\"Not authenticated\");",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/admin/workout-templates",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"workout-templates"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Obtener Template",
+					"item": [
+						{
+							"name": "Obtener template valido",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Solicitud exitosa 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Template tiene todas las propiedades esperadas\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData).to.have.property(\"name\");",
+											"    pm.expect(jsonData).to.have.property(\"description\");",
+											"    pm.expect(jsonData).to.have.property(\"is_public\");",
+											"    pm.expect(jsonData).to.have.property(\"id\");",
+											"    pm.expect(jsonData).to.have.property(\"created_by\");",
+											"    pm.expect(jsonData).to.have.property(\"created_at\");",
+											"    pm.expect(jsonData).to.have.property(\"updated_at\");",
+											"    pm.expect(jsonData).to.have.property(\"template_exercises\");",
+											"    pm.expect(jsonData.template_exercises).to.be.an(\"array\");",
+											"    jsonData.template_exercises.forEach(function (ex, index) {",
+											"        pm.expect(ex).to.have.property(\"exercise_id\");",
+											"        pm.expect(ex).to.have.property(\"order_index\");",
+											"        pm.expect(ex).to.have.property(\"suggested_sets\");",
+											"        pm.expect(ex).to.have.property(\"suggested_reps\");",
+											"        pm.expect(ex).to.have.property(\"suggested_weight\");",
+											"        pm.expect(ex).to.have.property(\"suggested_duration\");",
+											"        pm.expect(ex).to.have.property(\"id\");",
+											"        pm.expect(ex).to.have.property(\"template_id\");",
+											"        pm.expect(ex).to.have.property(\"exercise\");",
+											"        pm.expect(ex.exercise).to.have.property(\"name\");",
+											"        pm.expect(ex.exercise).to.have.property(\"description\");",
+											"        pm.expect(ex.exercise).to.have.property(\"exercise_type\");",
+											"        pm.expect(ex.exercise).to.have.property(\"muscle_group\");",
+											"        pm.expect(ex.exercise).to.have.property(\"equipment\");",
+											"        pm.expect(ex.exercise).to.have.property(\"instructions\");",
+											"        pm.expect(ex.exercise).to.have.property(\"is_active\");",
+											"        pm.expect(ex.exercise).to.have.property(\"id\");",
+											"        pm.expect(ex.exercise).to.have.property(\"created_at\");",
+											"        pm.expect(ex.exercise).to.have.property(\"updated_at\");",
+											"        });",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{admin_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/admin/workout-templates/{{admin_template_id}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"workout-templates",
+										"{{admin_template_id}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Obtener template inexistente",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Template no encontrado 404\", function () {",
+											"    pm.response.to.have.status(404);",
+											"});",
+											"",
+											"pm.test(\"Mensaje de error indica que el Template no fue encontrado\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData).to.have.property(\"detail\");",
+											"    pm.expect(jsonData.detail).to.include(\"Workout template not found\");",
+											"});",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{admin_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/admin/workout-templates/0",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"workout-templates",
+										"0"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Obtener template sin Admin",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Acceso no autorizado 400\", function () {",
+											"    pm.response.to.have.status(400);",
+											"});",
+											"",
+											"pm.test(\"El mensaje indica falta de privilegios\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData).to.have.property(\"detail\")",
+											"    pm.expect(jsonData.detail).to.include(\"user doesn't have enough privileges\");",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{admin_test_user_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/admin/workout-templates/{{admin_template_id}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"workout-templates",
+										"{{admin_template_id}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Obtener template sin Token",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Acceso no autorizado 403\", function () {",
+											"    pm.response.to.have.status(403);",
+											"});",
+											"",
+											"pm.test(\"El mensaje indica que no está autenticado\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData).to.have.property(\"detail\")",
+											"    pm.expect(jsonData.detail).to.include(\"Not authenticated\");",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/admin/workout-templates/{{admin_template_id}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"workout-templates",
+										"{{admin_template_id}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Actualizar Template",
+					"item": [
+						{
+							"name": "Actualizar Template valido",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Template actualizado correctamente 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"La respuesta es JSON\", function () {",
+											"    pm.response.to.be.json;",
+											"});",
+											"",
+											"pm.test(\"El Template actualizado tiene los campos esperados\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData).to.have.property(\"name\");",
+											"    pm.expect(jsonData).to.have.property(\"description\");",
+											"});",
+											"",
+											"pm.test(\"El campo name y description del template se actualizaron correctamente\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData.name).to.eql(\"flipas\");",
+											"    pm.expect(jsonData.description).to.eql(\"Jugar Fox Hole\");",
+											"});",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{admin_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"name\": \"flipas\",\n  \"description\": \"Jugar Fox Hole\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/admin/workout-templates/{{admin_template_id}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"workout-templates",
+										"{{admin_template_id}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Actualizar Template inexistente",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Template no encontrado 404\", function () {",
+											"    pm.response.to.have.status(404);",
+											"});",
+											"",
+											"pm.test(\"Mensaje de error indica que el Template no fue encontrado\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData).to.have.property(\"detail\");",
+											"    pm.expect(jsonData.detail).to.include(\"Workout template not found\");",
+											"});",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{admin_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"name\": \"flipas\",\n  \"description\": \"Jugar Fox Hole\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/admin/workout-templates/0",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"workout-templates",
+										"0"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Actualizar Template sin admin",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Acceso no autorizado 400\", function () {",
+											"    pm.response.to.have.status(400);",
+											"});",
+											"",
+											"pm.test(\"El mensaje indica falta de privilegios\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData).to.have.property(\"detail\")",
+											"    pm.expect(jsonData.detail).to.include(\"user doesn't have enough privileges\");",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{admin_test_user_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"name\": \"flipas\",\n  \"description\": \"Jugar Fox Hole\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/admin/workout-templates/{{admin_template_id}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"workout-templates",
+										"{{admin_template_id}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Actualizar Template sin token",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Acceso no autorizado 403\", function () {",
+											"    pm.response.to.have.status(403);",
+											"});",
+											"",
+											"pm.test(\"El mensaje indica que no está autenticado\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData).to.have.property(\"detail\")",
+											"    pm.expect(jsonData.detail).to.include(\"Not authenticated\");",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"name\": \"flipas\",\n  \"description\": \"Jugar Fox Hole\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/admin/workout-templates/{{admin_template_id}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"workout-templates",
+										"{{admin_template_id}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Añadir Ejercicios a Template",
+					"item": [
+						{
+							"name": "Añadir Ejercicio valido",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Añadicion exitosa 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Verificar los datos del ejercicio añadido\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData.exercise_id).to.eql(pm.environment.get(\"admin_template_exercise_2_id\")),",
+											"    pm.expect(jsonData.order_index).to.eql(2),",
+											"    pm.expect(jsonData.suggested_sets).to.eql(1),",
+											"    pm.expect(jsonData.suggested_reps).to.eql(3),",
+											"    pm.expect(jsonData.suggested_weight).to.eql(8),",
+											"    pm.expect(jsonData.suggested_duration).to.eql(1)",
+											"    pm.environment.set(\"admin_template_exercise_id\", jsonData.id);",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{admin_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"exercise_id\": {{admin_template_exercise_2_id}},\n  \"order_index\": 2,\n  \"suggested_sets\": 1,\n  \"suggested_reps\": 3,\n  \"suggested_weight\": 8,\n  \"suggested_duration\": 1\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/admin/workout-templates/{{admin_template_id}}/exercises",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"workout-templates",
+										"{{admin_template_id}}",
+										"exercises"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Añadir Ejercicio sin admin",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Acceso no autorizado 400\", function () {",
+											"    pm.response.to.have.status(400);",
+											"});",
+											"",
+											"pm.test(\"El mensaje indica falta de privilegios\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData).to.have.property(\"detail\")",
+											"    pm.expect(jsonData.detail).to.include(\"user doesn't have enough privileges\");",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{admin_test_user_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"exercise_id\": {{admin_template_exercise_2_id}},\n  \"order_index\": 2,\n  \"suggested_sets\": 1,\n  \"suggested_reps\": 3,\n  \"suggested_weight\": 8,\n  \"suggested_duration\": 1\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/admin/workout-templates/{{admin_template_id}}/exercises",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"workout-templates",
+										"{{admin_template_id}}",
+										"exercises"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Añadir Ejercicio sin token",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Acceso no autorizado 403\", function () {",
+											"    pm.response.to.have.status(403);",
+											"});",
+											"",
+											"pm.test(\"El mensaje indica que no está autenticado\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData).to.have.property(\"detail\")",
+											"    pm.expect(jsonData.detail).to.include(\"Not authenticated\");",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"exercise_id\": {{admin_template_exercise_2_id}},\n  \"order_index\": 2,\n  \"suggested_sets\": 1,\n  \"suggested_reps\": 3,\n  \"suggested_weight\": 8,\n  \"suggested_duration\": 1\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/admin/workout-templates/{{admin_template_id}}/exercises",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"workout-templates",
+										"{{admin_template_id}}",
+										"exercises"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Añadir Ejercicio input invalido",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Valores incorrectos o faltantes 422\", function () {",
+											"    pm.response.to.have.status(422);",
+											"});",
+											"",
+											"pm.test(\"Mensaje del error indica que el valor no es un entero\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData).to.have.property(\"detail\");",
+											"    pm.expect(jsonData.detail[0].msg).to.include(\"Input should be a valid integer\");",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{admin_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"exercise_id\": {{admin_template_exercise_2_id}},\n  \"order_index\": 2,\n  \"suggested_sets\": \"adfaf\",\n  \"suggested_reps\": 3,\n  \"suggested_weight\": 8,\n  \"suggested_duration\": 1\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/admin/workout-templates/{{admin_template_id}}/exercises",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"workout-templates",
+										"{{admin_template_id}}",
+										"exercises"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Añadir Ejercicio invalido (Template inexistente)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Template no encontrado 404\", function () {",
+											"    pm.response.to.have.status(404);",
+											"});",
+											"",
+											"pm.test(\"Mensaje de error indica que el Template no se encontró\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData).to.have.property(\"detail\");",
+											"    pm.expect(jsonData.detail).to.include(\"Workout template not found\");",
+											"});",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{admin_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"exercise_id\": {{admin_template_exercise_2_id}},\n  \"order_index\": 2,\n  \"suggested_sets\": 1,\n  \"suggested_reps\": 3,\n  \"suggested_weight\": 8,\n  \"suggested_duration\": 1\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/admin/workout-templates/0/exercises",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"workout-templates",
+										"0",
+										"exercises"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Añadir Ejercicio invalido (id faltante)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Valores incorrectos o faltantes 422\", function () {",
+											"    pm.response.to.have.status(422);",
+											"});",
+											"",
+											"pm.test(\"Verifica que el campo 'exercise_id' es requerido\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData).to.have.property(\"detail\");",
+											"    pm.expect(jsonData.detail[0].msg).to.include(\"Field required\");",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{admin_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"order_index\": 2,\n  \"suggested_sets\": 3,\n  \"suggested_reps\": 3,\n  \"suggested_weight\": 8,\n  \"suggested_duration\": 1\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/admin/workout-templates/{{admin_template_id}}/exercises",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"workout-templates",
+										"{{admin_template_id}}",
+										"exercises"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Añadir Ejercicio invalido (orden faltante)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Valores incorrectos o faltantes 422\", function () {",
+											"    pm.response.to.have.status(422);",
+											"});",
+											"",
+											"pm.test(\"Verifica que el campo 'order_index' es requerido\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData).to.have.property(\"detail\");",
+											"    pm.expect(jsonData.detail[0].msg).to.include(\"Field required\");",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{admin_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"exercise_id\": {{admin_template_exercise_2_id}},\n  \"suggested_sets\": 3,\n  \"suggested_reps\": 3,\n  \"suggested_weight\": 8,\n  \"suggested_duration\": 1\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/admin/workout-templates/{{admin_template_id}}/exercises",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"workout-templates",
+										"{{admin_template_id}}",
+										"exercises"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Borrar Ejercicios de Template",
+					"item": [
+						{
+							"name": "Eliminar Ejercicio valido",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Ejercicio eliminado del Template exitosamente 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"El mensaje de confirmación es correcto\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData).to.have.property(\"message\");",
+											"    pm.expect(jsonData.message).to.include(\"Exercise removed from template successfully\");",
+											"});",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{admin_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/admin/workout-templates/{{admin_template_id}}/exercises/{{admin_template_exercise_id}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"workout-templates",
+										"{{admin_template_id}}",
+										"exercises",
+										"{{admin_template_exercise_id}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Eliminar Ejercicio inexistente",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Ejercicio no encontrado 404\", function () {",
+											"    pm.response.to.have.status(404);",
+											"});",
+											"",
+											"pm.test(\"Mensaje de error indica que el ejercicio no se encontró\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData).to.have.property(\"detail\");",
+											"    pm.expect(jsonData.detail).to.include(\"Template exercise not found\");",
+											"});",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{admin_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/admin/workout-templates/{{admin_template_id}}/exercises/0",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"workout-templates",
+										"{{admin_template_id}}",
+										"exercises",
+										"0"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Eliminar Ejercicio sin admin",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Acceso no autorizado 400\", function () {",
+											"    pm.response.to.have.status(400);",
+											"});",
+											"",
+											"pm.test(\"El mensaje indica falta de privilegios\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData).to.have.property(\"detail\")",
+											"    pm.expect(jsonData.detail).to.include(\"user doesn't have enough privileges\");",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{admin_test_user_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/admin/workout-templates/{{admin_template_id}}/exercises/1",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"workout-templates",
+										"{{admin_template_id}}",
+										"exercises",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Eliminar Ejercicio sin token",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Acceso no autorizado 403\", function () {",
+											"    pm.response.to.have.status(403);",
+											"});",
+											"",
+											"pm.test(\"El mensaje indica que no está autenticado\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData).to.have.property(\"detail\")",
+											"    pm.expect(jsonData.detail).to.include(\"Not authenticated\");",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/admin/workout-templates/{{admin_template_id}}/exercises/1",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"workout-templates",
+										"{{admin_template_id}}",
+										"exercises",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Eliminar Ejercicio invalido (Template inexistente)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Template no encontrado 404\", function () {",
+											"    pm.response.to.have.status(404);",
+											"});",
+											"",
+											"pm.test(\"Mensaje de error indica que el Template no se encontró\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData).to.have.property(\"detail\");",
+											"    pm.expect(jsonData.detail).to.include(\"Workout template not found\");",
+											"});",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{admin_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/admin/workout-templates/0/exercises/1",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"workout-templates",
+										"0",
+										"exercises",
+										"1"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Borrar Templates",
+					"item": [
+						{
+							"name": "Borrar Template valido",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Template eliminado exitosamente 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"El mensaje de confirmación es correcto\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData).to.have.property(\"message\");",
+											"    pm.expect(jsonData.message).to.include(\"Workout template deleted successfully\");",
+											"});",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{admin_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/admin/workout-templates/{{admin_template_id}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"workout-templates",
+										"{{admin_template_id}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Borrar Template inexistente",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Template no encontrado 404\", function () {",
+											"    pm.response.to.have.status(404);",
+											"});",
+											"",
+											"pm.test(\"Mensaje de error indica que el Template no se encontró\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData).to.have.property(\"detail\");",
+											"    pm.expect(jsonData.detail).to.include(\"Workout template not found\");",
+											"});",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{admin_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/admin/workout-templates/0",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"workout-templates",
+										"0"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Borrar Template sin admin",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Acceso no autorizado 400\", function () {",
+											"    pm.response.to.have.status(400);",
+											"});",
+											"",
+											"pm.test(\"El mensaje indica falta de privilegios\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData).to.have.property(\"detail\")",
+											"    pm.expect(jsonData.detail).to.include(\"user doesn't have enough privileges\");",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{admin_test_user_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/admin/workout-templates/0",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"workout-templates",
+										"0"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Borrar Template sin token",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Acceso no autorizado 403\", function () {",
+											"    pm.response.to.have.status(403);",
+											"});",
+											"",
+											"pm.test(\"El mensaje indica que no está autenticado\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData).to.have.property(\"detail\")",
+											"    pm.expect(jsonData.detail).to.include(\"Not authenticated\");",
+											"});",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/admin/workout-templates/0",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"workout-templates",
+										"0"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

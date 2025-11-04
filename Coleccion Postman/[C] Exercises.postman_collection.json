@@ -1,0 +1,1413 @@
+{
+	"info": {
+		"_postman_id": "1a45e1a0-3a54-421a-93f4-21efb8780ea9",
+		"name": "[C] Exercises",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "49475218"
+	},
+	"item": [
+		{
+			"name": "Listar Ejercicios aun Vacio",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"// Respuesta en formato JSON",
+							"pm.test(\"La respuesta tiene formato JSON\", function () {",
+							"    pm.response.to.be.json;",
+							"});",
+							"",
+							"pm.test(\"La respuesta es un array vacío\", function () {",
+							"    const json = pm.response.json();",
+							"    pm.expect(json).to.be.an(\"array\").that.is.empty;",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{admin_token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{base_url}}/api/exercises/",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"exercises",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Crear Ejercicio 1 Correctamente",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"// Respuesta en formato JSON",
+							"pm.test(\"La respuesta tiene formato JSON\", function () {",
+							"    pm.response.to.be.json;",
+							"});",
+							"",
+							"pm.test(\"Response tiene atributos\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData).to.have.property('id');",
+							"    pm.expect(jsonData).to.have.property('name');",
+							"    pm.expect(jsonData).to.have.property('description');",
+							"    pm.expect(jsonData).to.have.property('exercise_type');",
+							"    pm.expect(jsonData).to.have.property('muscle_group');",
+							"    pm.expect(jsonData).to.have.property('equipment');",
+							"    pm.expect(jsonData).to.have.property('instructions');",
+							"    pm.expect(jsonData).to.have.property('is_active');",
+							"    pm.expect(jsonData).to.have.property('created_at');",
+							"    pm.expect(jsonData).to.have.property('updated_at');",
+							"    // Guarda el id en la variable de entorno \"exercise_id\"",
+							"    pm.environment.set('exercise_id', jsonData.id);",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{admin_token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"Curl de biceps con barra\",\n  \"description\": \"Ejercicio para trabajar el bicep\",\n  \"exercise_type\": \"WEIGHT_BASED\",\n  \"muscle_group\": \"bicep\",\n  \"equipment\": \"barra, discos\",\n  \"instructions\": \"Estando de pie recto, con los brazos extendidos, flexiona los brazos sin mover los codos.\",\n  \"is_active\": true\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/api/exercises/",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"exercises",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Crear Ejercicio 2 Correctamente",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"// Respuesta en formato JSON",
+							"pm.test(\"La respuesta tiene formato JSON\", function () {",
+							"    pm.response.to.be.json;",
+							"});",
+							"",
+							"pm.test(\"Response tiene atributos\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData).to.have.property('id');",
+							"    pm.expect(jsonData).to.have.property('name');",
+							"    pm.expect(jsonData).to.have.property('description');",
+							"    pm.expect(jsonData).to.have.property('exercise_type');",
+							"    pm.expect(jsonData).to.have.property('muscle_group');",
+							"    pm.expect(jsonData).to.have.property('equipment');",
+							"    pm.expect(jsonData).to.have.property('instructions');",
+							"    pm.expect(jsonData).to.have.property('is_active');",
+							"    pm.expect(jsonData).to.have.property('created_at');",
+							"    pm.expect(jsonData).to.have.property('updated_at');",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{admin_token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"Press banca\",\n  \"description\": \"Ejercicio para trabajar el pecho\",\n  \"exercise_type\": \"WEIGHT_BASED\",\n  \"muscle_group\": \"chest\",\n  \"equipment\": \"barra, discos\",\n  \"instructions\": \"Acostado en banco plano levantar barra\",\n  \"is_active\": true\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/api/exercises/",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"exercises",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Crear Ejercicio Usuario no Admin",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function(){",
+							"    pm.response.to.have.status(400);",
+							"})",
+							"",
+							"// Respuesta en formato JSON",
+							"pm.test(\"La respuesta tiene formato JSON\", function () {",
+							"    pm.response.to.be.json;",
+							"});",
+							"",
+							"pm.test(\"Mensaje correcto\", function () {",
+							"    const jsonData = pm.response.json();",
+							"    pm.expect(jsonData).to.have.property(\"detail\");",
+							"    pm.expect(jsonData.detail).to.include(\"The user doesn't have enough privileges\");",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{active_user_token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"Ejercicio_falla\",\n  \"description\": \"falla\",\n  \"exercise_type\": \"WEIGTH_BASED\",\n  \"muscle_group\": \"falla\",\n  \"equipment\": \"falla\",\n  \"instructions\": \"falla.\",\n  \"is_active\": true\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/api/exercises/",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"exercises",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Crear Ejercicio Campo Invalido",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 422\", function () {",
+							"    pm.response.to.have.status(422);",
+							"});",
+							"",
+							"// Respuesta en formato JSON",
+							"pm.test(\"La respuesta tiene formato JSON\", function () {",
+							"    pm.response.to.be.json;",
+							"});",
+							"",
+							"pm.test(\"Response has expected validation error structure\", function () {",
+							"    const json = pm.response.json();",
+							"    pm.expect(json).to.have.property(\"detail\");",
+							"    pm.expect(json.detail).to.be.an(\"array\").that.is.not.empty;",
+							"",
+							"    const error = json.detail[0];",
+							"    pm.expect(error).to.have.property(\"type\");",
+							"    pm.expect(error).to.have.property(\"loc\");",
+							"    pm.expect(error).to.have.property(\"msg\");",
+							"    pm.expect(error).to.have.property(\"input\");",
+							"    pm.expect(error).to.have.property(\"ctx\");",
+							"    pm.expect(error.ctx).to.have.property(\"expected\");",
+							"});",
+							"",
+							"pm.test(\"Validation error is for exercise_type\", function () {",
+							"    const json = pm.response.json();",
+							"    const error = json.detail[0];",
+							"    pm.expect(error.loc).to.include.members([\"body\", \"exercise_type\"]);",
+							"    pm.expect(error.msg).to.include(\"WEIGHT_BASED\", \"TIME_BASED\");",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{admin_token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"Curl de biceps con barra\",\n  \"description\": \"Ejercicio para trabajar el bicep\",\n  \"exercise_type\": \"pesas\",\n  \"muscle_group\": \"bicep\",\n  \"equipment\": \"barra, discos\",\n  \"instructions\": \"Estando de pie recto, con los brazos extendidos, flexiona los brazos sin mover los codos.\",\n  \"is_active\": true\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/api/exercises/",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"exercises",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Crear Ejercicio Campo Incorrecto",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 422\", function () {",
+							"    pm.response.to.have.status(422);",
+							"});",
+							"",
+							"// Respuesta en formato JSON",
+							"pm.test(\"La respuesta tiene formato JSON\", function () {",
+							"    pm.response.to.be.json;",
+							"});",
+							"",
+							"pm.test(\"Response has expected validation error structure\", function () {",
+							"    const json = pm.response.json();",
+							"    pm.expect(json).to.have.property(\"detail\");",
+							"    pm.expect(json.detail).to.be.an(\"array\").that.is.not.empty;",
+							"",
+							"    const error = json.detail[0];",
+							"    pm.expect(error).to.have.property(\"type\");",
+							"    pm.expect(error).to.have.property(\"loc\");",
+							"    pm.expect(error).to.have.property(\"msg\");",
+							"    pm.expect(error).to.have.property(\"input\");",
+							"    pm.expect(error).to.have.property(\"url\");",
+							"});",
+							"",
+							"pm.test(\"Validation error is for missing name\", function () {",
+							"    const json = pm.response.json();",
+							"    const error = json.detail[0];",
+							"    pm.expect(error.loc).to.include.members([\"body\", \"name\"]);",
+							"    pm.expect(error.msg).to.include(\"Input should be a valid string\");",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{admin_token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": 3,\n  \"description\": \"Ejercicio para trabajar el bicep\",\n  \"exercise_type\": \"WEIGHT_BASED\",\n  \"muscle_group\": \"bicep\",\n  \"equipment\": \"barra, discos\",\n  \"instructions\": \"Estando de pie recto, con los brazos extendidos, flexiona los brazos sin mover los codos.\",\n  \"is_active\": true\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/api/exercises/",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"exercises",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Crear Ejercicio Campo Faltante",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 422\", function () {",
+							"    pm.response.to.have.status(422);",
+							"});",
+							"",
+							"// Respuesta en formato JSON",
+							"pm.test(\"La respuesta tiene formato JSON\", function () {",
+							"    pm.response.to.be.json;",
+							"});",
+							"",
+							"pm.test(\"Response has expected validation error structure\", function () {",
+							"    const json = pm.response.json();",
+							"    pm.expect(json).to.have.property(\"detail\");",
+							"    pm.expect(json.detail).to.be.an(\"array\").that.is.not.empty;",
+							"",
+							"    const error = json.detail[0];",
+							"    pm.expect(error).to.have.property(\"type\");",
+							"    pm.expect(error).to.have.property(\"loc\");",
+							"    pm.expect(error).to.have.property(\"msg\");",
+							"    pm.expect(error).to.have.property(\"input\");",
+							"    pm.expect(error).to.have.property(\"url\");",
+							"});",
+							"",
+							"pm.test(\"Validation error is for missing name\", function () {",
+							"    const json = pm.response.json();",
+							"    const error = json.detail[0];",
+							"    pm.expect(error.loc).to.include.members([\"body\", \"name\"]);",
+							"    pm.expect(error.msg).to.include(\"Field required\");",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{admin_token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"description\": \"Ejercicio para trabajar el bicep\",\n  \"exercise_type\": \"WEIGHT_BASED\",\n  \"muscle_group\": \"bicep\",\n  \"equipment\": \"barra, discos\",\n  \"instructions\": \"Estando de pie recto, con los brazos extendidos, flexiona los brazos sin mover los codos.\",\n  \"is_active\": true\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/api/exercises/",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"exercises",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Listar todos los Ejercicios",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"// Respuesta en formato JSON",
+							"pm.test(\"La respuesta tiene formato JSON\", function () {",
+							"    pm.response.to.be.json;",
+							"});",
+							"",
+							"pm.test(\"La respuesta es un array\", function () {",
+							"    const json = pm.response.json();",
+							"    pm.expect(json).to.be.an(\"array\");",
+							"});",
+							"",
+							"pm.test(\"El array de ejercicios no está vacío\", function () {",
+							"    const json = pm.response.json();",
+							"    pm.expect(json.length).to.be.above(0);",
+							"});",
+							"",
+							"pm.test(\"Cada ejercicio tiene los atributos requeridos\", function () {",
+							"    const json = pm.response.json();",
+							"    json.forEach(ejercicio => {",
+							"        pm.expect(ejercicio).to.have.property(\"id\");",
+							"        pm.expect(ejercicio).to.have.property(\"name\");",
+							"        pm.expect(ejercicio).to.have.property(\"description\");",
+							"        pm.expect(ejercicio).to.have.property(\"exercise_type\");",
+							"        pm.expect(ejercicio).to.have.property(\"muscle_group\");",
+							"        pm.expect(ejercicio).to.have.property(\"equipment\");",
+							"        pm.expect(ejercicio).to.have.property(\"instructions\");",
+							"        pm.expect(ejercicio).to.have.property(\"is_active\");",
+							"        pm.expect(ejercicio).to.have.property(\"created_at\");",
+							"        pm.expect(ejercicio).to.have.property(\"updated_at\");",
+							"    });",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{admin_token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{base_url}}/api/exercises/",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"exercises",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Listar Ejercicios sin token",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 403\", function() {",
+							"    pm.response.to.have.status(403);",
+							"});",
+							"",
+							"pm.test(\"La respuesta tiene formato JSON\", function () {",
+							"    pm.response.to.be.json;",
+							"});",
+							"",
+							"pm.test(\"Mensaje correcto\", function () {",
+							"    const jsonData = pm.response.json();",
+							"    pm.expect(jsonData).to.have.property(\"detail\");",
+							"    pm.expect(jsonData.detail).to.include(\"Not authenticated\");",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{base_url}}/api/exercises/",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"exercises",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Obtener Ejercicio correctamente",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"// Respuesta en formato JSON",
+							"pm.test(\"La respuesta tiene formato JSON\", function () {",
+							"    pm.response.to.be.json;",
+							"});",
+							"",
+							"pm.test(\"Response tiene atributos\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData).to.have.property('id');",
+							"    pm.expect(jsonData).to.have.property('name');",
+							"    pm.expect(jsonData).to.have.property('description');",
+							"    pm.expect(jsonData).to.have.property('exercise_type');",
+							"    pm.expect(jsonData).to.have.property('muscle_group');",
+							"    pm.expect(jsonData).to.have.property('equipment');",
+							"    pm.expect(jsonData).to.have.property('instructions');",
+							"    pm.expect(jsonData).to.have.property('is_active');",
+							"    pm.expect(jsonData).to.have.property('created_at');",
+							"    pm.expect(jsonData).to.have.property('updated_at');",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{admin_token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/api/exercises/{{exercise_id}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"exercises",
+						"{{exercise_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Obtener Ejercicio ID invalido",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 422\", function () {",
+							"    pm.response.to.have.status(422);",
+							"});",
+							"",
+							"// Respuesta en formato JSON",
+							"pm.test(\"La respuesta tiene formato JSON\", function () {",
+							"    pm.response.to.be.json;",
+							"});",
+							"",
+							"pm.test(\"Response has expected validation error structure\", function () {",
+							"    const json = pm.response.json();",
+							"    pm.expect(json).to.have.property(\"detail\");",
+							"    pm.expect(json.detail).to.be.an(\"array\").that.is.not.empty;",
+							"",
+							"    const error = json.detail[0];",
+							"    pm.expect(error).to.have.property(\"type\");",
+							"    pm.expect(error).to.have.property(\"loc\");",
+							"    pm.expect(error).to.have.property(\"msg\");",
+							"    pm.expect(error).to.have.property(\"input\");",
+							"    pm.expect(error).to.have.property(\"url\");",
+							"});",
+							"",
+							"pm.test(\"Validation error is for input\", function () {",
+							"    const json = pm.response.json();",
+							"    const error = json.detail[0];",
+							"    pm.expect(error.loc).to.include.members([\"path\", \"exercise_id\"]);",
+							"    pm.expect(error.msg).to.include(\"Input should be a valid integer, unable to parse string as an integer\");",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{admin_token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/api/exercises/{{exercise_id}}-",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"exercises",
+						"{{exercise_id}}-"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Obtener Ejercicio inexistente",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 404\", function() {",
+							"    pm.response.to.have.status(404);",
+							"});",
+							"",
+							"pm.test(\"La respuesta tiene formato JSON\", function () {",
+							"    pm.response.to.be.json;",
+							"});",
+							"",
+							"pm.test(\"Mensaje correcto\", function () {",
+							"    const jsonData = pm.response.json();",
+							"    pm.expect(jsonData).to.have.property(\"detail\");",
+							"    pm.expect(jsonData.detail).to.include(\"Exercise not found\");",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{admin_token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/api/exercises/{{exercise_id}}99999999999",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"exercises",
+						"{{exercise_id}}99999999999"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Obtener Ejercicio sin token",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 403\", function() {",
+							"    pm.response.to.have.status(403);",
+							"});",
+							"",
+							"pm.test(\"La respuesta tiene formato JSON\", function () {",
+							"    pm.response.to.be.json;",
+							"});",
+							"",
+							"pm.test(\"Mensaje correcto\", function () {",
+							"    const jsonData = pm.response.json();",
+							"    pm.expect(jsonData).to.have.property(\"detail\");",
+							"    pm.expect(jsonData.detail).to.include(\"Not authenticated\");",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/api/exercises/{{exercise_id}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"exercises",
+						"{{exercise_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Actualizar Ejercicio correctamente",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function(){",
+							"    pm.response.to.have.status(200);",
+							"})",
+							"",
+							"// Respuesta en formato JSON",
+							"pm.test(\"La respuesta tiene formato JSON\", function () {",
+							"    pm.response.to.be.json;",
+							"});",
+							"",
+							"pm.test(\"Respuesta tiene atributos y valores correctos\", function(){",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData).to.have.property(\"name\", \"Curl de biceps con mancuerna\");",
+							"    pm.expect(jsonData).to.have.property(\"description\", \"Ejercicio para trabajar el bicep\");",
+							"    pm.expect(jsonData).to.have.property(\"exercise_type\", \"WEIGHT_BASED\");",
+							"    pm.expect(jsonData).to.have.property(\"muscle_group\", \"bicep\");",
+							"    pm.expect(jsonData).to.have.property(\"equipment\", \"mancuerna\");",
+							"    pm.expect(jsonData).to.have.property(\"instructions\", \"Estando de pie recto, con los brazos extendidos, flexiona los brazos sin mover los codos.\");",
+							"    pm.expect(jsonData).to.have.property(\"is_active\", true);",
+							"    pm.expect(jsonData).to.have.property(\"id\");",
+							"    pm.expect(jsonData).to.have.property(\"created_at\");",
+							"    pm.expect(jsonData).to.have.property(\"updated_at\");",
+							"",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{admin_token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"Curl de biceps con mancuerna\",\n  \"description\": \"Ejercicio para trabajar el bicep\",\n  \"exercise_type\": \"WEIGHT_BASED\",\n  \"muscle_group\": \"bicep\",\n  \"equipment\": \"mancuerna\",\n  \"instructions\": \"Estando de pie recto, con los brazos extendidos, flexiona los brazos sin mover los codos.\",\n  \"is_active\": true\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/api/exercises/{{exercise_id}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"exercises",
+						"{{exercise_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Actualizar Ejercicio ID invalido",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 422\", function () {",
+							"    pm.response.to.have.status(422);",
+							"});",
+							"",
+							"// Respuesta en formato JSON",
+							"pm.test(\"La respuesta tiene formato JSON\", function () {",
+							"    pm.response.to.be.json;",
+							"});",
+							"",
+							"pm.test(\"Response has expected validation error structure\", function () {",
+							"    const json = pm.response.json();",
+							"    pm.expect(json).to.have.property(\"detail\");",
+							"    pm.expect(json.detail).to.be.an(\"array\").that.is.not.empty;",
+							"",
+							"    const error = json.detail[0];",
+							"    pm.expect(error).to.have.property(\"type\");",
+							"    pm.expect(error).to.have.property(\"loc\");",
+							"    pm.expect(error).to.have.property(\"msg\");",
+							"    pm.expect(error).to.have.property(\"input\");",
+							"    pm.expect(error).to.have.property(\"url\");",
+							"});",
+							"",
+							"pm.test(\"Validation error is for input\", function () {",
+							"    const json = pm.response.json();",
+							"    const error = json.detail[0];",
+							"    pm.expect(error.loc).to.include.members([\"path\", \"exercise_id\"]);",
+							"    pm.expect(error.msg).to.include(\"Input should be a valid integer, unable to parse string as an integer\");",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{admin_token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"Curl de biceps con mancuerna\",\n  \"description\": \"Ejercicio para trabajar el bicep\",\n  \"exercise_type\": \"WEIGHT_BASED\",\n  \"muscle_group\": \"bicep\",\n  \"equipment\": \"mancuerna\",\n  \"instructions\": \"Estando de pie recto, con los brazos extendidos, flexiona los brazos sin mover los codos.\",\n  \"is_active\": true\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/api/exercises/{{exercise_id}}-",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"exercises",
+						"{{exercise_id}}-"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Actualizar Ejercicio inexistente",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 404\", function() {",
+							"    pm.response.to.have.status(404);",
+							"});",
+							"",
+							"pm.test(\"La respuesta tiene formato JSON\", function () {",
+							"    pm.response.to.be.json;",
+							"});",
+							"",
+							"pm.test(\"Mensaje correcto\", function () {",
+							"    const jsonData = pm.response.json();",
+							"    pm.expect(jsonData).to.have.property(\"detail\");",
+							"    pm.expect(jsonData.detail).to.include(\"Exercise not found\");",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{admin_token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"Curl de biceps con mancuerna\",\n  \"description\": \"Ejercicio para trabajar el bicep\",\n  \"exercise_type\": \"WEIGHT_BASED\",\n  \"muscle_group\": \"bicep\",\n  \"equipment\": \"mancuerna\",\n  \"instructions\": \"Estando de pie recto, con los brazos extendidos, flexiona los brazos sin mover los codos.\",\n  \"is_active\": true\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/api/exercises/{{exercise_id}}999999999999",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"exercises",
+						"{{exercise_id}}999999999999"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Actualizar Ejercicio sin token",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 403\", function() {",
+							"    pm.response.to.have.status(403);",
+							"});",
+							"",
+							"pm.test(\"La respuesta tiene formato JSON\", function () {",
+							"    pm.response.to.be.json;",
+							"});",
+							"",
+							"pm.test(\"Mensaje correcto\", function () {",
+							"    const jsonData = pm.response.json();",
+							"    pm.expect(jsonData).to.have.property(\"detail\");",
+							"    pm.expect(jsonData.detail).to.include(\"Not authenticated\");",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"Curl de biceps con mancuerna\",\n  \"description\": \"Ejercicio para trabajar el bicep\",\n  \"exercise_type\": \"WEIGHT_BASED\",\n  \"muscle_group\": \"bicep\",\n  \"equipment\": \"mancuerna\",\n  \"instructions\": \"Estando de pie recto, con los brazos extendidos, flexiona los brazos sin mover los codos.\",\n  \"is_active\": true\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/api/exercises/{{exercise_id}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"exercises",
+						"{{exercise_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Actualizar Ejercicio no Admin",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function() {",
+							"    pm.response.to.have.status(400);",
+							"});",
+							"",
+							"pm.test(\"La respuesta tiene formato JSON\", function () {",
+							"    pm.response.to.be.json;",
+							"});",
+							"",
+							"pm.test(\"Mensaje correcto\", function () {",
+							"    const jsonData = pm.response.json();",
+							"    pm.expect(jsonData).to.have.property(\"detail\");",
+							"    pm.expect(jsonData.detail).to.include(\"The user doesn't have enough privileges\");",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{active_user_token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"Curl de biceps con mancuerna\",\n  \"description\": \"Ejercicio para trabajar el bicep\",\n  \"exercise_type\": \"WEIGHT_BASED\",\n  \"muscle_group\": \"bicep\",\n  \"equipment\": \"mancuerna\",\n  \"instructions\": \"Estando de pie recto, con los brazos extendidos, flexiona los brazos sin mover los codos.\",\n  \"is_active\": true\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/api/exercises/{{exercise_id}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"exercises",
+						"{{exercise_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Eliminar Ejercicio correctamente",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function() {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"La respuesta tiene formato JSON\", function () {",
+							"    pm.response.to.be.json;",
+							"});",
+							"",
+							"pm.test(\"Mensaje correcto\", function () {",
+							"    const jsonData = pm.response.json();",
+							"    pm.expect(jsonData).to.have.property(\"message\");",
+							"    pm.expect(jsonData.message).to.include(\"Exercise deleted successfully\");",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{admin_token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/api/exercises/{{exercise_id}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"exercises",
+						"{{exercise_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Eliminar Ejercicio ID invalido",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 422\", function () {",
+							"    pm.response.to.have.status(422);",
+							"});",
+							"",
+							"// Respuesta en formato JSON",
+							"pm.test(\"La respuesta tiene formato JSON\", function () {",
+							"    pm.response.to.be.json;",
+							"});",
+							"",
+							"pm.test(\"Response has expected validation error structure\", function () {",
+							"    const json = pm.response.json();",
+							"    pm.expect(json).to.have.property(\"detail\");",
+							"    pm.expect(json.detail).to.be.an(\"array\").that.is.not.empty;",
+							"",
+							"    const error = json.detail[0];",
+							"    pm.expect(error).to.have.property(\"type\");",
+							"    pm.expect(error).to.have.property(\"loc\");",
+							"    pm.expect(error).to.have.property(\"msg\");",
+							"    pm.expect(error).to.have.property(\"input\");",
+							"    pm.expect(error).to.have.property(\"url\");",
+							"});",
+							"",
+							"pm.test(\"Validation error is for input\", function () {",
+							"    const json = pm.response.json();",
+							"    const error = json.detail[0];",
+							"    pm.expect(error.loc).to.include.members([\"path\", \"exercise_id\"]);",
+							"    pm.expect(error.msg).to.include(\"Input should be a valid integer, unable to parse string as an integer\");",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{admin_token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/api/exercises/{{exercise_id}}-",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"exercises",
+						"{{exercise_id}}-"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Eliminar Ejercicio no Admin",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function() {",
+							"    pm.response.to.have.status(400);",
+							"});",
+							"",
+							"pm.test(\"La respuesta tiene formato JSON\", function () {",
+							"    pm.response.to.be.json;",
+							"});",
+							"",
+							"pm.test(\"Mensaje correcto\", function () {",
+							"    const jsonData = pm.response.json();",
+							"    pm.expect(jsonData).to.have.property(\"detail\");",
+							"    pm.expect(jsonData.detail).to.include(\"The user doesn't have enough privileges\");",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{active_user_token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/api/exercises/{{exercise_id}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"exercises",
+						"{{exercise_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Eliminar Ejercicio inexistente",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 404\", function() {",
+							"    pm.response.to.have.status(404);",
+							"});",
+							"",
+							"pm.test(\"La respuesta tiene formato JSON\", function () {",
+							"    pm.response.to.be.json;",
+							"});",
+							"",
+							"pm.test(\"Mensaje correcto\", function () {",
+							"    const jsonData = pm.response.json();",
+							"    pm.expect(jsonData).to.have.property(\"detail\");",
+							"    pm.expect(jsonData.detail).to.include(\"Exercise not found\");",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{admin_token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/api/exercises/{{exercise_id}}9999999999999",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"exercises",
+						"{{exercise_id}}9999999999999"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Eliminar Ejercicio sin token",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 403\", function() {",
+							"    pm.response.to.have.status(403);",
+							"});",
+							"",
+							"pm.test(\"La respuesta tiene formato JSON\", function () {",
+							"    pm.response.to.be.json;",
+							"});",
+							"",
+							"pm.test(\"Mensaje correcto\", function () {",
+							"    const jsonData = pm.response.json();",
+							"    pm.expect(jsonData).to.have.property(\"detail\");",
+							"    pm.expect(jsonData.detail).to.include(\"Not authenticated\");",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/api/exercises/{{exercise_id}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"exercises",
+						"{{exercise_id}}"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

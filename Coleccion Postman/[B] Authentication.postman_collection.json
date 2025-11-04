@@ -1,0 +1,348 @@
+{
+	"info": {
+		"_postman_id": "4582f7c4-abe7-4d27-ba7f-9cc9ca6d2e97",
+		"name": "[B] Authentication",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "49475218"
+	},
+	"item": [
+		{
+			"name": "Login Admin",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"// Respuesta en formato JSON",
+							"pm.test(\"La respuesta tiene formato JSON\", function () {",
+							"    pm.response.to.be.json;",
+							"});",
+							"",
+							"pm.test(\"Response has access token\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData).to.have.property('access_token');",
+							"    pm.expect(jsonData).to.have.property('token_type');",
+							"    pm.expect(jsonData.token_type).to.eql('bearer');",
+							"    // Guarda el access_token en la variable de entorno \"admin_token\"",
+							"    pm.environment.set('admin_token', jsonData.access_token);",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "username",
+							"value": "admin@example.com",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "admin123",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{base_url}}/api/auth/login",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login Email Incorrecto",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {",
+							"    pm.response.to.have.status(400);",
+							"});",
+							"",
+							"// Respuesta en formato JSON",
+							"pm.test(\"La respuesta tiene formato JSON\", function () {",
+							"    pm.response.to.be.json;",
+							"});",
+							"",
+							"pm.test(\"Mensaje correcto\", function () {",
+							"    const jsonData = pm.response.json();",
+							"    pm.expect(jsonData).to.have.property(\"detail\");",
+							"    pm.expect(jsonData.detail).to.include(\"Incorrect email or password\");",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "username",
+							"value": "email_incorrecto@example.com",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "admin123",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{base_url}}/api/auth/login",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login Password Incorrecto",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {",
+							"    pm.response.to.have.status(400);",
+							"});",
+							"",
+							"// Respuesta en formato JSON",
+							"pm.test(\"La respuesta tiene formato JSON\", function () {",
+							"    pm.response.to.be.json;",
+							"});",
+							"",
+							"pm.test(\"Mensaje correcto\", function () {",
+							"    const jsonData = pm.response.json();",
+							"    pm.expect(jsonData).to.have.property(\"detail\");",
+							"    pm.expect(jsonData.detail).to.include(\"Incorrect email or password\");",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "username",
+							"value": "admin@example.com",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "fail_password",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{base_url}}/api/auth/login",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login Usuario Activo",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"// Respuesta en formato JSON",
+							"pm.test(\"La respuesta tiene formato JSON\", function () {",
+							"    pm.response.to.be.json;",
+							"});",
+							"",
+							"pm.test(\"Response has access token\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData).to.have.property('access_token');",
+							"    pm.expect(jsonData).to.have.property('token_type');",
+							"    pm.expect(jsonData.token_type).to.eql('bearer');",
+							"    // Guarda el access_token en la variable de entorno \"active_user_token\"",
+							"    pm.environment.set('active_user_token', jsonData.access_token);",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "username",
+							"value": "usuario_activo@example.com",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "testpassword123",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{base_url}}/api/auth/login",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login Usuario Inactivo",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {",
+							"    pm.response.to.have.status(400);",
+							"});",
+							"",
+							"// Respuesta en formato JSON",
+							"pm.test(\"La respuesta tiene formato JSON\", function () {",
+							"    pm.response.to.be.json;",
+							"});",
+							"",
+							"pm.test(\"Mensaje correcto\", function () {",
+							"    const jsonData = pm.response.json();",
+							"    pm.expect(jsonData).to.have.property(\"detail\");",
+							"    pm.expect(jsonData.detail).to.include(\"Inactive user\");",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "username",
+							"value": "usuario_inactivo@example.com",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "testpassword123",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{base_url}}/api/auth/login",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

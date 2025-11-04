@@ -1,0 +1,1988 @@
+{
+	"info": {
+		"_postman_id": "5ea88f56-ce05-4405-9df7-239c34955fd3",
+		"name": "[A] Users",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "49475218"
+	},
+	"item": [
+		{
+			"name": "PRE-REQUEST",
+			"item": [
+				{
+					"name": "Login Admin",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"pm.environment.set('admin_token', jsonData.access_token);",
+									"",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "username",
+									"value": "admin@example.com",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "admin123",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/api/auth/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Registro de Usuario",
+			"item": [
+				{
+					"name": "Registro usuario activo exitoso",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function(){",
+									"    pm.response.to.have.status(200);",
+									"})",
+									"",
+									"// Respuesta en formato JSON",
+									"pm.test(\"La respuesta tiene formato JSON\", function () {",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"pm.test(\"Usuario creado: atributos correctos en la respuesta\", function() {",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property(\"email\", \"usuario_activo@example.com\");",
+									"    pm.expect(jsonData).to.have.property(\"username\", \"usuario_activo\");",
+									"    pm.expect(jsonData).to.have.property(\"full_name\", \"usuario_activo_full_name\");",
+									"    pm.expect(jsonData).to.have.property(\"is_active\", true);",
+									"    pm.expect(jsonData).to.have.property(\"is_admin\", false);",
+									"    pm.expect(jsonData).to.have.property(\"id\");",
+									"    pm.expect(jsonData).to.have.property(\"created_at\");",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"usuario_activo@example.com\",\n  \"username\": \"usuario_activo\",\n  \"full_name\": \"usuario_activo_full_name\",\n  \"is_active\": true,\n  \"is_admin\": false,\n  \"password\": \"testpassword123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/users/register",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login Usuario Activo Token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json()",
+									"pm.environment.set('active_user_token', jsonData.access_token);",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "username",
+									"value": "usuario_activo@example.com",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "testpassword123",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/api/auth/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Registro usuario inactivo exitoso",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function(){",
+									"    pm.response.to.have.status(200);",
+									"})",
+									"",
+									"// Respuesta en formato JSON",
+									"pm.test(\"La respuesta tiene formato JSON\", function () {",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"pm.test(\"Usuario creado: atributos correctos en la respuesta\", function() {",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property(\"email\", \"usuario_inactivo@example.com\");",
+									"    pm.expect(jsonData).to.have.property(\"username\", \"usuario_inactivo\");",
+									"    pm.expect(jsonData).to.have.property(\"full_name\", \"usuario_inactivo_full_name\");",
+									"    pm.expect(jsonData).to.have.property(\"is_active\", false);",
+									"    pm.expect(jsonData).to.have.property(\"is_admin\", false);",
+									"    pm.expect(jsonData).to.have.property(\"id\");",
+									"    pm.expect(jsonData).to.have.property(\"created_at\");",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"usuario_inactivo@example.com\",\n  \"username\": \"usuario_inactivo\",\n  \"full_name\": \"usuario_inactivo_full_name\",\n  \"is_active\": false,\n  \"is_admin\": false,\n  \"password\": \"testpassword123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/users/register",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Email ya existe",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"// Respuesta en formato JSON",
+									"pm.test(\"La respuesta tiene formato JSON\", function () {",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"pm.test(\"Mensaje correcto\", function () {",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property(\"detail\");",
+									"    pm.expect(jsonData.detail).to.include(\"The user with this email already exists\");",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"usuario_activo@example.com\",\n  \"username\": \"email_falla\",\n  \"full_name\": \"email_falla\",\n  \"is_active\": true,\n  \"is_admin\": false,\n  \"password\": \"email_falla\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/users/register",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Username ya existe",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"// Respuesta en formato JSON",
+									"pm.test(\"La respuesta tiene formato JSON\", function () {",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"pm.test(\"Mensaje correcto\", function () {",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property(\"detail\");",
+									"    pm.expect(jsonData.detail).to.include(\"The user with this username already exists\");",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"username_falla@example.com\",\n  \"username\": \"usuario_activo\",\n  \"full_name\": \"username_falla\",\n  \"is_active\": true,\n  \"is_admin\": false,\n  \"password\": \"username_falla\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/users/register",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"register"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Informacion de Usuario",
+			"item": [
+				{
+					"name": "Informacion usuario inactivo",
+					"item": [
+						{
+							"name": "Registro usuario de prueba",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function(){",
+											"    pm.response.to.have.status(200);",
+											"})",
+											"",
+											"// Respuesta en formato JSON",
+											"pm.test(\"La respuesta tiene formato JSON\", function () {",
+											"    pm.response.to.be.json;",
+											"});",
+											"",
+											"pm.test(\"Usuario creado: atributos correctos en la respuesta\", function() {",
+											"    const jsonData = pm.response.json();",
+											"    pm.expect(jsonData).to.have.property(\"email\", \"usuario_de_prueba@example.com\");",
+											"    pm.expect(jsonData).to.have.property(\"username\", \"usuario_de_prueba\");",
+											"    pm.expect(jsonData).to.have.property(\"full_name\", \"usuario_de_prueba_full_name\");",
+											"    pm.expect(jsonData).to.have.property(\"is_active\", true);",
+											"    pm.expect(jsonData).to.have.property(\"is_admin\", false);",
+											"    pm.expect(jsonData).to.have.property(\"id\");",
+											"    pm.expect(jsonData).to.have.property(\"created_at\");",
+											"    pm.environment.set('inactive_test_user_id', jsonData.id);",
+											"});",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"email\": \"usuario_de_prueba@example.com\",\n  \"username\": \"usuario_de_prueba\",\n  \"full_name\": \"usuario_de_prueba_full_name\",\n  \"is_active\": true,\n  \"is_admin\": false,\n  \"password\": \"testpassword123\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/users/register",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"users",
+										"register"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Login Usuario de prueba",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"// Respuesta en formato JSON",
+											"pm.test(\"La respuesta tiene formato JSON\", function () {",
+											"    pm.response.to.be.json;",
+											"});",
+											"",
+											"pm.test(\"Response has access token\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData).to.have.property('access_token');",
+											"    pm.expect(jsonData).to.have.property('token_type');",
+											"    pm.expect(jsonData.token_type).to.eql('bearer');",
+											"    // Guarda el access_token en la variable de entorno \"active_user_token\"",
+											"    pm.environment.set('inactive_test_user_token', jsonData.access_token);",
+											"});",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/x-www-form-urlencoded",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "username",
+											"value": "usuario_de_prueba@example.com",
+											"type": "text"
+										},
+										{
+											"key": "password",
+											"value": "testpassword123",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{base_url}}/api/auth/login",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"auth",
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Asignar usuario a inactivo",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function(){",
+											"    pm.response.to.have.status(200);",
+											"})",
+											"",
+											"// Respuesta en formato JSON",
+											"pm.test(\"La respuesta tiene formato JSON\", function () {",
+											"    pm.response.to.be.json;",
+											"});",
+											"",
+											"pm.test(\"Usuario actualizado: atributos correctos en la respuesta\", function() {",
+											"    const jsonData = pm.response.json();",
+											"    pm.expect(jsonData).to.have.property(\"email\", \"usuario_de_prueba@example.com\");",
+											"    pm.expect(jsonData).to.have.property(\"username\", \"usuario_de_prueba\");",
+											"    pm.expect(jsonData).to.have.property(\"full_name\", \"usuario_de_prueba_full_name\");",
+											"    pm.expect(jsonData).to.have.property(\"is_active\", false);",
+											"    pm.expect(jsonData).to.have.property(\"is_admin\", false);",
+											"    pm.expect(jsonData).to.have.property(\"id\");",
+											"    pm.expect(jsonData).to.have.property(\"created_at\");",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{inactive_test_user_token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"email\": \"usuario_de_prueba@example.com\",\n  \"username\": \"usuario_de_prueba\",\n  \"full_name\": \"usuario_de_prueba_full_name\",\n  \"is_active\": false,\n  \"is_admin\": false,\n  \"password\": \"testpassword123\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/users/me",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"users",
+										"me"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Informacion de Usuario Inactivo",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 400\", function(){",
+											"    pm.response.to.have.status(400);",
+											"})",
+											"",
+											"// Respuesta en formato JSON",
+											"pm.test(\"La respuesta tiene formato JSON\", function () {",
+											"    pm.response.to.be.json;",
+											"});",
+											"",
+											"pm.test(\"Mensaje correcto\", function () {",
+											"    const jsonData = pm.response.json();",
+											"    pm.expect(jsonData).to.have.property(\"detail\");",
+											"    pm.expect(jsonData.detail).to.include(\"Inactive user\");",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{inactive_test_user_token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": []
+								},
+								"url": {
+									"raw": "{{base_url}}/api/users/me",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"users",
+										"me"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Borrar usuario de prueba",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Usuario eliminado correctamente 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"La respuesta es JSON\", function () {",
+											"    pm.response.to.be.json;",
+											"});",
+											"",
+											"pm.test(\"El mensaje de confirmación es correcto\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData).to.have.property(\"message\");",
+											"    pm.expect(jsonData.message).to.include(\"deleted successfully\");",
+											"});",
+											"",
+											"pm.environment.unset(\"inactive_test_user_token\");",
+											"pm.environment.unset(\"inactive_test_user_id\");"
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{admin_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/admin/users/{{inactive_test_user_id}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"users",
+										"{{inactive_test_user_id}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Informacion usuario eliminado",
+					"item": [
+						{
+							"name": "Registro usuario de prueba",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function(){",
+											"    pm.response.to.have.status(200);",
+											"})",
+											"",
+											"// Respuesta en formato JSON",
+											"pm.test(\"La respuesta tiene formato JSON\", function () {",
+											"    pm.response.to.be.json;",
+											"});",
+											"",
+											"pm.test(\"Usuario creado: atributos correctos en la respuesta\", function() {",
+											"    const jsonData = pm.response.json();",
+											"    pm.expect(jsonData).to.have.property(\"email\", \"usuario_de_prueba@example.com\");",
+											"    pm.expect(jsonData).to.have.property(\"username\", \"usuario_de_prueba\");",
+											"    pm.expect(jsonData).to.have.property(\"full_name\", \"usuario_de_prueba_full_name\");",
+											"    pm.expect(jsonData).to.have.property(\"is_active\", true);",
+											"    pm.expect(jsonData).to.have.property(\"is_admin\", false);",
+											"    pm.expect(jsonData).to.have.property(\"id\");",
+											"    pm.expect(jsonData).to.have.property(\"created_at\");",
+											"    pm.environment.set('inactive_test_user_id', jsonData.id);",
+											"});",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"email\": \"usuario_de_prueba@example.com\",\n  \"username\": \"usuario_de_prueba\",\n  \"full_name\": \"usuario_de_prueba_full_name\",\n  \"is_active\": true,\n  \"is_admin\": false,\n  \"password\": \"testpassword123\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/users/register",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"users",
+										"register"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Login Usuario de prueba",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"// Respuesta en formato JSON",
+											"pm.test(\"La respuesta tiene formato JSON\", function () {",
+											"    pm.response.to.be.json;",
+											"});",
+											"",
+											"pm.test(\"Response has access token\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData).to.have.property('access_token');",
+											"    pm.expect(jsonData).to.have.property('token_type');",
+											"    pm.expect(jsonData.token_type).to.eql('bearer');",
+											"    // Guarda el access_token en la variable de entorno \"active_user_token\"",
+											"    pm.environment.set('inactive_test_user_token', jsonData.access_token);",
+											"});",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/x-www-form-urlencoded",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "username",
+											"value": "usuario_de_prueba@example.com",
+											"type": "text"
+										},
+										{
+											"key": "password",
+											"value": "testpassword123",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{base_url}}/api/auth/login",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"auth",
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Borrar usuario de prueba",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Usuario eliminado correctamente 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"La respuesta es JSON\", function () {",
+											"    pm.response.to.be.json;",
+											"});",
+											"",
+											"pm.test(\"El mensaje de confirmación es correcto\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData).to.have.property(\"message\");",
+											"    pm.expect(jsonData.message).to.include(\"deleted successfully\");",
+											"});",
+											"",
+											"pm.environment.unset(\"inactive_test_user_token\");",
+											"pm.environment.unset(\"inactive_test_user_id\");"
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{admin_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/admin/users/{{inactive_test_user_id}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"users",
+										"{{inactive_test_user_id}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Informacion de Usuario Inactivo",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 403\", function(){",
+											"    pm.response.to.have.status(403);",
+											"})",
+											"",
+											"// Respuesta en formato JSON",
+											"pm.test(\"La respuesta tiene formato JSON\", function () {",
+											"    pm.response.to.be.json;",
+											"});",
+											"",
+											"pm.test(\"Mensaje correcto\", function () {",
+											"    const jsonData = pm.response.json();",
+											"    pm.expect(jsonData).to.have.property(\"detail\");",
+											"    pm.expect(jsonData.detail).to.include(\"Could not validate credentials\");",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{inactive_test_user_token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": []
+								},
+								"url": {
+									"raw": "{{base_url}}/api/users/me",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"users",
+										"me"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Informacion de Usuario",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function(){",
+									"    pm.response.to.have.status(200);",
+									"})",
+									"",
+									"// Respuesta en formato JSON",
+									"pm.test(\"La respuesta tiene formato JSON\", function () {",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"pm.test(\"Respuesta tiene atributos y valores correctos\", function(){",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property(\"email\", \"usuario_activo@example.com\");",
+									"    pm.expect(jsonData).to.have.property(\"username\", \"usuario_activo\");",
+									"    pm.expect(jsonData).to.have.property(\"full_name\", \"usuario_activo_full_name\");",
+									"    pm.expect(jsonData).to.have.property(\"is_active\", true);",
+									"    pm.expect(jsonData).to.have.property(\"is_admin\", false);",
+									"    pm.expect(jsonData).to.have.property(\"id\");",
+									"    pm.expect(jsonData).to.have.property(\"created_at\");",
+									"    pm.expect(jsonData).to.have.property(\"updated_at\");",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{active_user_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "{{base_url}}/api/users/me",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"me"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Informacion de Admin",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function(){",
+									"    pm.response.to.have.status(200);",
+									"})",
+									"",
+									"// Respuesta en formato JSON",
+									"pm.test(\"La respuesta tiene formato JSON\", function () {",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"pm.test(\"Respuesta tiene atributos y valores correctos\", function(){",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property(\"email\", \"admin@example.com\");",
+									"    pm.expect(jsonData).to.have.property(\"username\", \"admin\");",
+									"    pm.expect(jsonData).to.have.property(\"full_name\", \"System Administrator\");",
+									"    pm.expect(jsonData).to.have.property(\"is_active\", true);",
+									"    pm.expect(jsonData).to.have.property(\"is_admin\", true);",
+									"    pm.expect(jsonData).to.have.property(\"id\");",
+									"    pm.expect(jsonData).to.have.property(\"created_at\");",
+									"    pm.expect(jsonData).to.have.property(\"updated_at\");",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{admin_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "{{base_url}}/api/users/me",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"me"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Informacion sin token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 403\", function() {",
+									"    pm.response.to.have.status(403);",
+									"});",
+									"",
+									"pm.test(\"La respuesta tiene formato JSON\", function () {",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"pm.test(\"Mensaje correcto\", function () {",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property(\"detail\");",
+									"    pm.expect(jsonData.detail).to.include(\"Not authenticated\");",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/users/me",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"me"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Informacion token corrupto",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 403\", function() {",
+									"    pm.response.to.have.status(403);",
+									"});",
+									"",
+									"pm.test(\"La respuesta tiene formato JSON\", function () {",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"pm.test(\"Mensaje correcto\", function () {",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property(\"detail\");",
+									"    pm.expect(jsonData.detail).to.include(\"Could not validate credentials\");",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{admin_token}}#",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/users/me",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"me"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Actualizar Informacion de Usuario",
+			"item": [
+				{
+					"name": "Actualizacion exitosa de un campo",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function(){",
+									"    pm.response.to.have.status(200);",
+									"})",
+									"",
+									"// Respuesta en formato JSON",
+									"pm.test(\"La respuesta tiene formato JSON\", function () {",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"pm.test(\"Respuesta tiene atributos y valores correctos\", function(){",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property(\"email\", \"nuevo_email@example.com\");",
+									"    pm.expect(jsonData).to.have.property(\"username\", \"usuario_activo\");",
+									"    pm.expect(jsonData).to.have.property(\"full_name\", \"usuario_activo_full_name\");",
+									"    pm.expect(jsonData).to.have.property(\"is_active\", true);",
+									"    pm.expect(jsonData).to.have.property(\"is_admin\", false);",
+									"    pm.expect(jsonData).to.have.property(\"id\");",
+									"    pm.expect(jsonData).to.have.property(\"created_at\");",
+									"    pm.expect(jsonData).to.have.property(\"updated_at\");",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{active_user_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"nuevo_email@example.com\",\n  \"username\": \"usuario_activo\",\n  \"full_name\": \"usuario_activo_full_name\",\n  \"is_active\": true,\n  \"is_admin\": false,\n  \"password\": \"testpassword123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/users/me",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"me"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Actualizacion exitosa de varios campos",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function(){",
+									"    pm.response.to.have.status(200);",
+									"})",
+									"",
+									"// Respuesta en formato JSON",
+									"pm.test(\"La respuesta tiene formato JSON\", function () {",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"pm.test(\"Respuesta tiene atributos y valores correctos\", function(){",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property(\"email\", \"nuevo_email@example.com\");",
+									"    pm.expect(jsonData).to.have.property(\"username\", \"nuevo_username\");",
+									"    pm.expect(jsonData).to.have.property(\"full_name\", \"nuevo_full_name\");",
+									"    pm.expect(jsonData).to.have.property(\"is_active\", true);",
+									"    pm.expect(jsonData).to.have.property(\"is_admin\", false);",
+									"    pm.expect(jsonData).to.have.property(\"id\");",
+									"    pm.expect(jsonData).to.have.property(\"created_at\");",
+									"    pm.expect(jsonData).to.have.property(\"updated_at\");",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{active_user_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"nuevo_email@example.com\",\n  \"username\": \"nuevo_username\",\n  \"full_name\": \"nuevo_full_name\",\n  \"is_active\": true,\n  \"is_admin\": false,\n  \"password\": \"nueva_password\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/users/me",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"me"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Actualizacion exitosa reseteo usuario_activo",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function(){",
+									"    pm.response.to.have.status(200);",
+									"})",
+									"",
+									"// Respuesta en formato JSON",
+									"pm.test(\"La respuesta tiene formato JSON\", function () {",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"pm.test(\"Usuario actualizado: atributos correctos en la respuesta\", function() {",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property(\"email\", \"usuario_activo@example.com\");",
+									"    pm.expect(jsonData).to.have.property(\"username\", \"usuario_activo\");",
+									"    pm.expect(jsonData).to.have.property(\"full_name\", \"usuario_activo_full_name\");",
+									"    pm.expect(jsonData).to.have.property(\"is_active\", true);",
+									"    pm.expect(jsonData).to.have.property(\"is_admin\", false);",
+									"    pm.expect(jsonData).to.have.property(\"id\");",
+									"    pm.expect(jsonData).to.have.property(\"created_at\");",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{active_user_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"usuario_activo@example.com\",\n  \"username\": \"usuario_activo\",\n  \"full_name\": \"usuario_activo_full_name\",\n  \"is_active\": true,\n  \"is_admin\": false,\n  \"password\": \"testpassword123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/users/me",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"me"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Actualizacion con email invalido",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 422\", function () {",
+									"    pm.response.to.have.status(422);",
+									"});",
+									"",
+									"// Respuesta en formato JSON",
+									"pm.test(\"La respuesta tiene formato JSON\", function () {",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"pm.test(\"Response has expected validation error structure\", function () {",
+									"    const json = pm.response.json();",
+									"    pm.expect(json).to.have.property(\"detail\");",
+									"    pm.expect(json.detail).to.be.an(\"array\").that.is.not.empty;",
+									"",
+									"    const error = json.detail[0];",
+									"    pm.expect(error).to.have.property(\"type\");",
+									"    pm.expect(error).to.have.property(\"loc\");",
+									"    pm.expect(error).to.have.property(\"msg\");",
+									"    pm.expect(error).to.have.property(\"input\");",
+									"    pm.expect(error).to.have.property(\"ctx\");",
+									"    pm.expect(error.ctx).to.have.property(\"reason\");",
+									"});",
+									"",
+									"pm.test(\"Validation error is for email\", function () {",
+									"    const json = pm.response.json();",
+									"    const error = json.detail[0];",
+									"    pm.expect(error.loc).to.include.members([\"body\", \"email\"]);",
+									"    pm.expect(error.msg).to.include(\"email address\");",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{active_user_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"email_invalido\",\n  \"username\": \"usuario_activo\",\n  \"full_name\": \"usuario_activo_full_name\",\n  \"is_active\": true,\n  \"is_admin\": false,\n  \"password\": \"testpassword123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/users/me",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"me"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Actualizacion sin token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 403\", function() {",
+									"    pm.response.to.have.status(403);",
+									"});",
+									"",
+									"pm.test(\"La respuesta tiene formato JSON\", function () {",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"pm.test(\"Mensaje correcto\", function () {",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property(\"detail\");",
+									"    pm.expect(jsonData.detail).to.include(\"Not authenticated\");",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"usuario_activo@example.com\",\n  \"username\": \"cambio\",\n  \"full_name\": \"usuario_activo_full_name\",\n  \"is_active\": true,\n  \"is_admin\": false,\n  \"password\": \"testpassword123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/users/me",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"me"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Actualizacion con token corrupto",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 403\", function() {",
+									"    pm.response.to.have.status(403);",
+									"});",
+									"",
+									"pm.test(\"La respuesta tiene formato JSON\", function () {",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"pm.test(\"Mensaje correcto\", function () {",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property(\"detail\");",
+									"    pm.expect(jsonData.detail).to.include(\"Could not validate credentials\");",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{active_user_token}}#",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"usuario_activo@example.com\",\n  \"username\": \"usuario_activo\",\n  \"full_name\": \"usuario_activo_full_name\",\n  \"is_active\": true,\n  \"is_admin\": false,\n  \"password\": \"testpassword123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/users/me",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"me"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Actualizacion con usuario inactivo",
+			"item": [
+				{
+					"name": "Registro usuario de prueba",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function(){",
+									"    pm.response.to.have.status(200);",
+									"})",
+									"",
+									"// Respuesta en formato JSON",
+									"pm.test(\"La respuesta tiene formato JSON\", function () {",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"pm.test(\"Usuario creado: atributos correctos en la respuesta\", function() {",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property(\"email\", \"usuario_de_prueba@example.com\");",
+									"    pm.expect(jsonData).to.have.property(\"username\", \"usuario_de_prueba\");",
+									"    pm.expect(jsonData).to.have.property(\"full_name\", \"usuario_de_prueba_full_name\");",
+									"    pm.expect(jsonData).to.have.property(\"is_active\", true);",
+									"    pm.expect(jsonData).to.have.property(\"is_admin\", false);",
+									"    pm.expect(jsonData).to.have.property(\"id\");",
+									"    pm.expect(jsonData).to.have.property(\"created_at\");",
+									"    pm.environment.set('inactive_test_user_id', jsonData.id);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"usuario_de_prueba@example.com\",\n  \"username\": \"usuario_de_prueba\",\n  \"full_name\": \"usuario_de_prueba_full_name\",\n  \"is_active\": true,\n  \"is_admin\": false,\n  \"password\": \"testpassword123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/users/register",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login Usuario de prueba",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"// Respuesta en formato JSON",
+									"pm.test(\"La respuesta tiene formato JSON\", function () {",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"pm.test(\"Response has access token\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('access_token');",
+									"    pm.expect(jsonData).to.have.property('token_type');",
+									"    pm.expect(jsonData.token_type).to.eql('bearer');",
+									"    // Guarda el access_token en la variable de entorno \"active_user_token\"",
+									"    pm.environment.set('inactive_test_user_token', jsonData.access_token);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "username",
+									"value": "usuario_de_prueba@example.com",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "testpassword123",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/api/auth/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Asignar usuario a inactivo",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function(){",
+									"    pm.response.to.have.status(200);",
+									"})",
+									"",
+									"// Respuesta en formato JSON",
+									"pm.test(\"La respuesta tiene formato JSON\", function () {",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"pm.test(\"Usuario actualizado: atributos correctos en la respuesta\", function() {",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property(\"email\", \"usuario_de_prueba@example.com\");",
+									"    pm.expect(jsonData).to.have.property(\"username\", \"usuario_de_prueba\");",
+									"    pm.expect(jsonData).to.have.property(\"full_name\", \"usuario_de_prueba_full_name\");",
+									"    pm.expect(jsonData).to.have.property(\"is_active\", false);",
+									"    pm.expect(jsonData).to.have.property(\"is_admin\", false);",
+									"    pm.expect(jsonData).to.have.property(\"id\");",
+									"    pm.expect(jsonData).to.have.property(\"created_at\");",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{inactive_test_user_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"usuario_de_prueba@example.com\",\n  \"username\": \"usuario_de_prueba\",\n  \"full_name\": \"usuario_de_prueba_full_name\",\n  \"is_active\": false,\n  \"is_admin\": false,\n  \"password\": \"testpassword123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/users/me",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"me"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Actualizacion de usuario inactivo",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function(){",
+									"    pm.response.to.have.status(400);",
+									"})",
+									"",
+									"// Respuesta en formato JSON",
+									"pm.test(\"La respuesta tiene formato JSON\", function () {",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"pm.test(\"Mensaje correcto\", function () {",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property(\"detail\");",
+									"    pm.expect(jsonData.detail).to.include(\"Inactive user\");",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{inactive_test_user_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"nuevo_email@example.com\",\n  \"username\": \"usuario_activo\",\n  \"full_name\": \"usuario_activo_full_name\",\n  \"is_active\": true,\n  \"is_admin\": false,\n  \"password\": \"testpassword123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/users/me",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"me"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Borrar usuario de prueba",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Usuario eliminado correctamente 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"La respuesta es JSON\", function () {",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"pm.test(\"El mensaje de confirmación es correcto\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property(\"message\");",
+									"    pm.expect(jsonData.message).to.include(\"deleted successfully\");",
+									"});",
+									"",
+									"pm.environment.unset(\"inactive_test_user_token\");",
+									"pm.environment.unset(\"inactive_test_user_id\");"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/admin/users/{{inactive_test_user_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"users",
+								"{{inactive_test_user_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					"pm.environment.set(\"base_url\", \"http://127.0.0.1:8000\")"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
