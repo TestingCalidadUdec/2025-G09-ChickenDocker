@@ -91,7 +91,7 @@ async completeWorkout() {
   }
 
   doneButtonInExerciseModal() {
-    return this.page.getByRole('button', { name: /^done$/i });
+    return this.page.getByRole('button', { name: /^Done$/i });
   }
 
   async openAddExerciseModal() {
@@ -106,14 +106,13 @@ async completeWorkout() {
 
   async addAnyExerciseIfAvailable() {
     await this.openAddExerciseModal();
-
-    const addButtons = this.page.getByRole('button', { name: /add/i });
-
+    await this.page.getByText(/Add Exercise to Workout/i).waitFor();
+    const addButtons = this.page.getByRole('button', { name: /^Add$/i })
     if (await addButtons.count()) {
       await addButtons.first().click();
     } else {
       await expect(
-        this.page.getByText(/no exercises found/i)
+        this.page.getByText(/No exercises found/i)
       ).toBeVisible();
     }
 

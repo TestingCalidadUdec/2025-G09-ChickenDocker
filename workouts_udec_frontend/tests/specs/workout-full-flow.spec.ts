@@ -26,10 +26,12 @@ test('usuario puede crear un workout, usarlo y completarlo', async ({ page }) =>
   // 3. "Start New Workout" desde el Dashboard (abre modal)
   await dashboard.clickStartNewWorkout();
 
-  const workoutName = `E2E Workout ${Date.now()}`;
+  await workoutPage.startNewWorkoutHeading();
 
-  // 4. Crear workout en blanco con nombre
-  await workoutPage.createBlankWorkout(workoutName);
+  const workoutName = `E2E flow Workout ${Date.now()}`;
+
+  await workoutPage.fillWorkoutName(workoutName);
+  await workoutPage.confirmStartWorkout();
 
   // 5. Ver pantalla del workout
   await workoutPage.expectOnWorkoutPage();
