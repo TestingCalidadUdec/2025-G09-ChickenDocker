@@ -1,6 +1,8 @@
 import { defineConfig, devices } from '@playwright/test';
 
 export default defineConfig({
+  workers: 1,
+
   use: {
     headless: false,
     baseURL: 'http://localhost:5173',
@@ -19,4 +21,6 @@ export default defineConfig({
       use: { ...devices['Desktop Chrome'] }
     }
   ]
+
+  
 });

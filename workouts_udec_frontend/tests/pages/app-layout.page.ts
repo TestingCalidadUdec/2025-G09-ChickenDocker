@@ -23,6 +23,11 @@ export class AppLayout {
     return this.page.getByRole('button', { name: /logout/i });
   }
 
+  adminLink() {
+    return this.page.getByRole('link', { name: 'Admin' });
+  }
+  
+
   async goToDashboard() {
     await this.dashboardLink().click();
     await expect(this.page).toHaveURL(/\/dashboard/);
@@ -46,4 +51,11 @@ export class AppLayout {
   async logout() {
     await this.logoutButton().click();
   }
+
+  async goToAdmin() {
+    await this.adminLink().click();
+    await expect(this.page).toHaveURL(/\/admin/);
+  }
+
+
 }
