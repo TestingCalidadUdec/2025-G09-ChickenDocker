@@ -15,3 +15,4 @@ test.describe('Rutas protegidas', () => {
     await expect(page).toHaveURL(/\/login/);
   });
 });
+
