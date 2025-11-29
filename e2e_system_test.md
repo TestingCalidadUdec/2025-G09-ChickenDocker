@@ -13,7 +13,7 @@ Antes de comenzar, asegúrate de tener instalado lo siguiente en tu sistema:
   
 ## 🚀 Instalación y Configuración
 
-Pasos para preparar el entorno de ejecucion de pruebas.
+Pasos para preparar el entorno de ejecución de pruebas.
 
 ### 1\. ⚙️ Preparación del Backend
 
@@ -23,22 +23,22 @@ Para que las pruebas E2E funcionen, el servidor backend debe estar **ejecutándo
 2.  Sigue las instrucciones de su `README.md` para iniciar el servidor.
 
 ### 2\. Instalar dependencias
-Despues de haber iniciado el backend abra otra terminal sin cerrar la del backend y dirigase a workouts_udec_frontend y ejecute lo siguente para instalar dependencias:
+Después de haber iniciado el backend abra otra terminal sin cerrar la del backend y diríjase a `workouts_udec_frontend` y ejecute lo siguiente para instalar dependencias:
 ```bash
 npm install
 ```
 
 ### 3\. Instalar navegadores de Playwright
-en la misma carpeta ejecute 
+En la misma carpeta ejecute:
 ```bash
 npx playwright install
 ```
-### 5\. Ejecutar todos los tests
+### 4\. Ejecutar todos los tests
 
-Depues de todo eso ejecute el siguente comando:
+Después de todo eso ejecute el siguente comando:
 
 ```bash
 npx playwright test
 ```
-Este comando ejecutará los 20 tests de forma iterativa
+Este comando ejecutará los 20 tests de forma iterativa.
 La ejecución de los tests puede tardar unos segundos.
