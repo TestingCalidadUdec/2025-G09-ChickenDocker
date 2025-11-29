@@ -1,4 +1,13 @@
-// tests/e2e/workout-full-flow.spec.ts
+/**
+ * Funcionalidades cubiertas
+ * - Inicia sesión con un usuario válido
+ * - Desde el dashboard, inicia la creación de un nuevo workout
+ * - Asigna un nombre único al workout
+ * - Verifica que el workout se crea correctamente y no tiene ejercicios al principio
+ * - Intenta añadir ejercicios (si hay disponibles)
+ * - Completa el workout
+ * - Va al historial y verifica que el workout aparece registrado
+ */
 import { test } from '@playwright/test';
 import { LoginPage } from '../pages/login.page';
 import { DashboardPage } from '../pages/dashboard.page';
@@ -10,6 +19,9 @@ const TEST_EMAIL = 'anyelo@gmail.com';
 const TEST_PASSWORD = 'cacaca';
 
 test.describe('Workout-Full-Flow', () => {
+
+  // Test verifica que un usuario puede crear un workout, usarlo y completarlo
+  // Usa un nombre único para evitar conflictos si se ejecuta varias veces
   test('usuario puede crear un workout, usarlo y completarlo', async ({ page }) => {
     const loginPage = new LoginPage(page);
     const dashboard = new DashboardPage(page);

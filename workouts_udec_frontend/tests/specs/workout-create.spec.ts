@@ -1,3 +1,12 @@
+/**
+ * Funcionalidades cubiertas
+ * - Inicia sesión con un usuario válido
+ * - Desde el dashboard, inicia la creación de un nuevo workout
+ * - Asigna un nombre único al workout
+ * - Verifica que el workout se crea correctamente y no tiene ejercicios al principio
+ * - Completa el workout
+ */
+
 import { test } from '@playwright/test';
 import { LoginPage } from '../pages/login.page';
 import { DashboardPage } from '../pages/dashboard.page';
@@ -7,29 +16,31 @@ const TEST_EMAIL = 'anyelo@gmail.com';
 const TEST_PASSWORD = 'cacaca';
 
 test.describe('Workout-Create', () => {
+   // Test verifica que un usuario puede crear un workout en blanco desde el dashboard
+   // Usa un nombre único para evitar conflictos si se ejecuta varias veces
   test('usuario puede crear un blank workout desde el dashboard', async ({ page }) => {
     const loginPage = new LoginPage(page);
     const dashboardPage = new DashboardPage(page);
     const workoutPage = new WorkoutPage(page);
-  
+
     await loginPage.goto();
     await loginPage.login(TEST_EMAIL, TEST_PASSWORD);
-  
+
     await dashboardPage.expectOnDashboard();
-  
+
     await dashboardPage.clickStartNewWorkout();
-  
+
     await workoutPage.startNewWorkoutHeading();
-  
+
     const workoutName = `Workout ${Date.now()}`;
-  
+
     await workoutPage.fillWorkoutName(workoutName);
     await workoutPage.confirmStartWorkout();
-  
+
     await workoutPage.expectOnWorkoutPage();
     await workoutPage.expectWorkoutName(workoutName);
     await workoutPage.expectNoExercisesYet();
-  
+
     await workoutPage.completeWorkout();
   });
 });
