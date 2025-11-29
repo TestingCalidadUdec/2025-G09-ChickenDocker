@@ -33,8 +33,6 @@ export class WorkoutPage {
     await this.confirmStartWorkout();
   }
 
-  // ---------- PÁGINA DEL WORKOUT ACTIVO ----------
-
   async expectOnWorkoutPage() {
     await expect(this.page).toHaveURL(/\/workout/);
   }
@@ -52,7 +50,7 @@ export class WorkoutPage {
   }
 
   completeButton() {
-    return this.page.getByRole('button', { name: /^complete$/i });
+    return this.page.getByRole('button', { name: /^Complete$/i });
   }
   confirmCompleteButton() {
   return this.page.getByRole('button', { name: /complete workout/i });
@@ -62,17 +60,10 @@ completeModalTitle() {
 }
 
 async completeWorkout() {
-  // 1. Click en "Complete" (abre modal)
   await this.completeButton().click();
-
-  // 2. Esperar modal
   await this.completeModalTitle();
-
-  // 3. Confirmar "Complete Workout"
   await this.confirmCompleteButton().click();
 }
-
-  // ---------- MODAL "Add Exercise to Workout" ----------
 
   addExerciseButton() {
     return this.page.getByRole('button', { name: /\+ add exercise/i });
@@ -108,8 +99,10 @@ async completeWorkout() {
     await this.openAddExerciseModal();
     await this.page.getByText(/Add Exercise to Workout/i).waitFor();
     const addButtons = this.page.getByRole('button', { name: /^Add$/i })
-    if (await addButtons.count()) {
-      await addButtons.first().click();
+    const num_buttons = await addButtons.count(); 
+    if (num_buttons > 0) {
+      await addButtons.nth(0).click();
+      return
     } else {
       await expect(
         this.page.getByText(/No exercises found/i)
