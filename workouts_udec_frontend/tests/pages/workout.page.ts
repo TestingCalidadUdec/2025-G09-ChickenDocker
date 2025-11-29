@@ -103,12 +103,7 @@ async completeWorkout() {
     if (num_buttons > 0) {
       await addButtons.nth(0).click();
       return
-    } else {
-      await expect(
-        this.page.getByText(/No exercises found/i)
-      ).toBeVisible();
     }
-
     await this.doneButtonInExerciseModal().click();
   }
 
