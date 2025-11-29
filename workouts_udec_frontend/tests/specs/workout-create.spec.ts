@@ -21,7 +21,7 @@ test.describe('Workout-Create', () => {
   
     await workoutPage.startNewWorkoutHeading();
   
-    const workoutName = `E2E Workout ${Date.now()}`;
+    const workoutName = `Workout ${Date.now()}`;
   
     await workoutPage.fillWorkoutName(workoutName);
     await workoutPage.confirmStartWorkout();

@@ -77,7 +77,7 @@ test.describe('Admin Menu', () => {
             type: 'WEIGHT_BASED',
             muscleGroup: 'Chest',
             equipment: 'Barbell',
-            description: 'E2E test exercise created via Admin UI',
+            description: 'test exercise',
         });
 
         await expect(page.getByText(TEST_EXERCISE_NAME)).toBeVisible();

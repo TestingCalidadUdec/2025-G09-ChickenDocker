@@ -29,7 +29,7 @@ test.describe('Workout-Full-Flow', () => {
   
     await workoutPage.startNewWorkoutHeading();
   
-    const workoutName = `E2E flow Workout ${Date.now()}`;
+    const workoutName = `flow Workout ${Date.now()}`;
   
     await workoutPage.fillWorkoutName(workoutName);
     await workoutPage.confirmStartWorkout();
