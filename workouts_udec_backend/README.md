@@ -65,8 +65,8 @@ postgres psql -c "CREATE DATABASE workouts_db OWNER workout_user;"
 alembic revision --autogenerate -m "Initial migration"
 alembic upgrade head
 
-# Create admin user
-python3 create_admin.py
+# Create admin user and test user
+python3 create_users.py
 ```
 
 ### 5. Start the Server
