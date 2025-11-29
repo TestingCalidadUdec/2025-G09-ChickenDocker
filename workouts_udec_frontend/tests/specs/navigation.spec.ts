@@ -4,13 +4,21 @@ import { AppLayout } from '../pages/app-layout.page';
 
 const TEST_EMAIL = 'anyelo@gmail.com';
 const TEST_PASSWORD = 'cacaca';
+const ADMIN_EMAIL = 'admin@example.com';
+const ADMIN_PASSWORD = 'admin123';
 
 test.describe('Navigation', () => {
-  test('navegación entre Dashboard, Profile, Workouts, History', async ({ page }) => {
-    const loginPage = new LoginPage(page);
-    const layout = new AppLayout(page);
+  let loginPage: LoginPage;
+  let layout: AppLayout;
   
-    await loginPage.goto();
+    test.beforeEach(async ({ page }) => {
+      loginPage = new LoginPage(page);
+      layout = new AppLayout(page);
+      await loginPage.goto();
+    });
+
+
+  test('Uusario navega entre Dashboard, Profile, Workouts y History', async ({ page }) => {
     await loginPage.login(TEST_EMAIL, TEST_PASSWORD);
   
     await layout.goToProfile();
@@ -19,4 +27,14 @@ test.describe('Navigation', () => {
     await layout.goToDashboard();
   });
   
+  test('Admin navega entre Dashboard, Profile, Workouts, History y Admin', async ({ page }) => {
+    await loginPage.login(ADMIN_EMAIL, ADMIN_PASSWORD);
+  
+    await layout.goToProfile();
+    await layout.goToWorkouts();
+    await layout.goToHistory();
+    await layout.goToDashboard();
+    await layout.goToAdmin();
+  });
+
 });

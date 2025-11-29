@@ -97,12 +97,19 @@ async completeWorkout() {
 
   async addAnyExerciseIfAvailable() {
     await this.openAddExerciseModal();
-    await this.page.getByText(/Add Exercise to Workout/i).waitFor();
+    
     const addButtons = this.page.getByRole('button', { name: /^Add$/i })
-    const num_buttons = await addButtons.count(); 
-    if (num_buttons > 0) {
-      await addButtons.nth(0).click();
+    const firstAddButton = this.page.getByRole('button', { name: /^Add$/i }).first();
+    const noExercisesText = this.page.getByText(/No exercises found/i);
+
+    try {
+      await firstAddButton.waitFor({ state: 'visible', timeout: 1000 });
+      await firstAddButton.click();
       return
+    } catch (error) {
+      await expect(
+        this.page.getByText(/No exercises found/i)
+      ).toBeVisible();
     }
     await this.doneButtonInExerciseModal().click();
   }

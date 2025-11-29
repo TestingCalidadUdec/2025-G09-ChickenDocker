@@ -1,15 +1,13 @@
 import { test, expect } from '@playwright/test';
 import { LoginPage } from '../pages/login.page';
-import { AppLayout } from '../pages/app-layout.page'; // Necesario para la navegación inicial si el admin no redirige automáticamente
+import { AppLayout } from '../pages/app-layout.page'; 
 
-// Page Objects específicos de Admin UI
 import { AdminPage } from '../pages/admin.page'; 
 import { UserManagementPage } from '../pages/admin.user.managment.page';
 import { ExerciseManagementPage } from '../pages/admin.exercise.management.page';
 import { WorkoutTemplatePage } from '../pages/admin.workout.template.page';
 
 
-// Datos de prueba para crear entidades únicas
 const UNIQUE = Date.now();
 const TEST_EXERCISE_NAME = `Test Exercise ${UNIQUE}`;
 const TEST_TEMPLATE_NAME = `Test Template ${UNIQUE}`;
